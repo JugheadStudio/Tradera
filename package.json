@@ -1,0 +1,24 @@
+{
+  "name": "vannilla-electron",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "start": "wait-on http://localhost:3000 && electron .",
+    "react-start": "cd react-app && npm start",
+    "dev": "concurrently \"npm run react-start\" \"npm run start\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Ruan Jordaan",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "dependencies": {
+    "bootstrap": "^5.3.3",
+    "electron": "^31.2.1",
+    "react-bootstrap": "^2.10.4",
+    "wait-on": "^7.2.0"
+  }
+}
