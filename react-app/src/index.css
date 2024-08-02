@@ -1,13 +1,130 @@
+:root {
+
+  /* Colors */
+  --tradera-yellow: #D1EF69;
+  --tradera-red: #FF4D4D;
+  --tradera-blue-light: #9CCDDC;
+  --tradera-blue-dark: #5591A9;
+  --tradera-grey: #0A0A0A;
+  --tradera-dark-grey: #151419;
+  --tradera-white: #ffffff;
+
+
+  /* Fonts */
+  --tradera-font-xSmall: 10px;
+  --tradera-font-small: 12px;
+  --tradera-font-medium: 15px;
+  --tradera-font-large: 17px;
+  --tradera-font-xlarge: 20px;
+  --tradera-font-xxlarge: 28px;
+
+  --tradera--border-radius: 10px;
+  --tradera--border-radius-profile: 20px;
+}
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  font-family: 'Montserrat', sans-serif !important;
+  background-color: var(--tradera-dark-grey) !important;
+  color: var(--tradera-white) !important;
 }
+
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+
+/* =========== Navbar =========== */
+.sidenav {
+  position: sticky;
+  top: 18px;
+  width: 100%;
+  height: 100vh;
+  color: var(--tradera-white);
+  background-color: var(--tradera-dark-grey);
+  font-weight: 400;
+  line-height: 28.44px;
+}
+
+.sidenav-headings {
+  color: var(--tradera-white);
+  font-size: var(--tradera-font-small);
+  font-weight: 400;
+  text-decoration: none;
+  margin-left: 20px;
+  margin-top: 40px;
+  padding: 7px 0 7px 21px;
+}
+
+.sidenav a {
+  color: var(--tradera-white);
+  font-size: var(--tradera-font-medium);
+  font-weight: 300;
+  text-decoration: none;
+  margin-left: 20px;
+  padding: 14px 21px 14px 21px;
+  display: flex;
+  align-items: center;
+}
+
+.sidenav a i {
+  margin-right: 10px; /* Space between icon and text */
+}
+
+.sidenav a:hover {
+  color: var(--tradera-white);
+  font-weight: 700;
+}
+
+.sidenav #mainLogo {
+  width: 35px;
+  margin-top: 28.86px;
+  margin-bottom: 26.86px;
+  padding-right: 13px;
+}
+
+.sidenav .nav-link.active {
+  background: linear-gradient(to bottom, #2D2C34, #151419);
+  border: 1px solid #2C2B31;
+  border-radius: var(--tradera--border-radius);
+}
+
+/* Styles for the user container */
+.usercontainder {
+  background: linear-gradient(to bottom, #2D2C34, #151419);
+  border: 1px solid #2C2B31;
+  border-radius: var(--tradera--border-radius-profile);
+  margin-left: 20px;
+  padding: 11px;
+  display: flex; /* Align items horizontally */
+  align-items: center; /* Center the items vertically */
+}
+
+.usercontainder #profileLogo {
+  width: 38px;
+  height: 38px; /* Ensure the height is equal to the width */
+  border-radius: 50%; /* Crop the image into a circle */
+  margin-right: 13px;
+  border: 1px solid #3D3C42;  
+}
+
+.usercontainder-info {
+  display: flex;
+  flex-direction: column; /* Stack the username and usertype vertically */
+}
+
+.usercontainder-username {
+  color: var(--tradera-white);
+  font-size: var(--tradera-font-medium);
+  font-weight: 700;
+  line-height: 21.94px;
+}
+
+.usercontainder-usertype {
+  color: var(--tradera-white);
+  font-size: var(--tradera-font-small);
+  font-weight: 400;
+  line-height: 14.63px;
 }
