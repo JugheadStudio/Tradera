@@ -2,7 +2,9 @@ import React from 'react'
 
 function Auth() {
   return (
-    <div>Auth</div>
+    <div className='page-background'>
+      Auth
+    </div>
   )
 }
 
