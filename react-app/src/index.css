@@ -82,7 +82,7 @@ body {
 
 .sidenav a:hover {
   color: var(--tradera-white);
-  font-weight: 700;
+  /* font-weight: 700; */
 }
 
 .sidenav #mainLogo {
@@ -163,6 +163,15 @@ body {
   margin-right: 10px;
 }
 
+.left-column-large {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  border-radius: var(--tradera--border-radius);
+  margin-right: 10px;
+}
+
 .left-top-row {
   flex: 1;
   background: linear-gradient(to bottom right, var(--tradera-blue-light), var(--tradera-blue-dark));
@@ -180,6 +189,14 @@ body {
 
 .right-column {
   flex: 2;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  border-radius: var(--tradera--border-radius);
+}
+
+.right-column-small {
+  flex: 1;
   display: flex;
   flex-direction: column;
   padding: 20px;
@@ -241,6 +258,14 @@ body {
   border: 1px solid #2C2B31;
   justify-content: center;
   align-items: center;
+}
+
+.admin-left-container {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  border-radius: var(--tradera--border-radius);
+  border: 1px solid #2C2B31;
 }
 
 .cardcontainder {
@@ -359,4 +384,219 @@ body {
 
 .transactions-count-yellow {
   color: var(--tradera-yellow);
+}
+
+/* components styling */
+
+.search-container {
+  display: flex;
+  width: 100%;
+  border-radius: var(--tradera--border-radius);
+  align-items: center;
+  margin: 0;
+  padding: 5px;
+}
+
+.search-input {
+  background-color: var(--tradera-grey);
+  color: var(--tradera-white);
+  border: 1px solid #2C2B31;
+  border-radius: var(--tradera--border-radius);
+  padding: 10px 15px;
+  font-size: var(--tradera-font-small);
+  cursor: pointer;
+  flex-grow: 1;
+}
+
+.search-input:active {
+  background-color: var(--tradera-grey-light);
+}
+
+.search-button {
+  background-color: var(--tradera-grey);
+  color: var(--tradera-white);
+  border: 1px solid #2C2B31;
+  border-radius: var(--tradera--border-radius);
+  padding: 10px 15px;
+  font-size: var(--tradera-font-small);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-left: 10px;
+}
+
+.search-button:active {
+  background-color: var(--tradera-grey-light);
+}
+
+/* Admin user cards */
+
+.admin-left-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  height: 100%;
+  border-radius: var(--tradera--border-radius);
+  border: 1px solid #2C2B31;
+  padding: 15px;
+}
+
+.admin-card {
+  background-color: var(--tradera-yellow);
+  border-radius: var(--tradera--border-radius);
+  padding: 15px;
+  margin-bottom: 15px;
+  width: 100%;
+  color: var(--tradera-grey);
+}
+
+.admin-card:last-child {
+  margin-bottom: 0;
+}
+
+.admin-card-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.admin-card-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.admin-card-title {
+  font-size: var(--tradera-font-large);
+  font-weight: bold;
+}
+
+.admin-card-subtitle {
+  font-size: var(--tradera-font-small);
+  margin-left: auto;
+}
+
+.admin-card-body {
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-card-balance {
+  font-size: var(--tradera-font-xxlarge);
+  font-weight: bold;
+  margin-bottom: 10px;
+  font-size: 30px;
+}
+
+.admin-card-expiry {
+  font-size: var(--tradera-font-medium);
+}
+
+/* Scrollbar styles for admin-left-container */
+.admin-left-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.admin-left-container::-webkit-scrollbar-track {
+  background: var(--tradera-grey);
+  border-radius: 4px;
+}
+
+.admin-left-container::-webkit-scrollbar-thumb {
+  background: var(--tradera-grey-light);
+  border-radius: 4px;
+}
+
+.admin-left-container::-webkit-scrollbar-thumb:hover {
+  background: var(--tradera-blue-light);
+}
+
+/* For Firefox */
+.admin-left-container {
+  scrollbar-width: thin;
+  scrollbar-color: var(--tradera-grey-light) var(--tradera-grey);
+}
+
+/* Admin button styles */
+.admin-button-container {
+  display: flex;
+  width: 100%;
+  gap: 10px;
+  margin-bottom: 15px;
+  position: sticky;
+  top: 0;
+  padding: 10px 0;
+  z-index: 1000;
+  white-space: nowrap;
+}
+
+.admin-button {
+  background-color: var(--tradera-grey);
+  color: var(--tradera-white);
+  border: 1px solid #2C2B31;
+  border-radius: var(--tradera--border-radius);
+  padding: 10px 10px;
+  font-size: var(--tradera-font-small);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.admin-button:hover {
+  background-color: var(--tradera-grey-light);
+}
+
+.admin-button.selected {
+  background-color: var(--tradera-purple-light);
+  color: var(--tradera-white);
+  border-color: var(--tradera-purple-dark);
+}
+
+.admin-button i {
+  margin-right: 5px;
+}
+
+.transactions-row {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  border: 1px solid #2C2B31;
+  border-radius: var(--tradera--border-radius);
+  margin-bottom: 10px;
+}
+
+.transactionsLogo {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 15px;
+}
+
+.transactions-info {
+  flex-grow: 1;
+}
+
+.transactions-name {
+  font-size: var(--tradera-font-medium);
+  font-weight: 600;
+  color: var(--tradera-white);
+  margin-bottom: 3px;
+}
+
+.transactions-usetype {
+  font-size: var(--tradera-font-small);
+  color: var(--tradera-grey-light);
+}
+
+.transactions-count-red {
+  font-size: var(--tradera-font-small);
+  color: var(--tradera-red);
+  text-align: right;
+}
+
+.transactions-count-red p {
+  margin: 0;
 }
