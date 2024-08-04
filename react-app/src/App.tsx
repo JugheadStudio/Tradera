@@ -12,7 +12,8 @@ import Button from 'react-bootstrap/Button';
 
 //Pages
 import AdminDashboard from './Pages/AdminDashboard';
-import Auth from './Pages/Auth';
+import Login from './Pages/Login';
+import Signup from './Pages/Signup';
 import Dashboard from './Pages/Dashboard';
 import Details from './Pages/Details';
 import Home from './Pages/Home';
@@ -22,18 +23,28 @@ import Home from './Pages/Home';
 function App() {
   return (
     <Router>
-      <div className="d-flex">
-        <Sidebar />
-        <div className="flex-grow-1 p-3">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/Details" element={<Details />} />
-            <Route path="/Dashboard" element={<Dashboard />} />
-            <Route path="/Auth" element={<Auth />} />
-            <Route path="/AdminDashboard" element={<AdminDashboard />} />
-          </Routes>
-        </div>
-      </div>
+      <Routes>
+        {/* checks if the path is to the auth page, if its not -> add the sidebar */}
+        <Route path="/" element={<Login />} />
+        <Route path="/Signup" element={<Signup />} />
+        <Route
+          path="*"
+          element={
+            <div className="d-flex">
+              <Sidebar />
+              <div className="flex-grow-1 p-3">
+                <Routes>
+                  <Route path="/Details" element={<Details />} />
+                  <Route path="/Dashboard" element={<Dashboard />} />
+                  <Route path="/Home" element={<Home />} />
+                  <Route path="/AdminDashboard" element={<AdminDashboard />} />
+                  <Route path="/Signup" element={<Signup />} />
+                </Routes>
+              </div>
+            </div>
+          }
+        />
+      </Routes>
     </Router>
   );
 }

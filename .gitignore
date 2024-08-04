@@ -39,3 +39,6 @@ packages/react-devtools-fusebox/dist
 packages/react-devtools-inline/dist
 packages/react-devtools-shell/dist
 packages/react-devtools-timeline/dist
+react-app/node_modules/.cache/default-development/0.pack
+react-app/node_modules/.cache/default-development/index.pack
+react-app/node_modules/.cache/default-development/index.pack
