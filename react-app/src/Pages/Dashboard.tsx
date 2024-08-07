@@ -55,7 +55,8 @@ function Dashboard() {
                 </div>
               </div>
               <div className="transactions-count-red">
-                <p>-25 <EonsRed/></p>
+                <p>-25</p>
+                <EonsRed/>
               </div>
             </div>
 
@@ -70,7 +71,8 @@ function Dashboard() {
                 </div>
               </div>
               <div className="transactions-count-yellow">
-                <p>+25 <EonsGreen/></p>
+                <p>+25</p>
+                <EonsGreen/>
               </div>
             </div>
 
@@ -85,7 +87,8 @@ function Dashboard() {
                 </div>
               </div>
               <div className="transactions-count-red">
-                <p>-55 <EonsRed/></p>
+                <p>-55</p>
+                <EonsRed/>
               </div>
             </div>
 
@@ -100,7 +103,8 @@ function Dashboard() {
                 </div>
               </div>
               <div className="transactions-count-yellow">
-                <p>+25 <EonsGreen/></p>
+                <p>+25</p>
+                <EonsGreen/>
               </div>
             </div>
 
@@ -115,7 +119,8 @@ function Dashboard() {
                 </div>
               </div>
               <div className="transactions-count-red">
-                <p>-525 <EonsRed/></p>
+                <p>-525</p>
+                <EonsRed/>
               </div>
             </div>
           </Col>
@@ -143,9 +148,8 @@ function Dashboard() {
                       <div className='transactions-usetype'>Monthly Transaction</div>
                     </div>
                     <div className='transactions-count-red'>
-                      <p>
-                        -55 <EonsRed/>
-                      </p>
+                      <p>-55</p>
+                      <EonsRed/>
                     </div>
                   </div>
 
@@ -156,9 +160,8 @@ function Dashboard() {
                       <div className='transactions-usetype'>Monthly Transaction</div>
                     </div>
                     <div className='transactions-count-yellow'>
-                      <p>
-                        +25 <EonsGreen/>
-                      </p>
+                      <p>+25</p>
+                        <EonsGreen/>
                     </div>
                   </div>
 
@@ -169,9 +172,8 @@ function Dashboard() {
                       <div className='transactions-usetype'>Transaction</div>
                     </div>
                     <div className='transactions-count-red'>
-                      <p>
-                        -525 <EonsRed/>
-                      </p>
+                      <p>-525</p>
+                      <EonsRed/>
                     </div>
                   </div>
 

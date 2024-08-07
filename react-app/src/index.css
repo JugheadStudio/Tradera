@@ -91,6 +91,10 @@ body {
   margin-bottom: 26.86px;
 }
 
+img, svg {
+  vertical-align: unset !important;
+}
+
 .sidenav .nav-link.active {
   background: linear-gradient(to bottom, #2D2C34, #151419);
   border: 1px solid var(--tradera-border);
@@ -382,6 +386,14 @@ body {
   margin-left: auto; 
   display: flex;
   align-items: center;
+}
+
+.transactions-count-yellow svg {
+  margin-left: 10px
+}
+
+.transactions-count-red svg {
+  margin-left: 10px
 }
 
 .transactions-count-red {
