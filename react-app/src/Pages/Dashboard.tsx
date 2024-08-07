@@ -5,24 +5,27 @@ import netflix from '../assets/netflix.png';
 import figma from '../assets/figma.png';
 import google from '../assets/google.png';
 import olivia from '../assets/olivia.png';
-import redlogo from '../assets/redlogo.png';
-import yellowlogo from '../assets/yellowlogo.png';
-import BarChart from '../Components/BarChart';
-import DonutChart from '../Components/DonutChart';
+import BarChart from '../components/BarChart';
+import DonutChart from '../components/DonutChart';
+import { Container, Row, Col } from 'react-bootstrap';
+
+import { ReactComponent as EonsRed } from '../assets/eons-red.svg';
+import { ReactComponent as EonsGreen } from '../assets/eons-green.svg';
+import { ReactComponent as EonsBlack } from '../assets/eons-black.svg';
 
 function Dashboard() {
   return (
     <div className='page-background'>
-      <div className='container'>
-        <div className='row'>
+      <Container fluid>
+        <Row>
 
-          <div className='left-column'>
+          <Col xs={4}>
             <div className='column-title'>
               <span className='spesific'>Your</span> <span className='transactions'>Balance</span>
             </div>
-            <div className='left-top-row'>
+            <div className='dashboard-balance-card'>
               <div className='cardcontainder'>
-                <img id='cardLogo' src={logo} alt='Tradera Logo' />
+                <EonsBlack/>
                 <div className='cardbalance'>
                   10646.89
                 </div>
@@ -38,8 +41,7 @@ function Dashboard() {
 
             {/* Transactions begin here */}
 
-
-            <div className='column-title'>
+            <div className='column-title mt-20'>
               <span className='spesific'>Recent</span> <span className='transactions'>Transactions</span>
             </div>
             <div className='transactions-row'>
@@ -53,7 +55,8 @@ function Dashboard() {
                 </div>
               </div>
               <div className="transactions-count-red">
-                <p>-25 <img id='current' src={redlogo} alt='redlogo' /></p>
+                <p>-25</p>
+                <EonsRed/>
               </div>
             </div>
 
@@ -68,7 +71,8 @@ function Dashboard() {
                 </div>
               </div>
               <div className="transactions-count-yellow">
-                <p>+25 <img id='current' src={yellowlogo} alt='yellowlogo' /></p>
+                <p>+25</p>
+                <EonsGreen/>
               </div>
             </div>
 
@@ -83,7 +87,8 @@ function Dashboard() {
                 </div>
               </div>
               <div className="transactions-count-red">
-                <p>-55 <img id='current' src={redlogo} alt='redlogo' /></p>
+                <p>-55</p>
+                <EonsRed/>
               </div>
             </div>
 
@@ -98,11 +103,12 @@ function Dashboard() {
                 </div>
               </div>
               <div className="transactions-count-yellow">
-                <p>+25 <img id='current' src={yellowlogo} alt='yellowlogo' /></p>
+                <p>+25</p>
+                <EonsGreen/>
               </div>
             </div>
 
-            <div className='transactions-row2'>
+            <div className='transactions-row'>
               <img className='transactionsLogo' src={olivia} alt='Profile' />
               <div className='transactions-info'>
                 <div className='transactions-name'>
@@ -113,22 +119,23 @@ function Dashboard() {
                 </div>
               </div>
               <div className="transactions-count-red">
-                <p>-525 <img id='current' src={redlogo} alt='redlogo' /></p>
+                <p>-525</p>
+                <EonsRed/>
               </div>
             </div>
-          </div>
+          </Col>
 
           {/* bar chart here */}
-          <div className='right-column'>
+          <Col xs={8}>
             <div className='column-title'>
               <span className='spesific'>Your</span> <span className='transactions'>Status</span>
             </div>
-            <div className='top-row'>
+            <div className='dasboard-status-chart'>
               <BarChart />
             </div>
 
-            <div className='bottom-row'>
-              <div className='column-wrapper'>
+            <Row className='mt-20'>
+              <Col sx={7}>
                 <div className='column-title'>
                   <span className='spesific'>Pending</span> <span className='transactions'>Transactions</span>
                 </div>
@@ -141,9 +148,8 @@ function Dashboard() {
                       <div className='transactions-usetype'>Monthly Transaction</div>
                     </div>
                     <div className='transactions-count-red'>
-                      <p>
-                        -55 <img id='current' src={redlogo} alt='redlogo' />
-                      </p>
+                      <p>-55</p>
+                      <EonsRed/>
                     </div>
                   </div>
 
@@ -154,41 +160,39 @@ function Dashboard() {
                       <div className='transactions-usetype'>Monthly Transaction</div>
                     </div>
                     <div className='transactions-count-yellow'>
-                      <p>
-                        +25 <img id='current' src={yellowlogo} alt='redlogo' />
-                      </p>
+                      <p>+25</p>
+                        <EonsGreen/>
                     </div>
                   </div>
 
-                  <div className='transactions-row2'>
+                  <div className='transactions-row'>
                     <img className='transactionsLogo' src={olivia} alt='Profile' />
                     <div className='transactions-info'>
                       <div className='transactions-name'>Olivia</div>
                       <div className='transactions-usetype'>Transaction</div>
                     </div>
                     <div className='transactions-count-red'>
-                      <p>
-                        -525 <img id='current' src={redlogo} alt='redlogo' />
-                      </p>
+                      <p>-525</p>
+                      <EonsRed/>
                     </div>
                   </div>
 
                 </div>
-              </div>
+              </Col>
 
-              <div className='bottom-right-wrapper'>
+              <Col xs={5}>
                 <div className='column-title'>
                   <span className='spesific'>Total</span> <span className='transactions'>Transactions</span>
                 </div>
-                <div className='bottom-right-column'>
+                <div className='dashboard-transactions-chart'>
                   <DonutChart />
                 </div>
-              </div>
-            </div>
+              </Col>
+            </Row>
 
-          </div>
-        </div>
-      </div>
+          </Col>
+        </Row>
+      </Container>
     </div>
   );
 }
