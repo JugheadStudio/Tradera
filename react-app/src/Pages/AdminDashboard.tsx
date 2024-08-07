@@ -2,6 +2,8 @@ import React from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import logo from '../assets/logo2.png';
 
+import { ReactComponent as EonsBlack } from '../assets/eons-black.svg';
+
 const AdminDashboard: React.FC = () => {
   const dummyCards = [
     { name: 'Alice', role: 'Explorer', balance: 8532.45, expiry: '11/25', color: '#98FB98', avatar: 'https://randomuser.me/api/portraits/women/2.jpg' },
@@ -60,7 +62,7 @@ const AdminDashboard: React.FC = () => {
         </div>
         <div className="admin-card-body">
           <div className='cardcontainder'>
-            <img id='cardLogo' src={logo} alt='Tradera Logo' />
+            <EonsBlack/>
             <div className='cardbalance'>
               {card.balance}
             </div>

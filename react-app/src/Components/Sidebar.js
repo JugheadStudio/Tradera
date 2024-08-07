@@ -3,7 +3,7 @@ import React from 'react';
 import { Nav } from 'react-bootstrap';
 import { Link, useLocation } from 'react-router-dom';
 
-import navlogo from '../assets/navlogo.png';
+import { ReactComponent as NavLogo } from '../assets/logo.svg';
 import profile from '../assets/profile.png';
 
 const Sidebar = () => {
@@ -13,8 +13,7 @@ const Sidebar = () => {
         <div expand='xl' className='sidenav' style={{ width: '250px' }}>
             <div className='w-100'>
                 <div className='align-items-center w-100 text-center'>
-                    <img id='mainLogo' src={navlogo} alt='Tradera Logo' />
-                    Tradera
+                    <NavLogo id='mainLogo' alt='Tradera Logo' />
                 </div>
             </div>
 
@@ -47,7 +46,7 @@ const Sidebar = () => {
             </Nav>
 
             <div className='sidenav-headings'>
-                ADMINS
+                ADMIN
             </div>
 
             <Nav className="flex-column">

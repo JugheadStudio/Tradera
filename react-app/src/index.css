@@ -87,17 +87,29 @@ body {
 }
 
 .sidenav #mainLogo {
-  width: 35px;
   margin-top: 28.86px;
   margin-bottom: 26.86px;
-  padding-right: 13px;
 }
 
 .sidenav .nav-link.active {
   background: linear-gradient(to bottom, #2D2C34, #151419);
   border: 1px solid var(--tradera-border);
   border-radius: var(--tradera--border-radius);
+  color: var(--tradera-blue-light);
 }
+
+.sidenav .nav-link:hover {
+  background: var(--tradera-grey);
+  border-radius: var(--tradera--border-radius);
+  cursor: pointer;
+  color: white;
+}
+
+.sidenav .nav-link {
+  color: var(--tradera-grey-light);
+  border: 1px solid transparent;
+}
+
 
 .usercontainder {
   background: linear-gradient(to bottom, #2D2C34, #151419);

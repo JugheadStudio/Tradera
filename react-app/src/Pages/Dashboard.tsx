@@ -5,11 +5,13 @@ import netflix from '../assets/netflix.png';
 import figma from '../assets/figma.png';
 import google from '../assets/google.png';
 import olivia from '../assets/olivia.png';
-import redlogo from '../assets/redlogo.png';
-import yellowlogo from '../assets/yellowlogo.png';
 import BarChart from '../components/BarChart';
 import DonutChart from '../components/DonutChart';
 import { Container, Row, Col } from 'react-bootstrap';
+
+import { ReactComponent as EonsRed } from '../assets/eons-red.svg';
+import { ReactComponent as EonsGreen } from '../assets/eons-green.svg';
+import { ReactComponent as EonsBlack } from '../assets/eons-black.svg';
 
 function Dashboard() {
   return (
@@ -23,7 +25,7 @@ function Dashboard() {
             </div>
             <div className='dashboard-balance-card'>
               <div className='cardcontainder'>
-                <img id='cardLogo' src={logo} alt='Tradera Logo' />
+                <EonsBlack/>
                 <div className='cardbalance'>
                   10646.89
                 </div>
@@ -53,7 +55,7 @@ function Dashboard() {
                 </div>
               </div>
               <div className="transactions-count-red">
-                <p>-25 <img id='current' src={redlogo} alt='redlogo' /></p>
+                <p>-25 <EonsRed/></p>
               </div>
             </div>
 
@@ -68,7 +70,7 @@ function Dashboard() {
                 </div>
               </div>
               <div className="transactions-count-yellow">
-                <p>+25 <img id='current' src={yellowlogo} alt='yellowlogo' /></p>
+                <p>+25 <EonsGreen/></p>
               </div>
             </div>
 
@@ -83,7 +85,7 @@ function Dashboard() {
                 </div>
               </div>
               <div className="transactions-count-red">
-                <p>-55 <img id='current' src={redlogo} alt='redlogo' /></p>
+                <p>-55 <EonsRed/></p>
               </div>
             </div>
 
@@ -98,7 +100,7 @@ function Dashboard() {
                 </div>
               </div>
               <div className="transactions-count-yellow">
-                <p>+25 <img id='current' src={yellowlogo} alt='yellowlogo' /></p>
+                <p>+25 <EonsGreen/></p>
               </div>
             </div>
 
@@ -113,7 +115,7 @@ function Dashboard() {
                 </div>
               </div>
               <div className="transactions-count-red">
-                <p>-525 <img id='current' src={redlogo} alt='redlogo' /></p>
+                <p>-525 <EonsRed/></p>
               </div>
             </div>
           </Col>
@@ -142,7 +144,7 @@ function Dashboard() {
                     </div>
                     <div className='transactions-count-red'>
                       <p>
-                        -55 <img id='current' src={redlogo} alt='redlogo' />
+                        -55 <EonsRed/>
                       </p>
                     </div>
                   </div>
@@ -155,7 +157,7 @@ function Dashboard() {
                     </div>
                     <div className='transactions-count-yellow'>
                       <p>
-                        +25 <img id='current' src={yellowlogo} alt='redlogo' />
+                        +25 <EonsGreen/>
                       </p>
                     </div>
                   </div>
@@ -168,7 +170,7 @@ function Dashboard() {
                     </div>
                     <div className='transactions-count-red'>
                       <p>
-                        -525 <img id='current' src={redlogo} alt='redlogo' />
+                        -525 <EonsRed/>
                       </p>
                     </div>
                   </div>
