@@ -34,7 +34,7 @@ const Sidebar = () => {
           </div>
 
           <Nav className="flex-column">
-              <Nav.Link as={Link} to="/" className={location.pathname === '/' ? 'active' : ''}>
+              <Nav.Link as={Link} to="/Home" className={location.pathname === '/Home' ? 'active' : ''}>
                   <i className="fas fa-home"></i> Home
               </Nav.Link>
               <Nav.Link as={Link} to="/Details" className={location.pathname === '/Details' ? 'active' : ''}>

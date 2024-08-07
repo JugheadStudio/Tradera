@@ -636,3 +636,55 @@ img, svg {
 .frozen-count-red p {
   margin: 0;
 }
+
+
+/* =========== Login & Signup =========== */
+.login-text{
+  font-family: 'Quantico', sans-serif;
+}
+
+.login-text .nav-link.active {
+  background: linear-gradient(to bottom, #2D2C34, #151419);
+  color: var(--tradera-blue-light);
+}
+
+.login-text .nav-link:hover {
+  background: var(--tradera-grey);
+  cursor: pointer;
+  color: white;
+}
+
+.login-text .nav-link {
+  color: var(--tradera-grey-light);
+}
+
+.login-form-container-div{
+  border-radius: var(--tradera--border-radius);
+  border: 1px solid var(--tradera-border);
+}
+
+.form-submit-button {
+  margin-top: 30px;
+  background-color: var(--tradera-grey-light);
+  color: var(--tradera-white);
+  border: 1px solid var(--tradera-border);
+  border-radius: var(--tradera--border-radius);
+  padding: 10px 10px;
+  font-size: var(--tradera-font-large);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  flex-shrink: 0;
+  text-align: center;
+}
+
+.form-submit-button:hover {
+  background-color: var(--tradera-yellow);
+  color: var(--tradera-purple-dark);
+}
+
+.form-submit-button.selected {
+  background-color: var(--tradera-purple-light);
+  color: var(--tradera-white);
+  border-color: var(--tradera-purple-dark);
+}

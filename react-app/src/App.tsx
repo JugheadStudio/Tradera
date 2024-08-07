@@ -23,51 +23,61 @@ import Home from './Pages/Home';
 
 function App() {
   return (
+    <Router>
+      <Container fluid>
+        <Routes>
+          <Route path="/" element={<Login />} />
+          <Route path="/Signup" element={<Signup />} />
+          <Route
+            path="*"
+            element={
+              <div className="d-flex">
+                <Sidebar />
+                <div className="flex-grow-1 p-3">
+                  <Routes>
+                    <Route path="/Details" element={<Details />} />
+                    <Route path="/Dashboard" element={<Dashboard />} />
+                    <Route path="/Home" element={<Home />} />
+                    <Route path="/AdminDashboard" element={<AdminDashboard />} />
+                  </Routes>
+                </div>
+              </div>
+            }
+          />
+        </Routes>
+      </Container>
+    </Router>
+
+
     // <Router>
     //   <Container fluid>
     //     <Row>
-    //       <Sidebar />
-    //       <Col xs={10}>
-    //         <Routes>
-    //           <Route path="/" element={<Home />} />
-    //           <Route path="/Details" element={<Details />} />
-    //           <Route path="/Dashboard" element={<Dashboard />} />
-    //           <Route path="/Auth" element={<Auth />} />
-    //           <Route path="/AdminDashboard" element={<AdminDashboard />} />
-    //         </Routes>
-    //       </Col>
-    //       </Row>
+    //     <Col xs={10}>
+    //       <Routes>
+    //         {/* checks if the path is to the auth page, if its not -> add the sidebar */}
+    //         <Route path="/" element={<Login />} />
+    //         <Route path="/Signup" element={<Signup />} />
+    //         <Route
+    //           path="*"
+    //           element={
+    //             <div className="d-flex">
+    //               <Sidebar />
+    //               <div className="flex-grow-1 p-3">
+    //                 <Routes>
+    //                   <Route path="/Details" element={<Details />} />
+    //                   <Route path="/Dashboard" element={<Dashboard />} />
+    //                   <Route path="/Home" element={<Home />} />
+    //                   <Route path="/AdminDashboard" element={<AdminDashboard />} />
+    //                 </Routes>
+    //               </div>
+    //             </div>
+    //           }
+    //         />
+    //       </Routes>
+    //     </Col>
+    //     </Row>
     //   </Container>
     // </Router>
-    <Router>
-      <Container fluid>
-        <Row>
-        <Col xs={10}>
-          <Routes>
-            {/* checks if the path is to the auth page, if its not -> add the sidebar */}
-            <Route path="/" element={<Login />} />
-            <Route path="/Signup" element={<Signup />} />
-            <Route
-              path="*"
-              element={
-                <div className="d-flex">
-                  <Sidebar />
-                  <div className="flex-grow-1 p-3">
-                    <Routes>
-                      <Route path="/Details" element={<Details />} />
-                      <Route path="/Dashboard" element={<Dashboard />} />
-                      <Route path="/Home" element={<Home />} />
-                      <Route path="/AdminDashboard" element={<AdminDashboard />} />
-                    </Routes>
-                  </div>
-                </div>
-              }
-            />
-          </Routes>
-        </Col>
-        </Row>
-      </Container>
-    </Router>
   );
 }
 
