@@ -78,7 +78,7 @@ const AdminDashboard: React.FC = () => {
         <div className='transactions-name'>{account.name}</div>
         <div className='transactions-usetype'>{account.role}</div>
       </div>
-      <div className='transactions-count-red'>
+      <div className='frozen-count-red'>
         <p>Frozen on {account.freezeDate}</p>
       </div>
     </div>
@@ -99,7 +99,7 @@ const AdminDashboard: React.FC = () => {
                 {renderAdminButton('fa-trash-alt', 'Delete Account')}
                 {renderSearchBar()}
               </div>
-              <Row>
+              <Row className="admin-users-container">
                 {dummyCards.map(renderCard)}
               </Row>
             </div>
@@ -108,7 +108,16 @@ const AdminDashboard: React.FC = () => {
             <div className='column-title'>
               <span className='spesific'>All</span> <span className='transactions'>Frozen Accounts</span>
             </div>
-            {renderSearchBar()}
+            <div className="search-container mb-3">
+              <input
+                type="text"
+                className="search-input"
+                placeholder="Search accounts..."
+              />
+              <button className="search-button">
+                <i className="fas fa-search"></i>
+              </button>
+            </div>
             {frozenAccounts.map(renderFrozenAccount)}
           </Col>
         </Row>

@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Sidebar from './Components/Sidebar';
+
+import Sidebar from './components/Sidebar';
 import logo from './logo.svg';
 import './App.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';

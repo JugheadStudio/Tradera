@@ -7,20 +7,21 @@ import google from '../assets/google.png';
 import olivia from '../assets/olivia.png';
 import redlogo from '../assets/redlogo.png';
 import yellowlogo from '../assets/yellowlogo.png';
-import BarChart from '../Components/BarChart';
-import DonutChart from '../Components/DonutChart';
+import BarChart from '../components/BarChart';
+import DonutChart from '../components/DonutChart';
+import { Container, Row, Col } from 'react-bootstrap';
 
 function Dashboard() {
   return (
     <div className='page-background'>
-      <div className='container'>
-        <div className='row'>
+      <Container>
+        <Row>
 
-          <div className='left-column'>
+          <Col xs={4}>
             <div className='column-title'>
               <span className='spesific'>Your</span> <span className='transactions'>Balance</span>
             </div>
-            <div className='left-top-row'>
+            <div className='dashboard-balance-card'>
               <div className='cardcontainder'>
                 <img id='cardLogo' src={logo} alt='Tradera Logo' />
                 <div className='cardbalance'>
@@ -37,7 +38,6 @@ function Dashboard() {
             </div>
 
             {/* Transactions begin here */}
-
 
             <div className='column-title'>
               <span className='spesific'>Recent</span> <span className='transactions'>Transactions</span>
@@ -102,7 +102,7 @@ function Dashboard() {
               </div>
             </div>
 
-            <div className='transactions-row2'>
+            <div className='transactions-row'>
               <img className='transactionsLogo' src={olivia} alt='Profile' />
               <div className='transactions-info'>
                 <div className='transactions-name'>
@@ -116,19 +116,19 @@ function Dashboard() {
                 <p>-525 <img id='current' src={redlogo} alt='redlogo' /></p>
               </div>
             </div>
-          </div>
+          </Col>
 
           {/* bar chart here */}
-          <div className='right-column'>
+          <Col xs={8}>
             <div className='column-title'>
               <span className='spesific'>Your</span> <span className='transactions'>Status</span>
             </div>
-            <div className='top-row'>
+            <div className='dasboard-status-chart'>
               <BarChart />
             </div>
 
-            <div className='bottom-row'>
-              <div className='column-wrapper'>
+            <Row>
+              <Col sx={7}>
                 <div className='column-title'>
                   <span className='spesific'>Pending</span> <span className='transactions'>Transactions</span>
                 </div>
@@ -160,7 +160,7 @@ function Dashboard() {
                     </div>
                   </div>
 
-                  <div className='transactions-row2'>
+                  <div className='transactions-row'>
                     <img className='transactionsLogo' src={olivia} alt='Profile' />
                     <div className='transactions-info'>
                       <div className='transactions-name'>Olivia</div>
@@ -174,21 +174,21 @@ function Dashboard() {
                   </div>
 
                 </div>
-              </div>
+              </Col>
 
-              <div className='bottom-right-wrapper'>
+              <Col xs={5}>
                 <div className='column-title'>
                   <span className='spesific'>Total</span> <span className='transactions'>Transactions</span>
                 </div>
-                <div className='bottom-right-column'>
+                <div className='dashboard-transactions-chart'>
                   <DonutChart />
                 </div>
-              </div>
-            </div>
+              </Col>
+            </Row>
 
-          </div>
-        </div>
-      </div>
+          </Col>
+        </Row>
+      </Container>
     </div>
   );
 }
