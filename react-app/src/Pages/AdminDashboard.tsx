@@ -94,16 +94,18 @@ const AdminDashboard: React.FC = () => {
             <div className='column-title'>
               <span className='spesific'>All</span> <span className='transactions'>Accounts</span>
             </div>
-            <div className="admin-left-container" style={{ maxHeight: 'calc(100vh - 150px)', overflowY: 'auto' }}>
+            <div className="admin-left-container" style={{ maxHeight: 'calc(100vh - 150px)'}}>
               <div className="admin-button-container">
                 {renderAdminButton('fa-user-plus', 'Add User')}
                 {renderAdminButton('fa-user-lock', 'Freeze Account')}
                 {renderAdminButton('fa-trash-alt', 'Delete Account')}
                 {renderSearchBar()}
               </div>
-              <Row className="admin-users-container">
-                {dummyCards.map(renderCard)}
-              </Row>
+              <Container className="admin-users-container" style={{overflowY: 'auto' }}>
+                <Row>
+                  {dummyCards.map(renderCard)}
+                </Row>
+              </Container>
             </div>
           </Col>
           <Col md={4}>

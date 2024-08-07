@@ -154,10 +154,11 @@ img, svg {
 
 /* =========== Background styling for pages =========== */
 .page-background {
-  width: 100%;
-  height: 100%;
+  /* width: 100%;
+  height: 100%; */
   background-color: var(--tradera-grey);
   border-radius: var(--tradera--border-radius);
+  padding: 20px;
 }
 
 /* =========== Dashboard layout =========== */
@@ -242,10 +243,7 @@ img, svg {
 
 .column-title {
   text-align: left;
-  margin-bottom: 10px;
-  margin-top: 20px;
-  padding-top: 10px;
-  padding-bottom: 10px;
+  margin-bottom: 20px;
   background-color: var(--tradera-grey);
   border-radius: var(--tradera--border-radius);
 }
@@ -551,6 +549,7 @@ img, svg {
   padding: 15px;
   background-color: var(--tradera-grey);
   border-bottom: 1px solid var(--tradera-border);
+  border-radius: var(--tradera--border-radius) var(--tradera--border-radius) 0 0;
 }
 
 .admin-button {

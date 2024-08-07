@@ -16,7 +16,7 @@ import { ReactComponent as EonsBlack } from '../assets/eons-black.svg';
 function Dashboard() {
   return (
     <div className='page-background'>
-      <Container>
+      <Container fluid>
         <Row>
 
           <Col xs={4}>

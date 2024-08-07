@@ -23,18 +23,20 @@ import Home from './Pages/Home';
 function App() {
   return (
     <Router>
-      <div className="d-flex">
-        <Sidebar />
-        <div className="flex-grow-1 p-3">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/Details" element={<Details />} />
-            <Route path="/Dashboard" element={<Dashboard />} />
-            <Route path="/Auth" element={<Auth />} />
-            <Route path="/AdminDashboard" element={<AdminDashboard />} />
-          </Routes>
-        </div>
-      </div>
+      <Container fluid>
+        <Row>
+          <Sidebar />
+          <Col xs={10} className="p-3">
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/Details" element={<Details />} />
+              <Route path="/Dashboard" element={<Dashboard />} />
+              <Route path="/Auth" element={<Auth />} />
+              <Route path="/AdminDashboard" element={<AdminDashboard />} />
+            </Routes>
+          </Col>
+          </Row>
+      </Container>
     </Router>
   );
 }
