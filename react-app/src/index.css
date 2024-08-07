@@ -44,6 +44,10 @@ body {
   font-family: 'Quantico', sans-serif;
 }
 
+.mt-20 {
+  margin-top: 20px !important;
+}
+
 /* =========== Navbar =========== */
 .sidenav {
   position: sticky;
@@ -227,6 +231,7 @@ img, svg {
   border: 1px solid var(--tradera-border);
   border-radius: var(--tradera--border-radius);
   margin-bottom: 10px;
+  /* padding: 0 20px; */
 }
 
 .bottom-row {

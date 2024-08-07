@@ -41,7 +41,7 @@ function Dashboard() {
 
             {/* Transactions begin here */}
 
-            <div className='column-title'>
+            <div className='column-title mt-20'>
               <span className='spesific'>Recent</span> <span className='transactions'>Transactions</span>
             </div>
             <div className='transactions-row'>
@@ -134,7 +134,7 @@ function Dashboard() {
               <BarChart />
             </div>
 
-            <Row>
+            <Row className='mt-20'>
               <Col sx={7}>
                 <div className='column-title'>
                   <span className='spesific'>Pending</span> <span className='transactions'>Transactions</span>
