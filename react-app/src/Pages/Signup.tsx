@@ -33,7 +33,7 @@ function Signup() {
               </form>
               <div className='text-center mt-3'>
                 <Nav.Link as={Link} to="/" className={location.pathname === '/' ? 'active' : ''}>
-                  <a href='#'>Already have an account? Log In</a>
+                  Already have an account? Log In
                 </Nav.Link>
               </div>
             </div>
