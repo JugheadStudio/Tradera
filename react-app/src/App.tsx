@@ -26,7 +26,7 @@ function App() {
       <Container fluid>
         <Row>
           <Sidebar />
-          <Col xs={10} className="p-3">
+          <Col xs={10}>
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/Details" element={<Details />} />
