@@ -10,7 +10,7 @@ const Sidebar = () => {
     const location = useLocation();
 
     return (
-        <Col xs={2} className='sidenav'>
+        <div className='sidenav'>
           <div className='w-100'>
               <div className='align-items-center w-100 text-center'>
                   <NavLogo id='mainLogo' alt='Tradera Logo' />
@@ -54,7 +54,7 @@ const Sidebar = () => {
                   <i className="fas fa-user-shield"></i> AdminDashboard
               </Nav.Link>
           </Nav>
-        </Col>
+        </div>
     );
 }
 

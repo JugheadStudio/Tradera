@@ -33,17 +33,19 @@ function App() {
             <Route path="/Signup" element={<Signup />} />
             <Route path="*" element={
               <>
-                <Sidebar/>
-                  <Col xs={10}>
-                    <Routes>
-                      <Route path="/Details" element={<Details />} />
-                      <Route path="/Dashboard" element={<Dashboard />} />
-                      <Route path="/Home" element={<Home />} />
-                      <Route path="/AdminDashboard" element={<AdminDashboard />} />
-                    </Routes>
-                  </Col>
-                </>
-              }
+                <Col xs={2}>
+                  <Sidebar/>
+                </Col>
+                <Col xs={10}>
+                  <Routes>
+                    <Route path="/Details" element={<Details />} />
+                    <Route path="/Dashboard" element={<Dashboard />} />
+                    <Route path="/Home" element={<Home />} />
+                    <Route path="/AdminDashboard" element={<AdminDashboard />} />
+                  </Routes>
+                </Col>
+              </>
+            }
             />
           </Routes>
         </Row>
