@@ -5,13 +5,15 @@ import netflix from '../assets/netflix.png';
 import figma from '../assets/figma.png';
 import google from '../assets/google.png';
 import olivia from '../assets/olivia.png';
-import BarChart from '../Components/BarChart';
-import DonutChart from '../Components/DonutChart';
 import { Container, Row, Col } from 'react-bootstrap';
 
 import { ReactComponent as EonsRed } from '../assets/eons-red.svg';
 import { ReactComponent as EonsGreen } from '../assets/eons-green.svg';
 import { ReactComponent as EonsBlack } from '../assets/eons-black.svg';
+
+// Components
+import BarChart from '../components/BarChart';
+import DonutChart from '../components/DonutChart';
 
 function Dashboard() {
   return (

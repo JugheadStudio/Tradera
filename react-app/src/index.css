@@ -48,6 +48,10 @@ body {
   margin-top: 20px !important;
 }
 
+.h100 {
+  height: 100vh;
+}
+
 /* =========== Navbar =========== */
 .sidenav {
   position: sticky;
@@ -639,28 +643,47 @@ img, svg {
 
 
 /* =========== Login & Signup =========== */
-.login-text{
+.login-Heading{
   font-family: 'Quantico', sans-serif;
 }
 
-.login-text .nav-link.active {
+.signup-btn p {
+  margin: 0;
+}
+
+.input-label {
+  font-size: var(--tradera-font-medium);
+  margin-bottom: 5px;
+}
+
+.signup-btn a.nav-link {
+  display: unset;
+  padding: 0;
+  color: var(--tradera-grey-light);
+  text-decoration: none;
+  background: transparent;
+  border: 0;
+}
+
+.signup-btn a.nav-link:hover {
+  color: var(--tradera-yellow);
+  cursor: pointer;
+}
+
+.signup-btn .nav-link.active {
   background: linear-gradient(to bottom, #2D2C34, #151419);
   color: var(--tradera-blue-light);
 }
 
-.login-text .nav-link:hover {
-  background: var(--tradera-grey);
-  cursor: pointer;
-  color: white;
-}
-
-.login-text .nav-link {
+.signup-btn .nav-link {
   color: var(--tradera-grey-light);
 }
 
 .login-form-container-div{
   border-radius: var(--tradera--border-radius);
   border: 1px solid var(--tradera-border);
+  align-self: center;
+  padding: 40px 20px !important;
 }
 
 .form-submit-button {
@@ -680,11 +703,39 @@ img, svg {
 
 .form-submit-button:hover {
   background-color: var(--tradera-yellow);
-  color: var(--tradera-purple-dark);
+  color: var(--tradera-dark-grey);
 }
 
 .form-submit-button.selected {
   background-color: var(--tradera-purple-light);
   color: var(--tradera-white);
   border-color: var(--tradera-purple-dark);
+}
+
+.form-control {
+  display: block;
+  width: 100%;
+  padding: 10px 20px;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--tradera-grey-light);
+  appearance: none;
+  background-color: var(--tradera-dark-grey);
+  background-clip: padding-box;
+  border: 1px solid var(--tradera-border);
+  border-radius: var(--tradera--border-radius);
+  transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+.form-control::placeholder {
+  color: var(--tradera-grey-light);
+}
+
+.form-control:focus {
+  color: var(--tradera-white);
+  background-color: var(--tradera-dark-grey);
+  border-color: var(--tradera-yellow);
+  outline: 0;
+  box-shadow: 0 0 0 0 transparent;
 }
