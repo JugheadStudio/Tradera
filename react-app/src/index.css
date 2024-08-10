@@ -48,6 +48,10 @@ body {
   margin-top: 20px !important;
 }
 
+.mb-20 {
+  margin-bottom: 20px !important;
+}
+
 .h100 {
   height: 100vh;
 }
@@ -58,6 +62,10 @@ body {
 
 .pl-0 {
   padding-left: 0;
+}
+
+.align-item-center {
+  align-items: center;
 }
 
 /* =========== Modal =========== */
@@ -377,7 +385,7 @@ img, svg {
   padding: 20px;
 }
 
-.action-container {
+.border-container {
   border-radius: var(--tradera--border-radius);
   border: 1px solid var(--tradera-border);
   justify-content: center;
@@ -937,4 +945,159 @@ img, svg {
   border-color: var(--tradera-yellow);
   outline: 0;
   box-shadow: 0 0 0 0 transparent;
+}
+
+/* ===================== Home ===================== */
+.home-eons-logo-container {
+  align-items: center;
+  margin-bottom: 20px;
+  justify-content: center;
+}
+
+.home-eons-logo-container div {
+  margin-right: 20px;
+}
+
+.home-eons-heading {
+  color: var(--tradera-grey-light);
+  font-size: var(--tradera-font-large);
+  margin-bottom: 0;
+}
+
+.home-eons-price {
+  font-size: var(--tradera-font-xxlarge);
+  color: var(--tradera-white);
+  font-weight: 600;
+  margin-bottom: 0;
+  line-height: 1;
+}
+
+.price-open-close {
+  margin-bottom: 0;
+  width: 100%;
+  text-align: center;
+  justify-content: space-around;
+  display: flex;
+}
+
+.border-container-price {
+  border-radius: var(--tradera--border-radius);
+  border: 1px solid var(--tradera-border);
+  justify-content: center;
+  align-items: center;
+  padding: 10px 20px;
+}
+
+.price-high {
+  color: var(--tradera-yellow);
+}
+
+.price-low {
+  color: var(--tradera-red);
+}
+
+.home-buttons {
+  justify-content: space-between;
+  display: flex;
+  margin-top: 20px;
+}
+
+.home-buttons button {
+  width: 48%;
+  text-align: center;
+  padding: 15px 20px;
+}
+
+.my-account-container p {
+  font-size: var(--tradera-font-xlarge);
+  margin-bottom: 0;
+  display: flex;
+}
+
+.my-account-container i {
+  font-size: 1rem;
+}
+
+.my-account-container button {
+  text-align: center;
+}
+
+.icon-wrapper {
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+}
+
+.home-transactions-row {
+  display: flex;
+  border: 1px solid var(--tradera-border);
+  border-radius: var(--tradera--border-radius);
+  margin-bottom: 10px;
+  padding: 10px 0;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.home-transactions-row div {
+  text-align: center;
+  width: 25%;
+  justify-content: center;
+}
+
+.home-transactions-row p {
+  margin: 0;
+}
+
+.home-transactions-count-red {
+  font-family: 'Quantico', sans-serif;
+  font-size: 20px;
+  align-items: center;
+  display: flex;
+  color: var(--tradera-red);
+}
+
+.home-transactions-count-green {
+  font-family: 'Quantico', sans-serif;
+  font-size: 20px;
+  align-items: center;
+  display: flex;
+  color: var(--tradera-yellow);
+}
+
+.home-transactions-count-red p {
+  margin-right: 10px;
+  margin-bottom: 0;
+}
+
+.home-transactions-count-green p {
+  margin-right: 10px;
+  margin-bottom: 0;
+}
+
+.home-transactions-row-headings div {
+  width: 25%;
+  text-align: center;
+}
+
+.home-transactions-row-headings {
+  background-color: var(--tradera-dark-grey);
+  border-radius: var(--tradera--border-radius);
+  margin-bottom: 10px;
+}
+
+.home-transactions-row-headings div {
+  padding: 10px 0;
+}
+.home-transactions-row-headings p {
+  margin: 0;
+}
+
+.home-transactions-row-headings {
+  display: flex;
+}
+
+.price-chart-container {
+  padding: 20px;
+  border-radius: var(--tradera--border-radius);
+  background-color: var(--tradera-dark-grey);
 }

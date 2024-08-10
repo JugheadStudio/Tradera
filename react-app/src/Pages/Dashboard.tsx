@@ -37,7 +37,7 @@ function Dashboard() {
       <Container fluid>
 
         <Row>
-          <Col className='action-container'>
+          <Col className='border-container'>
             <p className='account-status'>Account Status: <span className='active'>Active</span></p>
             {/* <p className='account-status'>Account Status: <span className='frozen'>Frozen</span></p> */}
           </Col>
@@ -225,7 +225,7 @@ function Dashboard() {
         </Row>
 
         {/* Account Settings Modal */}
-        <Modal size="lg" show={accountSettingsShow} onHide={handleAccountSettingsClose} animation={false}>
+        <Modal size="lg" show={accountSettingsShow} onHide={handleAccountSettingsClose} animation={false} dialogClassName="modal-dialog-centered">
           <Modal.Header closeButton>
             <Modal.Title>Account <span>Settings</span></Modal.Title>
           </Modal.Header>
@@ -279,7 +279,7 @@ function Dashboard() {
         </Modal>
 
         {/* Withdraw Modal */}
-        <Modal size="lg" show={withdrawShow} onHide={handleWithdrawClose} animation={false}>
+        <Modal size="lg" show={withdrawShow} onHide={handleWithdrawClose} animation={false} dialogClassName="modal-dialog-centered">
           <Modal.Header closeButton>
             <Modal.Title>Account <span>Withdraw</span></Modal.Title>
           </Modal.Header>
@@ -308,7 +308,7 @@ function Dashboard() {
         </Modal>
 
         {/* Transfer Modal */}
-        <Modal size="lg" show={transferShow} onHide={handleTransferClose} animation={false}>
+        <Modal size="lg" show={transferShow} onHide={handleTransferClose} animation={false} dialogClassName="modal-dialog-centered">
           <Modal.Header closeButton>
             <Modal.Title>Account <span>Transfer</span></Modal.Title>
           </Modal.Header>
