@@ -15,7 +15,7 @@ function DonutChart() {
   };
 
   const options = {
-    cutout: '70%',
+    cutout: '80%',
     responsive: true,
     maintainAspectRatio: false,
     plugins: {

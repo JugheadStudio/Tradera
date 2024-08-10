@@ -37,11 +37,11 @@ const Sidebar = () => {
               <Nav.Link as={Link} to="/Home" className={location.pathname === '/Home' ? 'active' : ''}>
                   <i className="fas fa-home"></i> Home
               </Nav.Link>
-              <Nav.Link as={Link} to="/Details" className={location.pathname === '/Details' ? 'active' : ''}>
+              {/* <Nav.Link as={Link} to="/Details" className={location.pathname === '/Details' ? 'active' : ''}>
                   <i className="fas fa-info-circle"></i> Details
-              </Nav.Link>
+              </Nav.Link> */}
               <Nav.Link as={Link} to="/Dashboard" className={location.pathname === '/Dashboard' ? 'active' : ''}>
-                  <i className="fas fa-tachometer-alt"></i> Dashboard
+                  <i className="fas fa-user"></i> My Account
               </Nav.Link>
           </Nav>
 
@@ -51,7 +51,7 @@ const Sidebar = () => {
 
           <Nav className="flex-column">
               <Nav.Link as={Link} to="/AdminDashboard" className={location.pathname === '/AdminDashboard' ? 'active' : ''}>
-                  <i className="fas fa-user-shield"></i> AdminDashboard
+                  <i className="fas fa-user-shield"></i> Admin Dashboard
               </Nav.Link>
           </Nav>
         </div>

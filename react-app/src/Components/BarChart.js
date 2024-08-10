@@ -111,6 +111,7 @@ const BarChart = () => {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+    // height: '300px',
   };
 
   const buttonContainerStyle = {

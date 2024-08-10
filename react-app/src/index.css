@@ -52,6 +52,103 @@ body {
   height: 100vh;
 }
 
+.pr-0 {
+  padding-right: 0;
+}
+
+.pl-0 {
+  padding-left: 0;
+}
+
+/* =========== Modal =========== */
+
+.modal-content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  color: var(--bs-modal-color);
+  pointer-events: auto;
+  background-color: var(--tradera-dark-grey);
+  background-clip: padding-box;
+  border: 1px solid var(--tradera-border);
+  border-radius: var(--tradera--border-radius);
+  outline: 0;
+}
+
+.modal-header {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  padding: 20px;
+  /* border-bottom: 1px solid var(--tradera-border); */
+  border-bottom: none;
+  border-top-left-radius: var(--tradera--border-radius);
+  border-top-right-radius: var(--tradera--border-radius);
+}
+
+.modal-body {
+  position: relative;
+  flex: 1 1 auto;
+  padding: 20px;
+}
+
+.modal-footer {
+  display: flex;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 20px 20px 20px;
+  /* border-top: 1px solid var(--tradera-border); */
+  border-top: none;
+  border-bottom-right-radius: var(--tradera--border-radius);
+  border-bottom-left-radius: var(--tradera--border-radius);
+}
+
+.modal-footer button {
+  margin: 0 0 0 20px;
+}
+
+.modal-footer .btn {
+  width: unset;
+  display: inline-block;
+}
+
+.modal-footer .col {
+  text-align: end;
+}
+
+.modal-title {
+  color: var(--tradera-grey-light);
+  font-weight: 100;
+}
+
+.modal-title span {
+  color: var(--tradera-white);
+  font-weight: 600;
+}
+
+.btn-close {
+  --bs-btn-close-color: #000;
+  --bs-btn-close-bg: url("data:image/svg+xml,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 16 16%27 fill=%27%23fff%27%3e%3cpath d=%27M.293.293a1 1 0 0 1 1.414 0L8 6.586 14.293.293a1 1 0 1 1 1.414 1.414L9.414 8l6.293 6.293a1 1 0 0 1-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 0 1-1.414-1.414L6.586 8 .293 1.707a1 1 0 0 1 0-1.414z%27/%3e%3c/svg%3e");
+  --bs-btn-close-opacity: 0.5;
+  --bs-btn-close-hover-opacity: 0.75;
+  --bs-btn-close-focus-shadow: 0 0 0 0.25rem transparent;
+  --bs-btn-close-focus-opacity: 1;
+  --bs-btn-close-disabled-opacity: 0.25;
+  --bs-btn-close-white-filter: invert(1) grayscale(100%) brightness(200%);
+  box-sizing: content-box;
+  width: 1em;
+  height: 1em;
+  padding: .25em .25em;
+  color: var(--bs-btn-close-color);
+  background: transparent var(--bs-btn-close-bg) center/1em auto no-repeat;
+  border: 0;
+  border-radius: .375rem;
+  opacity: var(--bs-btn-close-opacity);
+}
+
 /* =========== Navbar =========== */
 .sidenav {
   position: sticky;
@@ -122,7 +219,6 @@ img, svg {
   border: 1px solid transparent;
 }
 
-
 .usercontainder {
   background: linear-gradient(to bottom, #2D2C34, #151419);
   border: 1px solid var(--tradera-border);
@@ -154,7 +250,7 @@ img, svg {
 }
 
 .usercontainder-usertype {
-  color: var(--tradera-white);
+  color: var(--tradera-grey-light);
   font-size: var(--tradera-font-small);
   font-weight: 400;
   line-height: 14.63px;
@@ -231,7 +327,6 @@ img, svg {
 }
 
 .dasboard-status-chart {
-  flex-grow: 2;
   border: 1px solid var(--tradera-border);
   border-radius: var(--tradera--border-radius);
   margin-bottom: 10px;
@@ -275,6 +370,14 @@ img, svg {
   flex: 1;
   display: flex;
   flex-direction: column;
+  border-radius: var(--tradera--border-radius);
+  border: 1px solid var(--tradera-border);
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.action-container {
   border-radius: var(--tradera--border-radius);
   border: 1px solid var(--tradera-border);
   justify-content: center;
@@ -335,6 +438,22 @@ img, svg {
   color: var(--tradera-grey);
   font-size: var(--tradera-font-xlarge);
   font-weight: 400;
+}
+
+.account-status {
+  color: var(--tradera-grey-light);
+  font-size: var(--tradera-font-large);
+  margin-bottom: 0;
+}
+
+.account-status span.active {
+  color: var(--tradera-yellow);
+  font-weight: 600;
+}
+
+.account-status span.frozen {
+  color: var(--tradera-red);
+  font-weight: 600;
 }
 
 .transactions-row {
@@ -410,6 +529,86 @@ img, svg {
 
 .transactions-count-yellow {
   color: var(--tradera-yellow);
+}
+
+.btn-primary {
+  width: 100%;
+  padding: 15px 20px;
+  font-family: 'Montserrat', sans-serif !important;
+  font-size: var(--tradera-font-medium);
+  color: var(--tradera-blue-light);
+  border: 1px solid var(--tradera-blue-light);
+  border-radius: var(--tradera--border-radius);
+  background-color: transparent;
+  text-align: start;
+}
+
+.btn-primary:hover {
+  color: var(--tradera-dark-grey);
+  border: 1px solid var(--tradera-blue-light);
+  border-radius: var(--tradera--border-radius);
+  background-color: var(--tradera-blue-light);
+}
+
+.btn-secondary {
+  width: 100%;
+  padding: 15px 20px;
+  font-family: 'Montserrat', sans-serif !important;
+  font-size: var(--tradera-font-medium);
+  color: var(--tradera-yellow);
+  border: 1px solid var(--tradera-yellow);
+  border-radius: var(--tradera--border-radius);
+  background-color: transparent;
+  text-align: start;
+}
+
+.btn-secondary:hover {
+  color: var(--tradera-dark-grey);
+  border: 1px solid var(--tradera-yellow);
+  border-radius: var(--tradera--border-radius);
+  background-color: var(--tradera-yellow);
+}
+
+.btn-tertiary {
+  width: 100%;
+  padding: 15px 20px;
+  font-family: 'Montserrat', sans-serif !important;
+  font-size: var(--tradera-font-medium);
+  color: var(--tradera-grey-light);
+  border: 1px solid var(--tradera-grey-light);
+  border-radius: var(--tradera--border-radius);
+  background-color: transparent;
+  text-align: start;
+}
+
+.btn-tertiary:hover {
+  color: var(--tradera-dark-grey);
+  border: 1px solid var(--tradera-grey-light);
+  border-radius: var(--tradera--border-radius);
+  background-color: var(--tradera-grey-light);
+}
+
+.btn-danger {
+  width: 100%;
+  padding: 15px 20px;
+  font-family: 'Montserrat', sans-serif !important;
+  font-size: var(--tradera-font-medium);
+  color: var(--tradera-red);
+  border: 1px solid var(--tradera-red);
+  border-radius: var(--tradera--border-radius);
+  background-color: transparent;
+  text-align: start;
+}
+
+.btn-danger:hover {
+  color: var(--tradera-dark-grey);
+  border: 1px solid var(--tradera-red);
+  border-radius: var(--tradera--border-radius);
+  background-color: var(--tradera-red);
+}
+
+.btn i {
+  margin-right: 10px;
 }
 
 /* components styling */
