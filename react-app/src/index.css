@@ -169,12 +169,27 @@ body {
   line-height: 28.44px;
 }
 
+.btn-signout {
+  width: 100%;
+  color: var(--tradera-grey-light);
+  border-radius: var(--tradera--border-radius);
+  border: 1px solid var(--tradera-grey-light);
+  margin-top: 20px;
+}
+
+.btn-signout:hover {
+  color: var(--tradera-dark-grey);
+  border-radius: var(--tradera--border-radius);
+  border: 1px solid var(--tradera-red);
+  background-color: var(--tradera-red);
+  margin-top: 20px;
+}
+
 .sidenav-headings {
   color: var(--tradera-white);
   font-size: var(--tradera-font-small);
   font-weight: 400;
   text-decoration: none;
-  margin-left: 20px;
   margin-top: 40px;
   padding: 7px 0 7px 21px;
 }
@@ -184,7 +199,6 @@ body {
   font-size: var(--tradera-font-medium);
   font-weight: 300;
   text-decoration: none;
-  margin-left: 20px;
   padding: 14px 21px 14px 21px;
   display: flex;
   align-items: center;
@@ -231,7 +245,6 @@ img, svg {
   background: linear-gradient(to bottom, #2D2C34, #151419);
   border: 1px solid var(--tradera-border);
   border-radius: var(--tradera--border-radius-profile);
-  margin-left: 20px;
   padding: 11px;
   display: flex;
   align-items: center;
@@ -837,7 +850,6 @@ img, svg {
 .frozen-count-red {
   color: var(--tradera-red);
   text-align: right;
-  font-family: 'Quantico', sans-serif;
   font-size: var(--tradera-font-small);
   display: flex;
   align-items: center;
