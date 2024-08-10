@@ -117,11 +117,11 @@ function Home() {
               </div>
 
               <div>
-                <p>R 112</p>
+                <p className="text-grey">R 112</p>
               </div>
 
               <div>
-                <p>R 15,500</p>
+                <p className="text-grey">R 15,500</p>
               </div>
 
               <div className='home-transactions-count-red'>
@@ -136,11 +136,11 @@ function Home() {
               </div>
 
               <div>
-                <p>R 112</p>
+                <p className="text-grey">R 112</p>
               </div>
 
               <div>
-                <p>R 15,500</p>
+                <p className="text-grey">R 15,500</p>
               </div>
 
               <div className='home-transactions-count-green'>
@@ -155,11 +155,11 @@ function Home() {
               </div>
 
               <div>
-                <p>R 112</p>
+                <p className="text-grey">R 112</p>
               </div>
 
               <div>
-                <p>R 15,500</p>
+                <p className="text-grey">R 15,500</p>
               </div>
 
               <div className='home-transactions-count-red'>
@@ -174,11 +174,11 @@ function Home() {
               </div>
 
               <div>
-                <p>R 112</p>
+                <p className="text-grey">R 112</p>
               </div>
 
               <div>
-                <p>R 15,500</p>
+                <p className="text-grey">R 15,500</p>
               </div>
 
               <div className='home-transactions-count-green'>
@@ -193,11 +193,11 @@ function Home() {
               </div>
 
               <div>
-                <p>R 112</p>
+                <p className="text-grey">R 112</p>
               </div>
 
               <div>
-                <p>R 15,500</p>
+                <p className="text-grey">R 15,500</p>
               </div>
 
               <div className='home-transactions-count-red'>
@@ -212,11 +212,11 @@ function Home() {
               </div>
 
               <div>
-                <p>R 112</p>
+                <p className="text-grey">R 112</p>
               </div>
 
               <div>
-                <p>R 15,500</p>
+                <p className="text-grey">R 15,500</p>
               </div>
 
               <div className='home-transactions-count-green'>
@@ -256,11 +256,11 @@ function Home() {
               </div>
 
               <div>
-                <p>R 112</p>
+                <p className="text-grey">R 112</p>
               </div>
 
               <div>
-                <p>R 15,500</p>
+                <p className="text-grey">R 15,500</p>
               </div>
 
               <div className='home-transactions-count-red'>
@@ -275,11 +275,11 @@ function Home() {
               </div>
 
               <div>
-                <p>R 112</p>
+                <p className="text-grey">R 112</p>
               </div>
 
               <div>
-                <p>R 15,500</p>
+                <p className="text-grey">R 15,500</p>
               </div>
 
               <div className='home-transactions-count-green'>
@@ -294,11 +294,11 @@ function Home() {
               </div>
 
               <div>
-                <p>R 112</p>
+                <p className="text-grey">R 112</p>
               </div>
 
               <div>
-                <p>R 15,500</p>
+                <p className="text-grey">R 15,500</p>
               </div>
 
               <div className='home-transactions-count-red'>
@@ -313,11 +313,11 @@ function Home() {
               </div>
 
               <div>
-                <p>R 112</p>
+                <p className="text-grey">R 112</p>
               </div>
 
               <div>
-                <p>R 15,500</p>
+                <p className="text-grey">R 15,500</p>
               </div>
 
               <div className='home-transactions-count-green'>
@@ -332,11 +332,11 @@ function Home() {
               </div>
 
               <div>
-                <p>R 112</p>
+                <p className="text-grey">R 112</p>
               </div>
 
               <div>
-                <p>R 15,500</p>
+                <p className="text-grey">R 15,500</p>
               </div>
 
               <div className='home-transactions-count-red'>
@@ -351,11 +351,11 @@ function Home() {
               </div>
 
               <div>
-                <p>R 112</p>
+                <p className="text-grey">R 112</p>
               </div>
 
               <div>
-                <p>R 15,500</p>
+                <p className="text-grey">R 15,500</p>
               </div>
 
               <div className='home-transactions-count-green'>

@@ -68,6 +68,10 @@ body {
   align-items: center;
 }
 
+.text-grey {
+  color: var(--tradera-grey-light);
+}
+
 /* =========== Modal =========== */
 
 .modal-content {
