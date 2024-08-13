@@ -1,0 +1,6 @@
+@TraderaBackend_HostAddress = http://localhost:5219
+
+GET {{TraderaBackend_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
