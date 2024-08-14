@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\glend\\Documents\\DV300\\KWARTAAL 3\\Tradera\\back-end\\TraderaBackend\\TraderaBackend.csproj": {}
+    "/Users/jugz/Desktop/DV 300/Term 3/Tradera/back-end/TraderaBackend/TraderaBackend.csproj": {}
   },
   "projects": {
-    "C:\\Users\\glend\\Documents\\DV300\\KWARTAAL 3\\Tradera\\back-end\\TraderaBackend\\TraderaBackend.csproj": {
+    "/Users/jugz/Desktop/DV 300/Term 3/Tradera/back-end/TraderaBackend/TraderaBackend.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\glend\\Documents\\DV300\\KWARTAAL 3\\Tradera\\back-end\\TraderaBackend\\TraderaBackend.csproj",
+        "projectUniqueName": "/Users/jugz/Desktop/DV 300/Term 3/Tradera/back-end/TraderaBackend/TraderaBackend.csproj",
         "projectName": "TraderaBackend",
-        "projectPath": "C:\\Users\\glend\\Documents\\DV300\\KWARTAAL 3\\Tradera\\back-end\\TraderaBackend\\TraderaBackend.csproj",
-        "packagesPath": "C:\\Users\\glend\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\glend\\Documents\\DV300\\KWARTAAL 3\\Tradera\\back-end\\TraderaBackend\\obj\\",
+        "projectPath": "/Users/jugz/Desktop/DV 300/Term 3/Tradera/back-end/TraderaBackend/TraderaBackend.csproj",
+        "packagesPath": "/Users/jugz/.nuget/packages/",
+        "outputPath": "/Users/jugz/Desktop/DV 300/Term 3/Tradera/back-end/TraderaBackend/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\glend\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "/Users/jugz/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
@@ -43,6 +43,10 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "DotNetEnv": {
+              "target": "Package",
+              "version": "[3.1.0, )"
+            },
             "Microsoft.AspNetCore.OpenApi": {
               "target": "Package",
               "version": "[8.0.7, )"
@@ -75,6 +79,14 @@
               "target": "Package",
               "version": "[8.0.4, )"
             },
+            "Postmark": {
+              "target": "Package",
+              "version": "[5.2.0, )"
+            },
+            "SendGrid": {
+              "target": "Package",
+              "version": "[9.29.3, )"
+            },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[6.4.0, )"
@@ -99,7 +111,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.303/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.303/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

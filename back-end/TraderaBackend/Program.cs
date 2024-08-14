@@ -1,6 +1,7 @@
 using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 using TraderaBackend.Data;
+using DotNetEnv;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +11,8 @@ builder.Services.AddControllers() //adds controllers for the api endpoints
     .AddJsonOptions(options => {
         options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
     });
+
+builder.Services.AddTransient<EmailService>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -29,6 +32,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+// Load environment variables from .secrets file
+Env.Load(".secrets");
 
 var summaries = new[]
 {
