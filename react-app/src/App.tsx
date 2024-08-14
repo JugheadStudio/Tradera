@@ -11,7 +11,7 @@ import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 
 // Components
-import Sidebar from './components/Sidebar';
+import Sidebar from './Components/Sidebar';
 
 //Pages
 import AdminDashboard from './Pages/AdminDashboard';
