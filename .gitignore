@@ -25,6 +25,8 @@ chrome-user-data
 .vscode
 *.swp
 *.swo
+*appsettings.json
+*/appsettings.json
 
 packages/react-devtools-core/dist
 packages/react-devtools-extensions/chrome/build
@@ -43,3 +45,14 @@ react-app/node_modules/.cache/default-development/0.pack
 react-app/node_modules/.cache/default-development/index.pack
 react-app/node_modules/.cache/default-development/index.pack
 back-end/TraderaBackend/appsettings.json
+back-end/TraderaBackend/obj/project.assets.json
+back-end/TraderaBackend/obj/Debug/net8.0/apphost.exe
+back-end/TraderaBackend/obj/Debug/net8.0/TraderaBackend.AssemblyInfo.cs
+back-end/TraderaBackend/obj/Debug/net8.0/TraderaBackend.AssemblyInfoInputs.cache
+back-end/TraderaBackend/obj/Debug/net8.0/TraderaBackend.assets.cache
+back-end/TraderaBackend/obj/Debug/net8.0/TraderaBackend.csproj.AssemblyReference.cache
+back-end/TraderaBackend/obj/Debug/net8.0/TraderaBackend.GeneratedMSBuildEditorConfig.editorconfig
+back-end/TraderaBackend/obj/project.nuget.cache
+back-end/TraderaBackend/obj/TraderaBackend.csproj.nuget.dgspec.json
+back-end/TraderaBackend/obj/TraderaBackend.csproj.nuget.g.props
+back-end/TraderaBackend/obj/TraderaBackend.csproj.nuget.g.targets

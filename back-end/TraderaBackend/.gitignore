@@ -27,6 +27,8 @@ chrome-user-data
 *.swo
 *.secrets
 .secrets
+appsettings.json
+/appsettings.json
 
 packages/react-devtools-core/dist
 packages/react-devtools-extensions/chrome/build
