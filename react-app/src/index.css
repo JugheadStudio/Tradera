@@ -557,7 +557,6 @@ img, svg {
 }
 
 .btn-primary {
-  width: 100%;
   padding: 15px 20px;
   font-family: 'Montserrat', sans-serif !important;
   font-size: var(--tradera-font-medium);
@@ -565,7 +564,6 @@ img, svg {
   border: 1px solid var(--tradera-blue-light);
   border-radius: var(--tradera--border-radius);
   background-color: transparent;
-  text-align: start;
 }
 
 .btn-primary:hover {
@@ -576,7 +574,6 @@ img, svg {
 }
 
 .btn-secondary {
-  width: 100%;
   padding: 15px 20px;
   font-family: 'Montserrat', sans-serif !important;
   font-size: var(--tradera-font-medium);
@@ -584,7 +581,6 @@ img, svg {
   border: 1px solid var(--tradera-yellow);
   border-radius: var(--tradera--border-radius);
   background-color: transparent;
-  text-align: start;
 }
 
 .btn-secondary:hover {
@@ -595,7 +591,6 @@ img, svg {
 }
 
 .btn-tertiary {
-  width: 100%;
   padding: 15px 20px;
   font-family: 'Montserrat', sans-serif !important;
   font-size: var(--tradera-font-medium);
@@ -603,7 +598,6 @@ img, svg {
   border: 1px solid var(--tradera-grey-light);
   border-radius: var(--tradera--border-radius);
   background-color: transparent;
-  text-align: start;
 }
 
 .btn-tertiary:hover {
@@ -614,7 +608,6 @@ img, svg {
 }
 
 .btn-danger {
-  width: 100%;
   padding: 15px 20px;
   font-family: 'Montserrat', sans-serif !important;
   font-size: var(--tradera-font-medium);
@@ -622,7 +615,6 @@ img, svg {
   border: 1px solid var(--tradera-red);
   border-radius: var(--tradera--border-radius);
   background-color: transparent;
-  text-align: start;
 }
 
 .btn-danger:hover {
@@ -1116,4 +1108,10 @@ img, svg {
   padding: 20px;
   border-radius: var(--tradera--border-radius);
   background-color: var(--tradera-dark-grey);
+}
+
+.modal-account-container p {
+  font-size: var(--tradera-font-xlarge);
+  margin-bottom: 0;
+  display: flex;
 }

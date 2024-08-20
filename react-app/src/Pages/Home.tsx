@@ -80,8 +80,8 @@ function Home() {
                 105,000
               </p>
 
-              <Button variant="primary" onClick={handleWithdrawShow}><i className="fas fa-wallet"></i> Withdraw</Button>
-              <Button variant="primary" className='mt-3' onClick={handlePaymentShow}><i className="fas fa-money-bill"></i> Make Payment</Button>
+              <Button variant="primary w-100" onClick={handleWithdrawShow}><i className="fas fa-wallet"></i> Withdraw</Button>
+              <Button variant="primary w-100" className='mt-3' onClick={handlePaymentShow}><i className="fas fa-money-bill"></i> Make Payment</Button>
 
             </div>
           </Col>
@@ -377,17 +377,51 @@ function Home() {
 
           <Modal.Body>
             <Container fluid>
-              <Row>
-                <Col xs={12} className="pl-0 pr-0">
-                  Buy
+
+              <Row className="border-container">
+                <Col xs={12} className="modal-account-container">
+                  <div className=" d-flex justify-content-between align-items-center">
+                    <h5 className="mb-0">Amount owned</h5>
+                    <p>
+                      <span className="icon-wrapper"><EonsGrey/></span>
+                      25,000
+                    </p>
+
+                    <p>
+                      <span className="icon-wrapper"><RandGrey/></span>
+                      105,000
+                    </p>
+                  </div>
                 </Col>
               </Row>
+
+              <Row className="mt-20">
+                <Col xs={6} className="pl-0">
+                  <label htmlFor='buyAmount' className='input-label'>Amount To Buy</label>
+                  <input type='text' className='form-control' id='buyAmount' placeholder='0' />
+                </Col>
+
+                <Col xs={6} className="pr-0">
+                  <label htmlFor='currentPrice' className='input-label'>Current Buy Price</label>
+                  <input type='text' className='form-control' id='buyCurrentPrice' placeholder='100' readOnly />
+                </Col>
+              </Row>
+
+              <Row className="mt-20">
+                <Col xs={12} className="pl-0 text-end">
+                  <h3><strong>Total:</strong> R5000</h3>
+                </Col>
+              </Row>
+              
             </Container>
           </Modal.Body>
 
           <Modal.Footer>
+            <Button variant="secondary">
+              Buy
+            </Button>
             <Button variant="danger" onClick={handleBuyClose}>
-              Close
+              Cancel
             </Button>
           </Modal.Footer>
         </Modal>
@@ -402,17 +436,51 @@ function Home() {
 
           <Modal.Body>
             <Container fluid>
-              <Row>
-                <Col xs={12} className="pl-0 pr-0">
-                  Sell
+
+              <Row className="border-container">
+                <Col xs={12} className="modal-account-container">
+                  <div className=" d-flex justify-content-between align-items-center">
+                    <h5 className="mb-0">Amount owned</h5>
+                    <p>
+                      <span className="icon-wrapper"><EonsGrey/></span>
+                      25,000
+                    </p>
+
+                    <p>
+                      <span className="icon-wrapper"><RandGrey/></span>
+                      105,000
+                    </p>
+                  </div>
                 </Col>
               </Row>
+
+              <Row className="mt-20">
+                <Col xs={6} className="pl-0">
+                  <label htmlFor='buyAmount' className='input-label'>Amount To Sell</label>
+                  <input type='text' className='form-control' id='buyAmount' placeholder='0' />
+                </Col>
+
+                <Col xs={6} className="pr-0">
+                  <label htmlFor='currentPrice' className='input-label'>Current Sell Price</label>
+                  <input type='text' className='form-control' id='buyCurrentPrice' placeholder='100' readOnly />
+                </Col>
+              </Row>
+
+              <Row className="mt-20">
+                <Col xs={12} className="pl-0 text-end">
+                  <h3><strong>Total:</strong> R5000</h3>
+                </Col>
+              </Row>
+
             </Container>
           </Modal.Body>
 
-          <Modal.Footer>
+          <Modal.Footer className="mt-20">
+            <Button variant="secondary">
+              Sell
+            </Button>
             <Button variant="danger" onClick={handleSellClose}>
-              Close
+              Cancel
             </Button>
           </Modal.Footer>
         </Modal>

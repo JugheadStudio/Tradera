@@ -252,9 +252,9 @@ function Dashboard() {
             </div>
 
             <div className='action-container'>
-              <Button variant="secondary" className='mb-3' onClick={handleWithdrawShow}><i className="fas fa-wallet"></i> Withdraw</Button>
-              <Button variant="primary" className='mb-3' onClick={handleTransferShow}><i className="fas fa-money-bill-transfer"></i> Transfer</Button>
-              <Button variant="tertiary" onClick={handleAccountSettingsShow}><i className="fas fa-sliders"></i>Account Settings</Button>
+              <Button variant="secondary" className='mb-3 w-100' onClick={handleWithdrawShow}><i className="fas fa-wallet"></i> Withdraw</Button>
+              <Button variant="primary" className='mb-3 w-100' onClick={handleTransferShow}><i className="fas fa-money-bill-transfer"></i> Transfer</Button>
+              <Button variant="tertiary" className="w-100" onClick={handleAccountSettingsShow}><i className="fas fa-sliders"></i>Account Settings</Button>
             </div>
 
             <div className='column-title mt-20'>
@@ -279,18 +279,6 @@ function Dashboard() {
                 <Col xs={6} className='pl-0'>
                   <label htmlFor='usename' className='input-label'>Username</label>
                   <input type='text' className='form-control' id='accountSettingsUsername' placeholder='Han Solo' />
-                </Col>
-              </Row>
-
-              <Row className='mt-20'>
-                <Col xs={6} className='pl-0'>
-                  <label htmlFor='name' className='input-label'>Name</label>
-                  <input type='text' className='form-control' id='accountSettingsName' placeholder='Han' />
-                </Col>
-
-                <Col xs={6} className='pr-0'>
-                  <label htmlFor='surname' className='input-label'>surname</label>
-                  <input type='text' className='form-control' id='accountSettingsSurname' placeholder='Solo' />
                 </Col>
               </Row>
               
