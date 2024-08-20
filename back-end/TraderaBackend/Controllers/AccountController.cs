@@ -32,7 +32,9 @@ namespace TraderaBackend.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Account>> GetAccount(int id)
         {
-            var account = await _context.Account.FindAsync(id);
+            var account = await _context.Account
+                .Include(a => a.User)
+                .FirstOrDefaultAsync(a => a.Account_id == id);
 
             if (account == null)
             {

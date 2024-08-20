@@ -30,7 +30,9 @@ const Sidebar = () => {
       </div>
 
       <div>
-        <Button variant='signout'>Sign Out</Button>
+        <a href="/">
+          <Button variant='signout'>Sign Out</Button>
+        </a>
       </div>
 
       <div className='sidenav-headings'>

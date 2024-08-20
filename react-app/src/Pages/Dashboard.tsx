@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import logo from '../assets/logo2.png';
 import steve from '../assets/steve.png';
 import netflix from '../assets/netflix.png';
@@ -9,8 +10,8 @@ import { Container, Row, Col } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
-import DonutChart from '../components/DonutChart';
-import BarChart from '../components/BarChart';
+import DonutChart from '../Components/DonutChart';
+import BarChart from '../Components/BarChart';
 
 import { ReactComponent as EonsRed } from '../assets/eons-red.svg';
 import { ReactComponent as EonsGreen } from '../assets/eons-green.svg';
@@ -20,6 +21,47 @@ import { ReactComponent as EonsBlack } from '../assets/eons-black.svg';
 
 function Dashboard() {
 
+  // functionality
+  // currently logged in users id
+  const [loggedUserId, setLoggedUserId] = useState(0);
+
+  // currently logged in user's email or userid
+  const [userInfo, setUserInfo] = useState(null);
+  const [amountInWallet, setAmountInWallet] = useState(0);
+
+  // Amount you would like to withdraw
+  const [withdrawAmount, setWithdrawAmount] = useState(0);
+
+  // Fetch user data when the page loads
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await axios.get('/api/Account/' + loggedUserId);
+        const userData = response.data;
+        setUserInfo(userData);
+        setAmountInWallet(userData.amount);
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+
+    fetchUserData();
+  }, [loggedUserId]);
+
+
+  const handleWithdraw = async () => {
+    try {
+      const response = await axios.post('/api/withdraw', {
+        userId: loggedUserId,
+        amount: withdrawAmount
+      });
+    } catch (error) {
+      console.error('Error processing withdrawal:', error);
+    }
+  };
+
+
+  //front end
   const [accountSettingsShow, setAccountSettingsShow] = useState(false);
   const [withdrawShow, setWithdrawShow] = useState(false);
   const [transferShow, setTransferShow] = useState(false);
@@ -54,7 +96,7 @@ function Dashboard() {
               <div className='cardcontainder'>
                 <EonsBlack/>
                 <div className='cardbalance'>
-                  10646.89
+                  {amountInWallet}
                 </div>
               </div>
               <div className='cardnumber'>
@@ -131,7 +173,7 @@ function Dashboard() {
               </div>
               <div className="transactions-count-yellow">
                 <p>+25</p>
-                <EonsGreen/>
+                  <EonsGreen/>
               </div>
             </div>
 
@@ -289,18 +331,25 @@ function Dashboard() {
             <Container fluid>
               <Row>
                 <Col xs={12} className='pl-0 pr-0'>
-                  Withdraw
+                  <label htmlFor='withdrawAmount' className='input-label'>Withdraw Amount</label>
+                  <input type='number' className='form-control' id='withdrawAmount' placeholder='Enter amount' />
+                  <br></br>
+                  <Button variant="primary" onClick={() => {
+                    const withdrawInput = document.getElementById('withdrawAmount') as HTMLInputElement;
+                    const amount = withdrawInput ? withdrawInput.value : null;
+                    setWithdrawAmount(amount ? parseInt(amount) : 0);
+                    handleWithdraw();
+                  }}>
+                    Withdraw
+                  </Button>
                 </Col>
               </Row>
             </Container>
           </Modal.Body>
 
           <Modal.Footer>
-            <Button variant="primary" onClick={handleWithdrawClose}>
-              Edit
-            </Button>
             <Button variant="danger" onClick={handleWithdrawClose}>
-              Close
+              Cancel
             </Button>
             {/* <Button variant="primary" onClick={handleWithdrawClose}>
               Save Changes

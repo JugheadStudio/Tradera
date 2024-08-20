@@ -4,6 +4,8 @@ import { Link, useLocation } from 'react-router-dom';
 
 function Login() {
 
+  // Please log the currently logged in user's id/email to a global var we can access on the dashboard page 
+
   const location = useLocation();
 
   return (

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 import { Button, Col, Container, Modal, Row } from "react-bootstrap";
-import PriceChart from "../components/PriceChart";
+import PriceChart from "../Components/PriceChart";
 
 import { ReactComponent as EonsLogo } from "../assets/eons-home.svg";
 import { ReactComponent as EonsGreen } from "../assets/eons-green.svg";
