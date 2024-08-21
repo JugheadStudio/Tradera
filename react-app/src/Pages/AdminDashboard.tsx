@@ -8,7 +8,7 @@ const AdminDashboard: React.FC = () => {
   const [users, setUsers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const colors = ['#98FB98', '#87CEFA', '#FFD700'];
+
 
   const dummyCards = [
     { username: 'Alice', role: 'Explorer', balance: 8532.45, expiry: '11/25', color: '#98FB98', avatar: 'https://randomuser.me/api/portraits/women/2.jpg' },
@@ -39,8 +39,20 @@ const AdminDashboard: React.FC = () => {
   ];
 
 
-  
-  const renderAdminButton = (icon: string, text: string) => (
+
+  const renderFreezeButton = (icon: string, text: string) => (
+    <button className="admin-button">
+      <i className={`fas ${icon}`}></i> {text}
+    </button>
+  );
+
+  const renderAddUserButton = (icon: string, text: string) => (
+    <button className="admin-button">
+      <i className={`fas ${icon}`}></i> {text}
+    </button>
+  );
+
+  const renderDeleteButton = (icon: string, text: string) => (
     <button className="admin-button">
       <i className={`fas ${icon}`}></i> {text}
     </button>
@@ -63,27 +75,40 @@ const AdminDashboard: React.FC = () => {
     const fetchData = async () => {
       const data = await getUsers();
       const validRoles = ['Traveler', 'Explorer', 'Voyager', 'Precursor'];
-  
+
       let filteredUsers = [];
-  
+
       if (data && data.$values) {
         filteredUsers = data.$values.filter((user: any) => validRoles.includes(user.role));
       } else {
         filteredUsers = dummyCards.filter((user: any) => validRoles.includes(user.role));
       }
-  
+
       setUsers(filteredUsers);
       setLoading(false);
     };
-  
+
     fetchData();
   }, []);
 
-  const getRandomColor = () => colors[Math.floor(Math.random() * colors.length)];
+  const getRoleColor = (role: string) => {
+    switch (role) {
+      case 'Explorer':
+        return '#9E67F4'; 
+      case 'Traveler':
+        return '#87CEFA'; 
+      case 'Voyager':
+        return '#98FB98'; 
+      case 'Precursor':
+        return '#FFD700' ; 
+      default:
+        return '#FFFFFF';  // Default color if role is not found
+    }
+  };
 
   const renderCard = (card: any, index: number) => (
     <Col key={index} xs={12} sm={6} md={4} className="mb-4">
-      <div className="admin-card" style={{ backgroundColor: getRandomColor() }}>
+      <div className="admin-card" style={{ backgroundColor: getRoleColor(card.role) }}>
         <div className="admin-card-header">
           <img src={card.avatar || logo} alt="User Avatar" className="admin-card-avatar" />
           <div className="admin-card-title">{card.username}</div>
@@ -97,6 +122,10 @@ const AdminDashboard: React.FC = () => {
             </div>
           </div>
           <div className="admin-card-expiry">Expires {card.expiry || 'N/A'}</div>
+          <div>
+            {renderFreezeButton('fa-user-lock', 'Freeze Account')}
+            {renderDeleteButton('fa-trash-alt', 'Delete Account')}
+          </div>
         </div>
       </div>
     </Col>
@@ -124,11 +153,9 @@ const AdminDashboard: React.FC = () => {
             <div className='column-title'>
               <span className='spesific'>All</span> <span className='transactions'>Accounts</span>
             </div>
-            <div className="admin-left-container" style={{ maxHeight: 'calc(100vh - 150px)'}}>
+            <div className="admin-left-container" style={{ maxHeight: 'calc(100vh - 150px)' }}>
               <div className="admin-button-container">
-                {renderAdminButton('fa-user-plus', 'Add User')}
-                {renderAdminButton('fa-user-lock', 'Freeze Account')}
-                {renderAdminButton('fa-trash-alt', 'Delete Account')}
+                {renderAddUserButton('fa-user-plus', 'Add User')}
                 {renderSearchBar()}
               </div>
               <Container className="admin-users-container" style={{ overflowY: 'auto' }}>
