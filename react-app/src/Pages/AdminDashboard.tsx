@@ -62,11 +62,17 @@ const AdminDashboard: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       const data = await getUsers();
-      if (data && data.$values) { 
-        setUsers(data.$values);   
+      const validRoles = ['Traveler', 'Explorer', 'Voyager', 'Precursor'];
+  
+      let filteredUsers = [];
+  
+      if (data && data.$values) {
+        filteredUsers = data.$values.filter((user: any) => validRoles.includes(user.role));
       } else {
-        setUsers(dummyCards);     
+        filteredUsers = dummyCards.filter((user: any) => validRoles.includes(user.role));
       }
+  
+      setUsers(filteredUsers);
       setLoading(false);
     };
   
