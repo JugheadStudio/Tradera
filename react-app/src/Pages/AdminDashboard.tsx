@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
-import { getUsers } from '../Services/userService';
+import { deleteUser, getUsers } from '../Services/userService';
 import logo from '../assets/logo2.png';
 import { ReactComponent as EonsBlack } from '../assets/eons-black.svg';
 
@@ -52,8 +52,16 @@ const AdminDashboard: React.FC = () => {
     </button>
   );
 
-  const renderDeleteButton = (icon: string, text: string) => (
-    <button className="admin-button">
+  const handleDeleteUser = async (id: number) => {
+    await deleteUser(id);
+    setUsers(users.filter(user => user.user_id !== id)); // Update the UI after deletion
+  };
+
+  const renderDeleteButton = (icon: string, text: string, userId: number) => (
+    <button
+      className="admin-button"
+      onClick={() => handleDeleteUser(userId)} // Pass userId to the delete handler
+    >
       <i className={`fas ${icon}`}></i> {text}
     </button>
   );
@@ -124,7 +132,7 @@ const AdminDashboard: React.FC = () => {
           <div className="admin-card-expiry">Expires {card.expiry || 'N/A'}</div>
           <div>
             {renderFreezeButton('fa-user-lock', 'Freeze Account')}
-            {renderDeleteButton('fa-trash-alt', 'Delete Account')}
+            {renderDeleteButton('fa-trash-alt', 'Delete Account', card.user_id)} {/* Pass user ID here */}
           </div>
         </div>
       </div>
