@@ -7,7 +7,6 @@ public class EmailService
 
     public EmailService()
     {
-        // Replace with your Postmark API key
         _client = new PostmarkClient(Environment.GetEnvironmentVariable("POSTMARK_API_KEY"));
         _fromEmail = "150139@virtualwindow.co.za";
     }

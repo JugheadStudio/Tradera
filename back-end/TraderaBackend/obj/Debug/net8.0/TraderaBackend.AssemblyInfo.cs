@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("TraderaBackend")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+22b5766b4e048985f3273c880dfb13208bef3878")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5d7a61a6150254c0abbc4c47f2bce9d23c3d43a4")]
 [assembly: System.Reflection.AssemblyProductAttribute("TraderaBackend")]
 [assembly: System.Reflection.AssemblyTitleAttribute("TraderaBackend")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

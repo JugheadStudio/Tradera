@@ -11,7 +11,6 @@ import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 
 // Components
-import Sidebar from './Components/Sidebar';
 
 //Pages
 import AdminDashboard from './Pages/AdminDashboard';
@@ -20,6 +19,7 @@ import Signup from './Pages/Signup';
 import Dashboard from './Pages/Dashboard';
 import Details from './Pages/Details';
 import Home from './Pages/Home';
+import Sidebar from './components/Sidebar';
 
 function App() {
   return (
