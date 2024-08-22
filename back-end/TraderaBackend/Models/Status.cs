@@ -19,5 +19,9 @@ public class Status
     public int Annual_interest_rate {get; set;}
 
     public int Transaction_fee {get; set;}
+
+    // Navigation properties
+    public ICollection<Account>? Accounts {get; set;}
+
    
 }

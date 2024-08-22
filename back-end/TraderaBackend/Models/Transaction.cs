@@ -10,22 +10,22 @@ public class Transaction
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Transaction_id { get; set; }
 
+    [Required]
     public string Transaction_type { get; set; } = string.Empty;
 
     [Required]
-    public int From_account_id { get; set; }
-
-    [Required]
-    public int To_account_id { get; set; }
-
     public int Amount { get; set; }
 
+    [Required]
     public required DateTime Timestamp { get; set; }
 
-    // Navigation properties
-    [ForeignKey("From_account_id")]
-    public virtual Account? FromAccount { get; set; }
 
-    [ForeignKey("To_account_id")]
-    public virtual Account? ToAccount { get; set; }
+    // Foreign keys for transfer transactions
+    public int? From_account_id { get; set; }
+    public int? To_account_id { get; set; }
+
+    // Navigation properties
+    public required Account FromAccount { get; set; }
+    public required Account ToAccount { get; set; }
+
 }

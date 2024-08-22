@@ -10,16 +10,15 @@ public class UserSecurity
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Security_id { get; set; }
 
-    [Required]
-    public int User_id { get; set; }
+    public string? Password_hash { get; set; } = string.Empty;
 
-    public string Password_hash { get; set; } = string.Empty;
-
-    public required string Latest_otp_secret { get; set; }
+    public required string? Latest_otp_secret { get; set; }
 
     public required DateTime Updated_at { get; set; }
 
-    // Navigation properties
-    [ForeignKey("User_id")]
-    public virtual User? User { get; set; }
+    // foreign key
+    public required int User_id {get; set;}
+
+    //navigation property
+    public User? User {get; set;}
 }

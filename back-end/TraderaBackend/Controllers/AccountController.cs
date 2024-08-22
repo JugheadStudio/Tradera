@@ -23,18 +23,16 @@ namespace TraderaBackend.Controllers
 
         // GET: api/Account
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Account>>> GetAccount()
+        public async Task<ActionResult<IEnumerable<Account>>> GetAccounts()
         {
-            return await _context.Account.ToListAsync();
+            return await _context.Accounts.ToListAsync();
         }
 
         // GET: api/Account/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Account>> GetAccount(int id)
         {
-            var account = await _context.Account
-                .Include(a => a.User)
-                .FirstOrDefaultAsync(a => a.Account_id == id);
+            var account = await _context.Accounts.FindAsync(id);
 
             if (account == null)
             {
@@ -80,7 +78,7 @@ namespace TraderaBackend.Controllers
         [HttpPost]
         public async Task<ActionResult<Account>> PostAccount(Account account)
         {
-            _context.Account.Add(account);
+            _context.Accounts.Add(account);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetAccount", new { id = account.Account_id }, account);
@@ -90,13 +88,13 @@ namespace TraderaBackend.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAccount(int id)
         {
-            var account = await _context.Account.FindAsync(id);
+            var account = await _context.Accounts.FindAsync(id);
             if (account == null)
             {
                 return NotFound();
             }
 
-            _context.Account.Remove(account);
+            _context.Accounts.Remove(account);
             await _context.SaveChangesAsync();
 
             return NoContent();
@@ -104,7 +102,7 @@ namespace TraderaBackend.Controllers
 
         private bool AccountExists(int id)
         {
-            return _context.Account.Any(e => e.Account_id == id);
+            return _context.Accounts.Any(e => e.Account_id == id);
         }
     }
 }

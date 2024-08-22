@@ -8,56 +8,56 @@ public class AppDbContext : DbContext
 {
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) {}
 
-    public DbSet<User> Users {get; set;}
+    // All endpoint controllers
+    public DbSet<User> Users { get; set; }
+    public DbSet<UserSecurity> UserSecuritys { get; set; }
+    public DbSet<Status> Statuses { get; set; }
+    public DbSet<AuthLog> AuthLogs { get; set; }
+    public DbSet<Account> Accounts { get; set; }
+    public DbSet<Transaction> Transactions { get; set; }
 
-    public DbSet<UserSecurity> UserSecurity { get; set; } = default!;
-
-    public DbSet<Status> Status { get; set; } = default!;
-
-    public DbSet<AuthLog> AuthLog { get; set; } = default!;
-
-    public DbSet<Account> Account { get; set; } = default!;
-
-    public DbSet<Transaction> Transaction { get; set; } = default!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
 
-        modelBuilder.Entity<Transaction>()
-            .HasOne(t => t.FromAccount)
-            .WithMany()
-            .HasForeignKey(t => t.From_account_id)
-            .OnDelete(DeleteBehavior.Restrict);
-
-        modelBuilder.Entity<Transaction>()
-            .HasOne(t => t.ToAccount)
-            .WithMany()
-            .HasForeignKey(t => t.To_account_id)
-            .OnDelete(DeleteBehavior.Restrict);
-
-        modelBuilder.Entity<Account>()
-            .HasOne(a => a.User)
-            .WithMany()
-            .HasForeignKey(a => a.User_id)
-            .OnDelete(DeleteBehavior.Cascade);
-
-        modelBuilder.Entity<Account>()
-            .HasOne(a => a.AccountStatus)
-            .WithMany()
-            .HasForeignKey(a => a.Account_status_id)
-            .OnDelete(DeleteBehavior.Restrict);
-
+        // User and User security (1-1)
         modelBuilder.Entity<UserSecurity>()
             .HasOne(us => us.User)
-            .WithMany()
-            .HasForeignKey(us => us.User_id)
-            .OnDelete(DeleteBehavior.Cascade);
+            .WithOne(u => u.UserSecurity)
+            .HasForeignKey<UserSecurity>(us => us.User_id);
 
+        // User and Auth log (many-1)
         modelBuilder.Entity<AuthLog>()
-            .HasOne(al => al.User)
-            .WithMany()
-            .HasForeignKey(al => al.User_id)
-            .OnDelete(DeleteBehavior.Cascade);
+            .HasOne(a => a.User)
+            .WithMany(u => u.AuthLogs)
+            .HasForeignKey(a => a.User_id);
+
+        // User and Account (1-1)
+        modelBuilder.Entity<Account>()
+            .HasOne(a => a.User)
+            .WithOne(u => u.Account)
+            .HasForeignKey<Account>(a => a.User_id);
+
+        // Account and Transaction (1-many for FromAccount)
+        modelBuilder.Entity<Transaction>()
+            .HasOne(t => t.FromAccount)
+            .WithMany(a => a.FromTransactions) // Maps to FromTransactions
+            .HasForeignKey(t => t.From_account_id);
+
+        // Account and Transaction (1-many for ToAccount)
+        modelBuilder.Entity<Transaction>()
+            .HasOne(t => t.ToAccount)
+            .WithMany(a => a.ToTransactions) // Maps to ToTransactions
+            .HasForeignKey(t => t.To_account_id);
+
+        // Account and Status (many-1)
+        modelBuilder.Entity<Account>()
+            .HasOne(a => a.Status)
+            .WithMany(s => s.Accounts)
+            .HasForeignKey(a => a.Account_status_id);
     }
+
+
+    
 }

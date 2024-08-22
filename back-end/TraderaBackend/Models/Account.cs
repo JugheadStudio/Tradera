@@ -10,20 +10,19 @@ public class Account
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Account_id { get; set; }
 
-    [Required]
-    public int User_id { get; set; }
-
-    [Required]
-    public int Account_status_id { get; set; }
-
     public int Balance { get; set; }
 
     public bool Active { get; set; }
 
-    // Navigation properties
-    [ForeignKey("User_id")]
-    public virtual User? User { get; set; }
+    // Foreign keys
+    public required int User_id { get; set; }
+    public required int Account_status_id { get; set; }
 
-    [ForeignKey("Account_status_id")]
-    public virtual Status? AccountStatus { get; set; }
+    // Navigation properties
+    public User? User { get; set; }
+    public Status? Status { get; set; }
+
+    // Updated navigation properties
+    public ICollection<Transaction>? FromTransactions { get; set; } // Transactions where this account is the sender
+    public ICollection<Transaction>? ToTransactions { get; set; }   // Transactions where this account is the receiver
 }

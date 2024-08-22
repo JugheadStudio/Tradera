@@ -11,9 +11,6 @@ public class AuthLog
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Log_id { get; set; }
 
-    [Required]
-    public int User_id { get; set; }
-
     public DateTime Login_time { get; set; }
 
     public DateTime Logout_time { get; set; }
@@ -22,7 +19,9 @@ public class AuthLog
 
     public required string Device_info { get; set; }
 
-    // Navigation properties
-    [ForeignKey("User_id")]
-    public virtual User? User { get; set; }
+    //Foreign key
+    public int User_id {get; set;}
+
+    //Navigation property
+    public required User User {get; set;}
 }

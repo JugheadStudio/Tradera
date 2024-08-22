@@ -23,16 +23,16 @@ namespace TraderaBackend.Controllers
 
         // GET: api/UserSecurity
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<UserSecurity>>> GetUserSecurity()
+        public async Task<ActionResult<IEnumerable<UserSecurity>>> GetUserSecuritys()
         {
-            return await _context.UserSecurity.ToListAsync();
+            return await _context.UserSecuritys.ToListAsync();
         }
 
         // GET: api/UserSecurity/5
         [HttpGet("{id}")]
         public async Task<ActionResult<UserSecurity>> GetUserSecurity(int id)
         {
-            var userSecurity = await _context.UserSecurity.FindAsync(id);
+            var userSecurity = await _context.UserSecuritys.FindAsync(id);
 
             if (userSecurity == null)
             {
@@ -78,7 +78,7 @@ namespace TraderaBackend.Controllers
         [HttpPost]
         public async Task<ActionResult<UserSecurity>> PostUserSecurity(UserSecurity userSecurity)
         {
-            _context.UserSecurity.Add(userSecurity);
+            _context.UserSecuritys.Add(userSecurity);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetUserSecurity", new { id = userSecurity.Security_id }, userSecurity);
@@ -88,13 +88,13 @@ namespace TraderaBackend.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUserSecurity(int id)
         {
-            var userSecurity = await _context.UserSecurity.FindAsync(id);
+            var userSecurity = await _context.UserSecuritys.FindAsync(id);
             if (userSecurity == null)
             {
                 return NotFound();
             }
 
-            _context.UserSecurity.Remove(userSecurity);
+            _context.UserSecuritys.Remove(userSecurity);
             await _context.SaveChangesAsync();
 
             return NoContent();
@@ -102,7 +102,7 @@ namespace TraderaBackend.Controllers
 
         private bool UserSecurityExists(int id)
         {
-            return _context.UserSecurity.Any(e => e.Security_id == id);
+            return _context.UserSecuritys.Any(e => e.Security_id == id);
         }
     }
 }

@@ -23,16 +23,16 @@ namespace TraderaBackend.Controllers
 
         // GET: api/AuthLog
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<AuthLog>>> GetAuthLog()
+        public async Task<ActionResult<IEnumerable<AuthLog>>> GetAuthLogs()
         {
-            return await _context.AuthLog.ToListAsync();
+            return await _context.AuthLogs.ToListAsync();
         }
 
         // GET: api/AuthLog/5
         [HttpGet("{id}")]
         public async Task<ActionResult<AuthLog>> GetAuthLog(int id)
         {
-            var authLog = await _context.AuthLog.FindAsync(id);
+            var authLog = await _context.AuthLogs.FindAsync(id);
 
             if (authLog == null)
             {
@@ -47,7 +47,7 @@ namespace TraderaBackend.Controllers
         [HttpPost]
         public async Task<ActionResult<AuthLog>> PostAuthLog(AuthLog authLog)
         {
-            _context.AuthLog.Add(authLog);
+            _context.AuthLogs.Add(authLog);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetAuthLog", new { id = authLog.Log_id }, authLog);
@@ -55,7 +55,7 @@ namespace TraderaBackend.Controllers
 
         private bool AuthLogExists(int id)
         {
-            return _context.AuthLog.Any(e => e.Log_id == id);
+            return _context.AuthLogs.Any(e => e.Log_id == id);
         }
     }
 }

@@ -11,12 +11,21 @@ public class User
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int User_id {get; set;}
 
-    public string Username {get; set;} = string.Empty;
+    [Required]
+    public string? Username {get; set;} = string.Empty;
 
-    public required string Email {get; set;}
+    [Required]
+    public string? Email {get; set;} = string.Empty;
 
-     public string Role {get; set;} = string.Empty;
+    [Required]
+    public string Role { get; set; } = "normal"; // Default role is "normal"
 
+    [Required]
     public required DateTime Created_at {get; set;}
+
+    //Navigation property
+    public UserSecurity? UserSecurity {get; set;}
+    public Account? Account {get; set;}
+    public ICollection<AuthLog>? AuthLogs {get; set;}
 
 }
