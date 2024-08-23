@@ -17,15 +17,13 @@ public class Transaction
     public int Amount { get; set; }
 
     [Required]
-    public required DateTime Timestamp { get; set; }
+    public DateTime Timestamp { get; set; }
 
-
-    // Foreign keys for transfer transactions
+    // Nullable foreign keys for transactions
     public int? From_account_id { get; set; }
     public int? To_account_id { get; set; }
 
-    // Navigation properties
-    public required Account FromAccount { get; set; }
-    public required Account ToAccount { get; set; }
-
+    // Nullable navigation properties
+    public Account? FromAccount { get; set; }
+    public Account? ToAccount { get; set; }
 }

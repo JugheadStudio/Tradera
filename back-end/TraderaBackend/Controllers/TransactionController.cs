@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TraderaBackend.Data;
@@ -42,17 +37,32 @@ namespace TraderaBackend.Controllers
             return transaction;
         }
 
-        // PUT: api/Transaction/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutTransaction(int id, Transaction transaction)
+        // POST: api/Transaction/Deposit
+        [HttpPost("Deposit")]
+        public async Task<IActionResult> Deposit(int accountId, int amount)
         {
-            if (id != transaction.Transaction_id)
+            var account = await _context.Accounts.FindAsync(accountId);
+
+            if (account == null)
             {
-                return BadRequest();
+                return NotFound();
             }
 
-            _context.Entry(transaction).State = EntityState.Modified;
+            account.Balance += amount;
+
+            _context.Entry(account).State = EntityState.Modified;
+
+            // Create the transaction
+            var transaction = new Transaction
+            {
+                Amount = amount,
+                Transaction_type = "Deposit",
+                Timestamp = DateTime.UtcNow, // Use UTC now
+                FromAccount = null, // No FromAccount for a deposit
+                ToAccount = account  // The account receiving the deposit
+            };
+
+            _context.Transactions.Add(transaction);
 
             try
             {
@@ -60,42 +70,121 @@ namespace TraderaBackend.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!TransactionExists(id))
+                if (!AccountExists(accountId))
                 {
                     return NotFound();
                 }
                 else
                 {
-                    throw;
+                    return BadRequest("Concurrency exception occurred");
                 }
             }
 
             return NoContent();
         }
 
-        // POST: api/Transaction
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Transaction>> PostTransaction(Transaction transaction)
+        // POST: api/Transaction/Withdraw
+        [HttpPost("Withdraw")]
+        public async Task<IActionResult> Withdraw(int accountId, int amount)
         {
-            _context.Transactions.Add(transaction);
-            await _context.SaveChangesAsync();
+            var account = await _context.Accounts.FindAsync(accountId);
 
-            return CreatedAtAction("GetTransaction", new { id = transaction.Transaction_id }, transaction);
-        }
-
-        // DELETE: api/Transaction/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteTransaction(int id)
-        {
-            var transaction = await _context.Transactions.FindAsync(id);
-            if (transaction == null)
+            if (account == null)
             {
                 return NotFound();
             }
 
-            _context.Transactions.Remove(transaction);
-            await _context.SaveChangesAsync();
+            if (account.Balance < amount)
+            {
+                return BadRequest("Insufficient balance");
+            }
+
+            account.Balance -= amount;
+
+            _context.Entry(account).State = EntityState.Modified;
+
+            // Create the transaction
+            var transaction = new Transaction
+            {
+                Amount = amount,
+                Transaction_type = "Withdrawal",
+                Timestamp = DateTime.UtcNow, // Use UTC now
+                FromAccount = account,  // The account from which the funds are withdrawn
+                ToAccount = null        // No ToAccount for a withdrawal
+            };
+
+            _context.Transactions.Add(transaction);
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!AccountExists(accountId))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    return BadRequest("Concurrency exception occurred");
+                }
+            }
+
+            return NoContent();
+        }
+
+        // POST: api/Transaction/Transfer
+        [HttpPost("Transfer")]
+        public async Task<IActionResult> Transfer(int fromAccountId, int toAccountId, int amount)
+        {
+            var fromAccount = await _context.Accounts.FindAsync(fromAccountId);
+            var toAccount = await _context.Accounts.FindAsync(toAccountId);
+
+            if (fromAccount == null || toAccount == null)
+            {
+                return NotFound("One or both accounts not found");
+            }
+
+            if (fromAccount.Balance < amount)
+            {
+                return BadRequest("Insufficient balance in the source account");
+            }
+
+            // Update balances
+            fromAccount.Balance -= amount;
+            toAccount.Balance += amount;
+
+            _context.Entry(fromAccount).State = EntityState.Modified;
+            _context.Entry(toAccount).State = EntityState.Modified;
+
+            // Create the transaction
+            var transaction = new Transaction
+            {
+                Amount = amount,
+                Transaction_type = "Transfer",
+                Timestamp = DateTime.UtcNow, // Use UTC now
+                FromAccount = fromAccount,  // The source account
+                ToAccount = toAccount       // The destination account
+            };
+
+            _context.Transactions.Add(transaction);
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!AccountExists(fromAccountId) || !AccountExists(toAccountId))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    return BadRequest("Concurrency exception occurred");
+                }
+            }
 
             return NoContent();
         }
@@ -103,6 +192,11 @@ namespace TraderaBackend.Controllers
         private bool TransactionExists(int id)
         {
             return _context.Transactions.Any(e => e.Transaction_id == id);
+        }
+
+        private bool AccountExists(int id)
+        {
+            return _context.Accounts.Any(e => e.Account_id == id);
         }
     }
 }
