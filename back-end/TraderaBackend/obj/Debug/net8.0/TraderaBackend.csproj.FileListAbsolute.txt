@@ -1293,3 +1293,4 @@ C:\Users\emili\Documents\GitHub\Tradera\back-end\TraderaBackend\obj\Debug\net8.0
 C:\Users\emili\Documents\GitHub\Tradera\back-end\TraderaBackend\obj\Debug\net8.0\TraderaBackend.pdb
 C:\Users\emili\Documents\GitHub\Tradera\back-end\TraderaBackend\obj\Debug\net8.0\TraderaBackend.genruntimeconfig.cache
 C:\Users\emili\Documents\GitHub\Tradera\back-end\TraderaBackend\obj\Debug\net8.0\ref\TraderaBackend.dll
+C:\Users\emili\Documents\GitHub\Tradera\back-end\TraderaBackend\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll

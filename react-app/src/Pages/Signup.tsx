@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { Col, Container, Nav, Row } from 'react-bootstrap';
 import { Link, useLocation, useNavigate } from 'react-router-dom'; // useNavigate instead of useHistory
+import { useUser } from '../Contexts/UserContext';
 
 function Signup() {
   const location = useLocation();
   const navigate = useNavigate(); // useNavigate hook
+  const { setUserId } = useUser(); // Use the setUserId from the context
   const [userData, setUserData] = useState({
     username: '',
     email: '',
@@ -31,6 +33,7 @@ function Signup() {
       });
       if (response.ok) {
         const data = await response.json();
+        setUserId(data.user_id); // Assuming the response includes user_id
         alert('Signup successful!');
         navigate('/dashboard'); // Using navigate instead of history.push
       } else {

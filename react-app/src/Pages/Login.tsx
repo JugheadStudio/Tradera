@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { Col, Container, Nav, Row } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
+import { useUser } from '../Contexts/UserContext';
 
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
+  const { setUserId } = useUser();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault(); // Prevents the default form submission behavior
@@ -24,6 +26,7 @@ function Login() {
 
       const data = await response.json();
       console.log('Login successful:', data);
+      setUserId(data.user_id);
       navigate('/Dashboard');
     } catch (error) {
       if (error instanceof Error) {

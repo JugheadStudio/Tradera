@@ -20,67 +20,39 @@ import Dashboard from './Pages/Dashboard';
 import Details from './Pages/Details';
 import Home from './Pages/Home';
 import Sidebar from './Components/Sidebar';
+import { UserProvider } from './Contexts/UserContext';
 
 function App() {
   return (
     <Router>
-      <Container fluid>
-        <Row>
-          <Routes>
-            <Route path="/" element={<Login />} />
-            <Route path="/Signup" element={<Signup />} />
-            <Route path="*" element={
-              <>
-                <Col xs={2}>
-                  <Sidebar/>
-                </Col>
-                <Col xs={10}>
-                  <Routes>
-                    <Route path="/Details" element={<Details />} />
-                    <Route path="/Dashboard" element={<Dashboard />} />
-                    <Route path="/Home" element={<Home />} />
-                    <Route path="/AdminDashboard" element={<AdminDashboard />} />
-                  </Routes>
-                </Col>
-              </>
-            }
-            />
-          </Routes>
-        </Row>
-      </Container>
+      <UserProvider>
+        <Container fluid>
+          <Row>
+            <Routes>
+              <Route path="/" element={<Login />} />
+              <Route path="/Signup" element={<Signup />} />
+              <Route path="*" element={<AuthenticatedRoutes />} />
+            </Routes>
+          </Row>
+        </Container>
+      </UserProvider>
     </Router>
-
-
-    // <Router>
-    //   <Container fluid>
-    //     <Row>
-    //     <Col xs={10}>
-    //       <Routes>
-    //         {/* checks if the path is to the auth page, if its not -> add the sidebar */}
-    //         <Route path="/" element={<Login />} />
-    //         <Route path="/Signup" element={<Signup />} />
-    //         <Route
-    //           path="*"
-    //           element={
-    //             <div className="d-flex">
-    //               <Sidebar />
-    //               <div className="flex-grow-1 p-3">
-    //                 <Routes>
-    //                   <Route path="/Details" element={<Details />} />
-    //                   <Route path="/Dashboard" element={<Dashboard />} />
-    //                   <Route path="/Home" element={<Home />} />
-    //                   <Route path="/AdminDashboard" element={<AdminDashboard />} />
-    //                 </Routes>
-    //               </div>
-    //             </div>
-    //           }
-    //         />
-    //       </Routes>
-    //     </Col>
-    //     </Row>
-    //   </Container>
-    // </Router>
   );
 }
+
+const AuthenticatedRoutes = () => (
+  <>
+    <Col xs={2}><Sidebar /></Col>
+    <Col xs={10}>
+      <Routes>
+        <Route path="/Details" element={<Details />} />
+        <Route path="/Dashboard" element={<Dashboard />} />
+        <Route path="/Home" element={<Home />} />
+        <Route path="/AdminDashboard" element={<AdminDashboard />} />
+      </Routes>
+    </Col>
+  </>
+);
+
 
 export default App;
