@@ -13,8 +13,8 @@ import Modal from 'react-bootstrap/Modal';
 import { ReactComponent as EonsRed } from '../assets/eons-red.svg';
 import { ReactComponent as EonsGreen } from '../assets/eons-green.svg';
 import { ReactComponent as EonsBlack } from '../assets/eons-black.svg';
-import BarChart from '../components/BarChart';
-import DonutChart from '../components/DonutChart';
+import BarChart from '../Components/BarChart';
+import DonutChart from '../Components/DonutChart';
 
 // Components
 

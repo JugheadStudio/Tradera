@@ -1,53 +1,83 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Col, Container, Nav, Row } from 'react-bootstrap';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 function Login() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
-  // Please log the currently logged in user's id/email to a global var we can access on the dashboard page 
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
+    event.preventDefault(); // Prevents the default form submission behavior
+    try {
+      const response = await fetch('http://localhost:5219/api/user/authenticate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email, password })
+      });
 
-  const location = useLocation();
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log('Login successful:', data);
+      navigate('/Dashboard');
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error('Login error:', error.message);
+        alert('Login failed: ' + error.message);
+      } else {
+        console.error('An unexpected error occurred:', error);
+        alert('An unexpected error occurred. Please try again.');
+      }
+    }
+  };
 
   return (
-
     <Container fluid>
-
       <Row className='justify-content-around h100'>
         <Col xs={3} className='login-form-container-div'>
-
           <h2 className='text-center mb-4 login-Heading'>Log in</h2>
-
-          <form>
+          <form onSubmit={handleSubmit}>
             <div className='form-group mb-3'>
               <label htmlFor='email' className='input-label'>Email address</label>
-              <input type='email' className='form-control' id='email' placeholder='Enter email' />
+              <input
+                type='email'
+                className='form-control'
+                id='email'
+                placeholder='Enter email'
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+              />
             </div>
             <div className='form-group mb-3'>
               <label htmlFor='password' className='input-label'>Password</label>
-              <input type='password' className='form-control' id='password' placeholder='Password' />
+              <input
+                type='password'
+                className='form-control'
+                id='password'
+                placeholder='Password'
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+              />
             </div>
-            
-
-            <Nav.Link as={Link} to="/Dashboard" className={location.pathname === '/' ? 'active' : ''}>
-              <div className='form-submit-button'>
-                Submit
-              </div>
-            </Nav.Link>
-            
+            <button type='submit' className='form-submit-button w-100'>
+              Submit
+            </button>
           </form>
-          <div className='text-center mt-3 signup-btn'> 
-            <p>Dont have an account?</p>
-            <Nav.Link as={Link} to="/Signup" className={location.pathname === '/Signup' ? 'active' : ''}>
+          <div className='text-center mt-3 signup-btn'>
+            <p>Don't have an account?</p>
+            <Nav.Link as={Link} to="/Signup">
               Sign up
             </Nav.Link>
           </div>
-
         </Col>
       </Row>
-
     </Container>
-      
-  )
+  );
 }
 
-export default Login
+export default Login;

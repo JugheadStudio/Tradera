@@ -19,7 +19,7 @@ import Signup from './Pages/Signup';
 import Dashboard from './Pages/Dashboard';
 import Details from './Pages/Details';
 import Home from './Pages/Home';
-import Sidebar from './components/Sidebar';
+import Sidebar from './Components/Sidebar';
 
 function App() {
   return (

@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "/Users/jugz/Desktop/DV 300/Term 3/Tradera/back-end/TraderaBackend/TraderaBackend.csproj": {}
+    "C:\\Users\\emili\\Documents\\GitHub\\Tradera\\back-end\\TraderaBackend\\TraderaBackend.csproj": {}
   },
   "projects": {
-    "/Users/jugz/Desktop/DV 300/Term 3/Tradera/back-end/TraderaBackend/TraderaBackend.csproj": {
+    "C:\\Users\\emili\\Documents\\GitHub\\Tradera\\back-end\\TraderaBackend\\TraderaBackend.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/jugz/Desktop/DV 300/Term 3/Tradera/back-end/TraderaBackend/TraderaBackend.csproj",
+        "projectUniqueName": "C:\\Users\\emili\\Documents\\GitHub\\Tradera\\back-end\\TraderaBackend\\TraderaBackend.csproj",
         "projectName": "TraderaBackend",
-        "projectPath": "/Users/jugz/Desktop/DV 300/Term 3/Tradera/back-end/TraderaBackend/TraderaBackend.csproj",
-        "packagesPath": "/Users/jugz/.nuget/packages/",
-        "outputPath": "/Users/jugz/Desktop/DV 300/Term 3/Tradera/back-end/TraderaBackend/obj/",
+        "projectPath": "C:\\Users\\emili\\Documents\\GitHub\\Tradera\\back-end\\TraderaBackend\\TraderaBackend.csproj",
+        "packagesPath": "C:\\Users\\emili\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\emili\\Documents\\GitHub\\Tradera\\back-end\\TraderaBackend\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/Users/jugz/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\emili\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
@@ -43,9 +43,17 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "BCrypt.Net-Next": {
+              "target": "Package",
+              "version": "[4.0.3, )"
+            },
             "DotNetEnv": {
               "target": "Package",
               "version": "[3.1.0, )"
+            },
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[8.0.8, )"
             },
             "Microsoft.AspNetCore.OpenApi": {
               "target": "Package",
@@ -111,7 +119,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.303/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.303/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using TraderaBackend.Data;
 using TraderaBackend.DTOs;
 using TraderaBackend.Models;
+using System.Security.Cryptography;
+
 
 namespace TraderaBackend.Controllers
 {
@@ -17,9 +19,12 @@ namespace TraderaBackend.Controllers
     {
         private readonly AppDbContext _context;
 
-        public UserController(AppDbContext context)
+        private readonly ILogger<UserController> _logger;
+
+        public UserController(AppDbContext context, ILogger<UserController> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         // GET: api/User
@@ -78,74 +83,98 @@ namespace TraderaBackend.Controllers
         [HttpPost]
         public async Task<ActionResult<User>> PostUser(UserDTO userDto)
         {
-            // Generate a new User entity
-            var user = new User
+            var transaction = _context.Database.BeginTransaction();
+            try
             {
-                Username = userDto.Username,
-                Email = userDto.Email,
-                Role = "User", // Default role, you can change this as needed
-                Created_at = DateTime.UtcNow // Set the current time as Created_at
-            };
+                var user = new User
+                {
+                    Username = userDto.Username,
+                    Email = userDto.Email,
+                    Role = "Traveler",
+                    Created_at = DateTime.UtcNow
+                };
 
-            // Add the User entity to the context and save it to generate User_id
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
+                _context.Users.Add(user);
+                await _context.SaveChangesAsync();
 
-            // Generate a new UserSecurity entity
-            var userSecurity = new UserSecurity
-            {
-                Password_hash = HashPassword(userDto.Password), // Password stored as is for now
-                Latest_otp_secret = GenerateOtpSecret(), // Generate OTP secret, replace this with your logic
-                Updated_at = DateTime.UtcNow, // Set the current time as Updated_at
-                User_id = user.User_id // Set the generated User_id
-            };
+                var userSecurity = new UserSecurity
+                {
+                    Password_hash = HashPassword(userDto.Password),
+                    Latest_otp_secret = GenerateOtpSecret(),
+                    Updated_at = DateTime.UtcNow,
+                    User_id = user.User_id
+                };
 
-            // Associate the UserSecurity entity with the User entity
-            user.UserSecurity = userSecurity;
+                _context.UserSecuritys.Add(userSecurity);
+                await _context.SaveChangesAsync();
 
-            // Add the UserSecurity entity to the context
-            _context.UserSecuritys.Add(userSecurity);
+                var account = new Account
+                {
+                    Balance = 0,
+                    Active = true,
+                    User_id = user.User_id,
+                    Account_status_id = 1
+                };
 
-            // Save changes to the database
-            await _context.SaveChangesAsync();
+                _context.Accounts.Add(account);
+                await _context.SaveChangesAsync();
 
-            // Generate a new Account entity
-            var account = new Account
-            {
-                Balance = 0,
-                Active = true,
-                User_id = user.User_id, 
-                Account_status_id = 1,
-            };
+                await transaction.CommitAsync();
 
-            // Associate the UserSecurity entity with the User entity
-            user.Account = account;
+                _logger.LogInformation("User created successfully with ID {UserId}", user.User_id);
 
-            // Add the UserSecurity entity to the context
-            _context.Accounts.Add(account);
-
-            // Save changes to the database
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetUser", new { id = user.User_id }, user);
+                return CreatedAtAction(nameof(GetUser), new { id = user.User_id }, user);
+                }
+                catch (DbUpdateException ex)
+                {
+                    await transaction.RollbackAsync();
+                    _logger.LogError(ex, "Database update failed for User: {Email}", userDto.Email);
+                    return StatusCode(500, "Database update failed: " + ex.InnerException?.Message);
+                }
+                catch (Exception ex)
+                {
+                    await transaction.RollbackAsync();
+                    _logger.LogError(ex, "Failed to create user with Email: {Email}", userDto.Email);
+                    return StatusCode(500, "Internal Server Error: " + ex.Message);
+                }
         }
 
 
         // Helper methods (implement these methods according to your requirements)
         private string HashPassword(string password)
         {
-            // For now, return the password as is. 
-            // Make sure to replace this with proper hashing later.
-            return password;
+            return BCrypt.Net.BCrypt.HashPassword(password);
         }
 
 
         private string GenerateOtpSecret()
         {
-            // Implement your OTP secret generation logic here
-            return Guid.NewGuid().ToString(); // Example using a GUID
+            byte[] tokenData = new byte[16]; // 128 bits
+            RandomNumberGenerator.Fill(tokenData); // Fill the buffer with random bytes
+            return Convert.ToBase64String(tokenData); // Convert to base64 for easier handling and storage
         }
 
+        // POST: api/User/Authenticate
+        [HttpPost("authenticate")]
+        public async Task<ActionResult<User>> AuthenticateUser(UserLoginDTO userDto)
+        {
+            if (userDto == null)
+            {
+                _logger.LogError("Received null UserLoginDTO");
+                return BadRequest("Invalid user data");
+            }
+
+            var user = await _context.Users
+                                    .Include(u => u.UserSecurity) // Ensure related data is loaded
+                                    .FirstOrDefaultAsync(u => u.Email == userDto.Email);
+
+            if (user == null || !BCrypt.Net.BCrypt.Verify(userDto.Password, user.UserSecurity?.Password_hash))
+            {
+                return Unauthorized("Invalid credentials");
+            }
+
+            return Ok(user);
+        }
 
         // DELETE: api/User/5
         [HttpDelete("{id}")]

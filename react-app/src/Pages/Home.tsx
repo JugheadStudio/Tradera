@@ -7,7 +7,7 @@ import { ReactComponent as EonsGreen } from "../assets/eons-green.svg";
 import { ReactComponent as EonsRed } from "../assets/eons-red.svg";
 import { ReactComponent as EonsGrey } from "../assets/eons-grey.svg";
 import { ReactComponent as RandGrey } from "../assets/rand-icon.svg";
-import PriceChart from "../components/PriceChart";
+import PriceChart from "../Components/PriceChart";
 
 function Home() {
   const [buyShow, setBuyShow] = useState(false);
