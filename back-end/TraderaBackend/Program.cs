@@ -16,6 +16,8 @@ builder.Services.AddTransient<EmailService>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddScoped<EmailService>(); // Register the EmailService
+
 // DB CONNECTION CONFIG
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<AppDbContext>(options => 
@@ -32,6 +34,7 @@ builder.Services.AddCors(options =>
                    .AllowAnyMethod()
                    .AllowAnyHeader();
         });
+    
 });
 
 var app = builder.Build();

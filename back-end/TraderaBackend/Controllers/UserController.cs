@@ -21,10 +21,13 @@ namespace TraderaBackend.Controllers
 
         private readonly ILogger<UserController> _logger;
 
-        public UserController(AppDbContext context, ILogger<UserController> logger)
+        private readonly EmailService _emailService; // Declare EmailService
+
+        public UserController(AppDbContext context, ILogger<UserController> logger, EmailService emailService)
         {
             _context = context;
             _logger = logger;
+            _emailService = emailService; // Assign injected EmailService to the field
         }
 
         // GET: api/User
@@ -79,17 +82,44 @@ namespace TraderaBackend.Controllers
             return NoContent();
         }
 
-        // POST a new user: api/User
-        [HttpPost]
-        public async Task<ActionResult<User>> PostUser(UserDTO userDto)
+       // New: Initiate the signup process by generating an OTP and sending it via email
+        [HttpPost("initiate-signup")]
+        public async Task<ActionResult> InitiateSignup(UserDTO userDto)
         {
-            var transaction = _context.Database.BeginTransaction();
             try
             {
+                var otpCode = GenerateOtpCode(); // Generate the OTP code
+
+                // Use the injected EmailService to send the OTP
+                await _emailService.SendTwoFactorCodeAsync(userDto.Email, userDto.Username, otpCode);
+
+                // Return OTP and user data to the client for further processing
+                return Ok(new { Email = userDto.Email, Username = userDto.Username, OtpCode = otpCode });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to initiate signup for Email: {Email}", userDto.Email);
+                return StatusCode(500, "Internal Server Error: " + ex.Message);
+            }
+        }
+
+        [HttpPost("verify-otp-and-create-user")]
+        public async Task<ActionResult<User>> VerifyOtpAndCreateUser(OtpVerificationDTO otpDto)
+        {
+            // Verify if the provided OTP matches the one sent to the user's email
+            if (otpDto.Otp != otpDto.StoredOtp)
+            {
+                return Unauthorized("Invalid OTP.");
+            }
+
+            using var transaction = await _context.Database.BeginTransactionAsync();
+            try
+            {
+                // Create the user after OTP is verified
                 var user = new User
                 {
-                    Username = userDto.Username,
-                    Email = userDto.Email,
+                    Username = otpDto.Username,
+                    Email = otpDto.Email,
                     Role = "Traveler",
                     Created_at = DateTime.UtcNow
                 };
@@ -99,8 +129,8 @@ namespace TraderaBackend.Controllers
 
                 var userSecurity = new UserSecurity
                 {
-                    Password_hash = HashPassword(userDto.Password),
-                    Latest_otp_secret = GenerateOtpSecret(),
+                    Password_hash = HashPassword(otpDto.Password),
+                    Latest_otp_secret = null, // OTP has been used, clear it
                     Updated_at = DateTime.UtcNow,
                     User_id = user.User_id
                 };
@@ -124,34 +154,25 @@ namespace TraderaBackend.Controllers
                 _logger.LogInformation("User created successfully with ID {UserId}", user.User_id);
 
                 return CreatedAtAction(nameof(GetUser), new { id = user.User_id }, user);
-                }
-                catch (DbUpdateException ex)
-                {
-                    await transaction.RollbackAsync();
-                    _logger.LogError(ex, "Database update failed for User: {Email}", userDto.Email);
-                    return StatusCode(500, "Database update failed: " + ex.InnerException?.Message);
-                }
-                catch (Exception ex)
-                {
-                    await transaction.RollbackAsync();
-                    _logger.LogError(ex, "Failed to create user with Email: {Email}", userDto.Email);
-                    return StatusCode(500, "Internal Server Error: " + ex.Message);
-                }
+            }
+            catch (Exception ex)
+            {
+                await transaction.RollbackAsync();
+                _logger.LogError(ex, "Failed to create user with Email: {Email}", otpDto.Email);
+                return StatusCode(500, "Internal Server Error: " + ex.Message);
+            }
         }
 
-
-        // Helper methods (implement these methods according to your requirements)
+        // Helper methods (unchanged)
         private string HashPassword(string password)
         {
             return BCrypt.Net.BCrypt.HashPassword(password);
         }
 
-
-        private string GenerateOtpSecret()
+        private string GenerateOtpCode()
         {
-            byte[] tokenData = new byte[16]; // 128 bits
-            RandomNumberGenerator.Fill(tokenData); // Fill the buffer with random bytes
-            return Convert.ToBase64String(tokenData); // Convert to base64 for easier handling and storage
+            var random = new Random();
+            return random.Next(100000, 999999).ToString(); // Generate a 6-digit OTP code
         }
 
         // POST: api/User/Authenticate

@@ -1115,3 +1115,26 @@ img, svg {
   margin-bottom: 0;
   display: flex;
 }
+
+.otp-input-container {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.otp-input {
+  width: 50px;
+  height: 60px;
+  font-size: 24px;
+  text-align: center;
+  border: none;
+  border-radius: 8px;
+  background-color: var(--tradera-grey);
+  color: var(--tradera-white);
+}
+
+.otp-input:focus {
+  outline: 2px solid var(--tradera-blue-light);
+  background-color: var(--tradera-dark-grey);
+}
