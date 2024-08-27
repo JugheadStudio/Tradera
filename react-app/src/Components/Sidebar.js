@@ -39,7 +39,7 @@ const Sidebar = () => {
             {username || 'Guest'}
           </div>
           <div className='usercontainder-usertype'>
-            Traveler
+            {role}
           </div>
         </div>
       </div>
