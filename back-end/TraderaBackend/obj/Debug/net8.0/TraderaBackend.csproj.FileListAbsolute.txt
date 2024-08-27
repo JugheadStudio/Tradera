@@ -1294,3 +1294,5 @@ C:\Users\emili\Documents\GitHub\Tradera\back-end\TraderaBackend\obj\Debug\net8.0
 C:\Users\emili\Documents\GitHub\Tradera\back-end\TraderaBackend\obj\Debug\net8.0\TraderaBackend.genruntimeconfig.cache
 C:\Users\emili\Documents\GitHub\Tradera\back-end\TraderaBackend\obj\Debug\net8.0\ref\TraderaBackend.dll
 C:\Users\emili\Documents\GitHub\Tradera\back-end\TraderaBackend\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+c:\Users\anke1\Desktop\OpenWindow\Year 3\DV 300\Term 3\Finale\Tradera\back-end\TraderaBackend\bin\Debug\net8.0\BCrypt.Net-Next.dll
+c:\Users\anke1\Desktop\OpenWindow\Year 3\DV 300\Term 3\Finale\Tradera\back-end\TraderaBackend\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll

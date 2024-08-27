@@ -778,6 +778,17 @@ img, svg {
   border-radius: var(--tradera--border-radius) var(--tradera--border-radius) 0 0;
 }
 
+.admin-button-container-delete-freeze {
+  display: flex;
+  width: 100%;
+  gap: 10px;
+  position: sticky;
+  top: 0;
+  padding: 10px 0;
+  z-index: 1000;
+  white-space: nowrap;
+}
+
 .admin-button {
   background-color: var(--tradera-grey);
   color: var(--tradera-white);

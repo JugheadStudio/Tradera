@@ -40,9 +40,9 @@ const AdminDashboard: React.FC = () => {
 
 
 
-  const renderFreezeButton = (icon: string, text: string) => (
+  const renderFreezeButton = (icon: string) => (
     <button className="admin-button">
-      <i className={`fas ${icon}`}></i> {text}
+      <i className={`fas ${icon}`}></i> 
     </button>
   );
 
@@ -57,12 +57,12 @@ const AdminDashboard: React.FC = () => {
     setUsers(users.filter(user => user.user_id !== id)); // Update the UI after deletion
   };
 
-  const renderDeleteButton = (icon: string, text: string, userId: number) => (
+  const renderDeleteButton = (icon: string, userId: number) => (
     <button
       className="admin-button"
       onClick={() => handleDeleteUser(userId)} // Pass userId to the delete handler
     >
-      <i className={`fas ${icon}`}></i> {text}
+      <i className={`fas ${icon}`}></i>
     </button>
   );
 
@@ -92,6 +92,9 @@ const AdminDashboard: React.FC = () => {
         filteredUsers = dummyCards.filter((user: any) => validRoles.includes(user.role));
       }
 
+      // Sort users alphabetically by username
+      filteredUsers.sort((a: { username: string; }, b: { username: string; }) => a.username.localeCompare(b.username));
+
       setUsers(filteredUsers);
       setLoading(false);
     };
@@ -114,6 +117,7 @@ const AdminDashboard: React.FC = () => {
     }
   };
 
+  // TODO: render cards in alfabetic
   const renderCard = (card: any, index: number) => (
     <Col key={index} xs={12} sm={6} md={4} className="mb-4">
       <div className="admin-card" style={{ backgroundColor: getRoleColor(card.role) }}>
@@ -130,9 +134,9 @@ const AdminDashboard: React.FC = () => {
             </div>
           </div>
           <div className="admin-card-expiry">Expires {card.expiry || 'N/A'}</div>
-          <div>
-            {renderFreezeButton('fa-user-lock', 'Freeze Account')}
-            {renderDeleteButton('fa-trash-alt', 'Delete Account', card.user_id)} {/* Pass user ID here */}
+          <div className='admin-button-container-delete-freeze'>
+            {renderFreezeButton('fa-user-lock')}
+            {renderDeleteButton('fa-trash-alt', card.user_id)} 
           </div>
         </div>
       </div>
