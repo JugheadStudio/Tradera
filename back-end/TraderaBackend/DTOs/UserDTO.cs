@@ -13,4 +13,6 @@ public class UserDTO
 
     [Required]
     public string Password { get; set; } = string.Empty;
+
+    public bool IsFrozen { get; set; } = false; // Default to false
 }

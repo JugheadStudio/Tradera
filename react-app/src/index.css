@@ -507,14 +507,13 @@ img, svg {
 }
 
 .transactions-name {
-  color: var(--tradera-white);
   font-size: var(--tradera-font-medium);
   font-weight: 700;
   line-height: 21.94px;
 }
 
 .transactions-usetype {
-  color: var(--tradera-grey-light);
+  color: var(--tradera-grey);
   font-size: var(--tradera-font-small);
   font-weight: 400;
   line-height: 14.63px;
@@ -784,12 +783,38 @@ img, svg {
   gap: 10px;
   position: sticky;
   top: 0;
-  padding: 10px 0;
+  
   z-index: 1000;
   white-space: nowrap;
 }
 
 .admin-button {
+  background-color: var(--tradera-grey);
+  color: var(--tradera-white);
+  border: 1px solid var(--tradera-border);
+  border-radius: var(--tradera--border-radius);
+  padding: 10px 10px;
+  font-size: var(--tradera-font-small);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.admin-button-delete {
+  background-color: var(--tradera-grey);
+  color: var(--tradera-white);
+  border: 1px solid var(--tradera-border);
+  border-radius: var(--tradera--border-radius);
+  padding: 10px 10px;
+  font-size: var(--tradera-font-small);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.admin-button-freeze {
   background-color: var(--tradera-grey);
   color: var(--tradera-white);
   border: 1px solid var(--tradera-border);
@@ -831,14 +856,14 @@ img, svg {
 
 .transactions-name {
   font-size: var(--tradera-font-medium);
+  color: var(--tradera-grey);
   font-weight: 600;
-  color: var(--tradera-white);
   margin-bottom: 3px;
 }
 
 .transactions-usetype {
   font-size: var(--tradera-font-small);
-  color: var(--tradera-grey-light);
+  color: var(--tradera-grey);
 }
 
 .transactions-count-red {
