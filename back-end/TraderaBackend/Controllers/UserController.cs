@@ -82,7 +82,7 @@ namespace TraderaBackend.Controllers
             return NoContent();
         }
 
-       // New: Initiate the signup process by generating an OTP and sending it via email
+        // New: Initiate the signup process by generating an OTP and sending it via email
         [HttpPost("initiate-signup")]
         public async Task<ActionResult> InitiateSignup(UserDTO userDto)
         {
@@ -209,6 +209,44 @@ namespace TraderaBackend.Controllers
 
             _context.Users.Remove(user);
             await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
+        // POST: api/User/Freeze/5
+        [HttpPost("Freeze/{id}")]
+        public async Task<IActionResult> FreezeUser(int id)
+        {
+            var user = await _context.Users.FindAsync(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            user.IsFrozen = true;
+            _context.Entry(user).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+
+            _logger.LogInformation("User with ID {UserId} has been frozen.", id);
+
+            return NoContent();
+        }
+
+        // POST: api/User/Unfreeze/5
+        [HttpPost("Unfreeze/{id}")]
+        public async Task<IActionResult> UnfreezeUser(int id)
+        {
+            var user = await _context.Users.FindAsync(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            user.IsFrozen = false;
+            _context.Entry(user).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+
+            _logger.LogInformation("User with ID {UserId} has been unfrozen.", id);
 
             return NoContent();
         }

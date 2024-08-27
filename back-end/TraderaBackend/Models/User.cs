@@ -23,6 +23,9 @@ public class User
     [Required]
     public required DateTime Created_at {get; set;}
 
+    [Required]
+    public bool IsFrozen {get; set;}
+
     //Navigation property
     public UserSecurity? UserSecurity {get; set;}
     public Account? Account {get; set;}
