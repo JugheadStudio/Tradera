@@ -21,6 +21,7 @@ import Details from './Pages/Details';
 import Home from './Pages/Home';
 import Sidebar from './Components/Sidebar';
 import { UserProvider } from './Contexts/UserContext';
+import { useUser } from './Contexts/UserContext';
 
 function App() {
   return (
@@ -40,19 +41,25 @@ function App() {
   );
 }
 
-const AuthenticatedRoutes = () => (
-  <>
-    <Col xs={2}><Sidebar /></Col>
-    <Col xs={10}>
-      <Routes>
-        <Route path="/Details" element={<Details />} />
-        <Route path="/Dashboard" element={<Dashboard />} />
-        <Route path="/Home" element={<Home />} />
-        <Route path="/AdminDashboard" element={<AdminDashboard />} />
-      </Routes>
-    </Col>
-  </>
-);
+const AuthenticatedRoutes = () => {
+  const { userId, username, role } = useUser();
+
+  return (
+    <>
+      <Col xs={2}><Sidebar /></Col>
+      <Col xs={10}>
+        <Routes>
+          <Route path="/Details" element={<Details />} />
+          <Route path="/Dashboard" element={<Dashboard />} />
+          <Route path="/Home" element={<Home />} />
+          {role === 'Admin' && (
+            <Route path="/AdminDashboard" element={<AdminDashboard />} />
+          )}
+        </Routes>
+      </Col>
+    </>
+  );
+};
 
 
 export default App;

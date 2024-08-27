@@ -80,7 +80,7 @@ function Signup() {
       if (response.ok) {
         const data = await response.json();
         setUserId(data.user_id); // Set user ID in context
-        alert('OTP verified and user created successfully!');
+        // alert('OTP verified and user created successfully!');
         setShowOtpModal(false);
         navigate('/dashboard'); // Navigate to the dashboard after successful verification
       } else {
@@ -144,9 +144,6 @@ function Signup() {
           <Button variant="primary" className="w-100 mt-4" onClick={handleOtpSubmit}>
             Verify OTP
           </Button>
-          <p className="text-center mt-3">
-            Didn’t receive the code? <a href="#">Re-send OTP Code in 23s</a>
-          </p>
         </Modal.Body>
       </Modal>
     </Container>

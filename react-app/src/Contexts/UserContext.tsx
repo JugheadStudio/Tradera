@@ -3,9 +3,11 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 interface User {
   userId: string | null;
   username: string | null;
-  setUserId: (id: string | null) => void; // Setter for the userId
-  setUsername: (name: string | null) => void; // Setter for the username (optional if you want external control)
-  fetchUserData: (userId: string) => Promise<void>; // Ensure this is async
+  role: string | null; // Added role property
+  setUserId: (id: string | null) => void; 
+  setUsername: (name: string | null) => void;
+  setRole: (role: string | null) => void; // Setter for the role
+  fetchUserData: (userId: string) => Promise<void>;
 }
 
 const UserContext = createContext<User | undefined>(undefined);
@@ -21,6 +23,7 @@ export const useUser = () => {
 export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [userId, setUserId] = useState<string | null>(null);
   const [username, setUsername] = useState<string | null>(null);
+  const [role, setRole] = useState<string | null>(null); // State for role
 
   // Function to fetch user data
   const fetchUserData = async (userId: string) => {
@@ -29,6 +32,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const data = await response.json();
       if (response.ok) {
         setUsername(data.username); // Assuming the API returns an object with a username field
+        setRole(data.role); // Assuming the API returns an object with a role field
       } else {
         throw new Error(data.message || 'Failed to fetch user details');
       }
@@ -47,8 +51,10 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
     <UserContext.Provider value={{
       userId,
       username,
-      setUserId,       // Provide the ability to set the user ID from components
-      setUsername,     // Provide the ability to set the username from components
+      role,           // Provide the role
+      setUserId,      
+      setUsername,    
+      setRole,        // Provide the ability to set the role
       fetchUserData
     }}>
       {children}
