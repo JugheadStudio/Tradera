@@ -45,8 +45,9 @@ namespace TraderaBackend.Controllers
             {
                 Username = user.Username,
                 Email = user.Email,
-                AccountStatus = user.Account?.Status?.Status_name, // Add Status_name here
-                //Active = user.Account?.Active // Include Active status
+                AccountStatus = user.Account?.Status?.Status_name, 
+                Active = user.Account?.Active,
+                Role = user.Role
             }).ToList();
 
             return Ok(userDtos);

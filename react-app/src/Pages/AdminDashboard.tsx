@@ -1,18 +1,28 @@
 import React, { useEffect, useState } from 'react';
+
 import { Container, Row, Col } from 'react-bootstrap';
+
 import { deleteUser, getUsers } from '../Services/userService';
+
 import logo from '../assets/logo2.png';
+
 import { ReactComponent as EonsBlack } from '../assets/eons-black.svg';
 import { ReactComponent as Delete } from '../assets/delete.svg'
 import { ReactComponent as Unfreeze } from '../assets/Unfreeze.svg'
 import { ReactComponent as Freeze } from '../assets/Freeze.svg'
+
 import axios from 'axios';
 
+
 const AdminDashboard: React.FC = () => {
+
+  // Variables
   const [users, setUsers] = useState<any[]>([]);
   const [frozenUsers, setFrozenUsers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
+
+  // handles freezing
   const handleToggleFreeze = async (userId: number, isFrozen: boolean) => {
     try {
       const apiEndpoint = isFrozen ? 'Unfreeze' : 'Freeze';
@@ -39,6 +49,51 @@ const AdminDashboard: React.FC = () => {
     }
   };
 
+
+  // Delete user
+  const handleDeleteUser = async (id: number) => {
+    await deleteUser(id);
+    setUsers(users.filter(user => user.user_id !== id)); // Update the UI after deletion
+  };
+
+
+  // Fetch all users and display them
+  useEffect(() => {
+
+    const fetchData = async () => {
+
+      const data = await getUsers(); // Assuming this fetches all necessary data, including Account_status_id and Status_name.
+      
+      console.log(data);
+
+      let activeUsers = [];
+      let frozenUsers = [];
+  
+      if (data && data.$values) {
+
+        // Filter users with the role 'user' and divide them into active and frozen users
+        activeUsers = data.$values
+          .filter((user: any) => user.role === 'User' && user.active);
+
+        frozenUsers = data.$values
+          .filter((user: any) => user.role === 'User' && !user.active);
+      }
+  
+      // Sort users alphabetically by username
+      activeUsers.sort((a: { username: string }, b: { username: string }) => a.username.localeCompare(b.username));
+      frozenUsers.sort((a: { username: string }, b: { username: string }) => a.username.localeCompare(b.username));
+  
+      setUsers(activeUsers);
+      setFrozenUsers(frozenUsers);
+      setLoading(false);
+    };
+  
+    fetchData();
+  }, []);
+
+
+
+  // Front end rendering stuff
   const renderFreezeButton = (userId: number, isFrozen: boolean) => (
     <button
       className="admin-button-freeze"
@@ -53,11 +108,6 @@ const AdminDashboard: React.FC = () => {
       <i className={`fas ${icon}`}></i> {text}
     </button>
   );
-
-  const handleDeleteUser = async (id: number) => {
-    await deleteUser(id);
-    setUsers(users.filter(user => user.user_id !== id)); // Update the UI after deletion
-  };
 
   const renderDeleteButton = (userId: number) => (
     <button
@@ -80,50 +130,6 @@ const AdminDashboard: React.FC = () => {
       </button>
     </div>
   );
-
-  // Fetch all users and display them
-  useEffect(() => {
-    const fetchData = async () => {
-      const data = await getUsers(); // Assuming this fetches all necessary data, including Account_status_id and Status_name.
-      
-      let activeUsers = [];
-      let frozenUsers = [];
-  
-      if (data && data.$values) {
-        // Filter users with the role 'user' and divide them into active and frozen users
-        activeUsers = data.$values
-          .filter((user: any) => user.role === 'User' && !user.isFrozen);
-        frozenUsers = data.$values
-          .filter((user: any) => user.role === 'User' && user.isFrozen);
-      }
-  
-      // Sort users alphabetically by username
-      activeUsers.sort((a: { username: string }, b: { username: string }) => a.username.localeCompare(b.username));
-      frozenUsers.sort((a: { username: string }, b: { username: string }) => a.username.localeCompare(b.username));
-  
-      setUsers(activeUsers);
-      setFrozenUsers(frozenUsers);
-      setLoading(false);
-    };
-  
-    fetchData();
-  }, []);
-
-  // tweak die om account status id te gebruik
-  const getRoleColor = (accountStatus: string) => {
-    switch (accountStatus) {
-      case 'Traveler':
-        return '#87CEFA';
-      case 'Explorer':
-        return '#9E67F4';
-      case 'Voyager':
-        return '#98FB98';
-      case 'Precursor':
-        return '#FFD700';
-      default:
-        return '#FFFFFF';  // Default color if status is not found
-    }
-  };
 
   const renderCard = (card: any, index: number) => (
     <Col key={index} xs={12} sm={6} md={4} className="mb-4">
@@ -149,7 +155,7 @@ const AdminDashboard: React.FC = () => {
       </div>
     </Col>
   );
-  
+
   const renderFrozenAccount = (account: any, index: number) => (
     <div key={index} className='transactions-row' style={{ backgroundColor: getRoleColor(account.accountStatus) }}>
       <EonsBlack />
@@ -162,6 +168,24 @@ const AdminDashboard: React.FC = () => {
       </div>
     </div>
   );
+
+  // tweak die om account status id te gebruik
+  const getRoleColor = (accountStatus: string) => {
+    switch (accountStatus) {
+      case 'Traveler':
+        return '#87CEFA';
+      case 'Explorer':
+        return '#9E67F4';
+      case 'Voyager':
+        return '#98FB98';
+      case 'Precursor':
+        return '#FFD700';
+      default:
+        return '#FFFFFF';  // Default color if status is not found
+    }
+  };
+
+  
 
   return (
     <div className='page-background'>

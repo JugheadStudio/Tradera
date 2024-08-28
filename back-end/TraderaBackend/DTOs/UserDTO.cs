@@ -11,10 +11,10 @@ public class UserDTO
     [EmailAddress]
     public string Email { get; set; } = string.Empty;
 
-    [Required]
-    public string Password { get; set; } = string.Empty;
-
     public string? AccountStatus { get; set; }
 
-    //public bool? Active { get; set; } // Add Active property
+    public bool? Active { get; set; }
+
+    public string Role { get; set; } = string.Empty;
+
 }
