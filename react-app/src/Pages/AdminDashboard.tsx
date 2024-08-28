@@ -150,8 +150,8 @@ const AdminDashboard: React.FC = () => {
     <div key={index} className='transactions-row' style={{ backgroundColor: getRoleColor(account.role) }}>
       <EonsBlack />
       <div className='transactions-info'>
-        <div className='transactions-name'>{account.username}</div>
-        <div className='transactions-usetype'>{account.role}</div>
+        <div className='transactions-username'>{account.username}</div>
+        <div className='transactions-usertype'>{account.role}</div>
       </div>
       <div className='frozen-count-red'>
         {renderFreezeButton(account.user_id, account.isFrozen)}

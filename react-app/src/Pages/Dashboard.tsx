@@ -20,6 +20,7 @@ import DonutChart from '../Components/DonutChart';
 
 function Dashboard() {
 
+  
   // functionality
   // currently logged in users id
   const [loggedUserId, setLoggedUserId] = useState(0);
@@ -34,13 +35,15 @@ function Dashboard() {
   // Fetch user data when the page loads
   useEffect(() => {
     const fetchUserData = async () => {
-      try {
-        const response = await axios.get('/api/Account/' + loggedUserId);
-        const userData = response.data;
-        setUserInfo(userData);
-        setAmountInWallet(userData.amount);
-      } catch (error) {
-        console.error('Error fetching user data:', error);
+      if (loggedUserId > 0) {
+        try {
+          const response = await axios.get('/api/Account/' + loggedUserId);
+          const userData = response.data;
+          setUserInfo(userData);
+          setAmountInWallet(userData.amount);
+        } catch (error) {
+          console.error('Error fetching user data:', error);
+        }
       }
     };
 
@@ -80,6 +83,7 @@ function Dashboard() {
 
         <Row>
           <Col className='border-container'>
+          {/* TODO: Do the IsFrozen then the status changes and user can't see the rest of their context*/}
             <p className='account-status'>Account Status: <span className='active'>Active</span></p>
             {/* <p className='account-status'>Account Status: <span className='frozen'>Frozen</span></p> */}
           </Col>

@@ -512,8 +512,8 @@ img, svg {
   line-height: 21.94px;
 }
 
-.transactions-usetype {
-  color: var(--tradera-grey);
+.transactions-useagetype {
+  color: var(--tradera-white);
   font-size: var(--tradera-font-small);
   font-weight: 400;
   line-height: 14.63px;
@@ -854,14 +854,14 @@ img, svg {
   flex-grow: 1;
 }
 
-.transactions-name {
+.transactions-username {
   font-size: var(--tradera-font-medium);
   color: var(--tradera-grey);
   font-weight: 600;
   margin-bottom: 3px;
 }
 
-.transactions-usetype {
+.transactions-usertype {
   font-size: var(--tradera-font-small);
   color: var(--tradera-grey);
 }
