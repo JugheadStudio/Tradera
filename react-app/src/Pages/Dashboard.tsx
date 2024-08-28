@@ -23,19 +23,17 @@ function Dashboard() {
   // currently logged in users id
   const [loggedUserId, setLoggedUserId] = useState(0);
 
-  // currently logged in user's email or userid
   const [userInfo, setUserInfo] = useState(null);
   const [amountInWallet, setAmountInWallet] = useState(0);
   const [activeOrNo, setActiveOrNo] = useState(true);
 
-  // Amount you would like to withdraw
   const [withdrawAmount, setWithdrawAmount] = useState(0);
 
   // Fetch user ID from session storage when component mounts
   useEffect(() => {
     const userIdFromSession = sessionStorage.getItem("user_id");
     setLoggedUserId(userIdFromSession ? parseInt(userIdFromSession) : 0);
-  }, []); // This runs only once when the component mounts
+  }, []); 
 
   // Fetches account details whenever loggedUserId changes
   useEffect(() => {
@@ -51,7 +49,8 @@ function Dashboard() {
           setAmountInWallet(userData.balance);
           setActiveOrNo(userData.active);
           console.log("Account data fetched successfully");
-          console.log(activeOrNo);
+
+          sessionStorage.setItem("account_id", userData.account_id);
 
         } catch (error) {
           console.log('Error fetching user data:', error);

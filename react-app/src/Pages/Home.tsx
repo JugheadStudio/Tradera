@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
 import { Button, Col, Container, Modal, Row } from "react-bootstrap";
 
@@ -10,6 +11,12 @@ import { ReactComponent as RandGrey } from "../assets/rand-icon.svg";
 import PriceChart from "../Components/PriceChart";
 
 function Home() {
+
+  // currently logged in users id
+  const [loggedAccountId, setLoggedAccountId] = useState(0);
+  const [depositAmount, setDepositAmount] = useState(0); // Initialize with 0 or null
+  const [withdrawAmount, setWithdrawAmount] = useState(0); // New state for withdrawal amount
+
   const [buyShow, setBuyShow] = useState(false);
   const [sellShow, setSellShow] = useState(false);
   const [withdrawShow, setWithdrawShow] = useState(false);
@@ -27,6 +34,35 @@ function Home() {
   const handlePaymentClose = () => setPaymentShow(false);
   const handlePaymentShow = () => setPaymentShow(true);
 
+
+  // Fetch user ID from session storage when component mounts
+  useEffect(() => {
+    const accountIdFromSession = sessionStorage.getItem("account_id");
+    setLoggedAccountId(accountIdFromSession ? parseInt(accountIdFromSession) : 0);
+  }, []); 
+
+
+  // Transaction functionality
+  // Deposits
+  const handleDepositSubmit = async () => {
+    try {
+      const response = await axios.post(`http://localhost:5219/api/Transaction/Deposit?accountId=${loggedAccountId}&amount=${depositAmount}`);
+      console.log('Deposit successful:', response.data);
+    } catch (error) {
+      console.error('Error processing deposit:', error);
+    }
+  };
+
+  // Withdrawls
+  const handleWithdrawSubmit = async () => {
+    try {
+      const response = await axios.post(`http://localhost:5219/api/Transaction/Withdraw?accountId=${loggedAccountId}&amount=${withdrawAmount}`);
+      console.log('Withdrawal successful:', response.data);
+    } catch (error) {
+      console.error('Error processing withdrawal:', error);
+    }
+  };
+  
   return (
     <div className="page-background">
       <Container fluid>
@@ -81,7 +117,7 @@ function Home() {
               </p>
 
               <Button variant="primary w-100" onClick={handleWithdrawShow}><i className="fas fa-wallet"></i> Withdraw</Button>
-              <Button variant="primary w-100" className='mt-3' onClick={handlePaymentShow}><i className="fas fa-money-bill"></i> Make Payment</Button>
+              <Button variant="primary w-100" className='mt-3' onClick={handlePaymentShow}><i className="fas fa-money-bill"></i> Deposit</Button>
 
             </div>
           </Col>
@@ -488,20 +524,37 @@ function Home() {
         {/* Make Payment Modal */}
         <Modal size="lg" show={paymentShow} onHide={handlePaymentClose} animation={false} dialogClassName="modal-dialog-centered">
           <Modal.Header closeButton>
-            <Modal.Title>Make <span>Payment</span></Modal.Title>
+            <Modal.Title>Make <span>Deposit</span></Modal.Title>
           </Modal.Header>
 
           <Modal.Body>
             <Container fluid>
               <Row>
                 <Col xs={12} className='pl-0 pr-0'>
-                  Make Payment
+                  <label htmlFor='depositAmount' className='input-label'>Amount To Deposit</label>
+                  <input
+                    type='number'
+                    className='form-control'
+                    id='depositAmount'
+                    placeholder='0'
+                    value={depositAmount}
+                    onChange={(e) => {
+                      const value = parseInt(e.target.value);
+                      setDepositAmount(isNaN(value) ? 0 : value);
+                    }}
+                    min="0"
+                    step="1"
+                  />
                 </Col>
               </Row>
             </Container>
           </Modal.Body>
 
+
           <Modal.Footer>
+            <Button variant="primary" onClick={handleDepositSubmit}>
+              Deposit
+            </Button>
             <Button variant="danger" onClick={handlePaymentClose}>
               Close
             </Button>
@@ -518,13 +571,29 @@ function Home() {
             <Container fluid>
               <Row>
                 <Col xs={12} className='pl-0 pr-0'>
-                  Withdraw
+                  <label htmlFor='withdrawAmount' className='input-label'>Amount To Withdraw</label>
+                  <input
+                    type='number'
+                    className='form-control'
+                    id='withdrawAmount'
+                    placeholder='0'
+                    value={withdrawAmount}
+                    onChange={(e) => {
+                      const value = parseInt(e.target.value);
+                      setWithdrawAmount(isNaN(value) ? 0 : value);
+                    }}
+                    min="0"
+                    step="1"
+                  />
                 </Col>
               </Row>
             </Container>
           </Modal.Body>
 
           <Modal.Footer>
+            <Button variant="primary" onClick={handleWithdrawSubmit}>
+              Withdraw
+            </Button>
             <Button variant="danger" onClick={handleWithdrawClose}>
               Close
             </Button>
