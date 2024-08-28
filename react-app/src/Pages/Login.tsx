@@ -26,6 +26,10 @@ function Login() {
 
       const data = await response.json();
       console.log('Login successful:', data);
+
+      //stores user id in session storage
+      sessionStorage.setItem('user_id', data.user_id);
+      
       setUserId(data.user_id);
       navigate('/Dashboard');
     } catch (error) {

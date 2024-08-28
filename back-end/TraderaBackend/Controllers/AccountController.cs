@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging; // Added using statement for ILogger
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,10 +16,12 @@ namespace TraderaBackend.Controllers
     public class AccountController : ControllerBase
     {
         private readonly AppDbContext _context;
+        private readonly ILogger<AccountController> _logger;
 
-        public AccountController(AppDbContext context)
+        public AccountController(AppDbContext context, ILogger<AccountController> logger) // Fixed logger assignment
         {
             _context = context;
+            _logger = logger;
         }
 
         // GET: api/Account
@@ -33,6 +36,20 @@ namespace TraderaBackend.Controllers
         public async Task<ActionResult<Account>> GetAccount(int id)
         {
             var account = await _context.Accounts.FindAsync(id);
+
+            if (account == null)
+            {
+                return NotFound();
+            }
+
+            return account;
+        }
+
+        // Find account by user_id
+        [HttpGet("ByUserId/{user_id}")]
+        public async Task<ActionResult<Account>> GetAccountByUserId(int user_id)
+        {
+            var account = await _context.Accounts.FirstOrDefaultAsync(a => a.User_id == user_id);
 
             if (account == null)
             {
@@ -96,6 +113,44 @@ namespace TraderaBackend.Controllers
 
             _context.Accounts.Remove(account);
             await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
+        // POST: api/Account/Freeze/5
+        [HttpPost("Freeze/{user_id}")]
+        public async Task<IActionResult> FreezeAccount(int user_id)
+        {
+            var account = await _context.Accounts.FirstOrDefaultAsync(a => a.User_id == user_id);
+            if (account == null)
+            {
+                return NotFound();
+            }
+
+            account.Active = false;
+            _context.Entry(account).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+
+            _logger.LogInformation("User with ID {UserId} has been frozen.", user_id);
+
+            return NoContent();
+        }
+
+        // POST: api/Account/Unfreeze/5
+        [HttpPost("Unfreeze/{user_id}")]
+        public async Task<IActionResult> UnfreezeAccount(int user_id)
+        {
+            var account = await _context.Accounts.FirstOrDefaultAsync(a => a.User_id == user_id);
+            if (account == null)
+            {
+                return NotFound();
+            }
+
+            account.Active = true;
+            _context.Entry(account).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+
+            _logger.LogInformation("User with ID {UserId} has been unfrozen.", user_id);
 
             return NoContent();
         }

@@ -16,7 +16,7 @@ const AdminDashboard: React.FC = () => {
   const handleToggleFreeze = async (userId: number, isFrozen: boolean) => {
     try {
       const apiEndpoint = isFrozen ? 'Unfreeze' : 'Freeze';
-      await axios.post(`http://localhost:5219/api/User/${apiEndpoint}/${userId}`);
+      await axios.post(`http://localhost:5219/api/Account/${apiEndpoint}/${userId}`);
   
       // Update the state to reflect the freeze/unfreeze action
       if (isFrozen) {
@@ -81,10 +81,11 @@ const AdminDashboard: React.FC = () => {
     </div>
   );
 
+  // Fetch all users and display them
   useEffect(() => {
     const fetchData = async () => {
       const data = await getUsers();
-      const validRoles = ['Traveler', 'Explorer', 'Voyager', 'Precursor'];
+      const validRoles = ['User', 'Admin'];
 
       let activeUsers = [];
       let frozenUsers = [];
@@ -106,6 +107,7 @@ const AdminDashboard: React.FC = () => {
     fetchData();
   }, []);
 
+  // tweak die om account status id te gebruik
   const getRoleColor = (role: string) => {
     switch (role) {
       case 'Explorer':
@@ -117,7 +119,7 @@ const AdminDashboard: React.FC = () => {
       case 'Precursor':
         return '#FFD700';
       default:
-        return '#FFFFFF';  // Default color if role is not found
+        return '#FFFFFF';  // Default color if status is not found
     }
   };
 

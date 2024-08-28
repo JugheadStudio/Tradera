@@ -18,13 +18,13 @@ public class User
     public string? Email {get; set;} = string.Empty;
 
     [Required]
-    public string Role { get; set; } = "normal"; // Default role is "normal"
+    public string Role { get; set; } = "User"; // Default role is "User"
 
     [Required]
     public required DateTime Created_at {get; set;}
 
-    [Required]
-    public bool IsFrozen {get; set;}
+    // [Required]
+    // public bool IsFrozen {get; set;}
 
     //Navigation property
     public UserSecurity? UserSecurity {get; set;}

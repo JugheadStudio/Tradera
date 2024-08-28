@@ -20,37 +20,49 @@ import DonutChart from '../Components/DonutChart';
 
 function Dashboard() {
 
-  
-  // functionality
   // currently logged in users id
   const [loggedUserId, setLoggedUserId] = useState(0);
 
   // currently logged in user's email or userid
   const [userInfo, setUserInfo] = useState(null);
   const [amountInWallet, setAmountInWallet] = useState(0);
+  const [activeOrNo, setActiveOrNo] = useState(true);
 
   // Amount you would like to withdraw
   const [withdrawAmount, setWithdrawAmount] = useState(0);
 
-  // Fetch user data when the page loads
+  // Fetch user ID from session storage when component mounts
+  useEffect(() => {
+    const userIdFromSession = sessionStorage.getItem("user_id");
+    setLoggedUserId(userIdFromSession ? parseInt(userIdFromSession) : 0);
+  }, []); // This runs only once when the component mounts
+
+  // Fetches account details whenever loggedUserId changes
   useEffect(() => {
     const fetchUserData = async () => {
       if (loggedUserId > 0) {
         try {
-          const response = await axios.get('/api/Account/' + loggedUserId);
+          const response = await axios.get('http://localhost:5219/api/Account/ByUserId/' + loggedUserId);
           const userData = response.data;
+
+          console.log(userData);
+
           setUserInfo(userData);
-          setAmountInWallet(userData.amount);
+          setAmountInWallet(userData.balance);
+          setActiveOrNo(userData.active);
+          console.log("Account data fetched successfully");
+          console.log(activeOrNo);
+
         } catch (error) {
-          console.error('Error fetching user data:', error);
+          console.log('Error fetching user data:', error);
         }
       }
     };
 
     fetchUserData();
-  }, [loggedUserId]);
+  }, [loggedUserId]); // This runs whenever loggedUserId changes
 
-
+  // Withdraw functionality
   const handleWithdraw = async () => {
     try {
       const response = await axios.post('/api/withdraw', {
@@ -83,9 +95,12 @@ function Dashboard() {
 
         <Row>
           <Col className='border-container'>
-          {/* TODO: Do the IsFrozen then the status changes and user can't see the rest of their context*/}
-            <p className='account-status'>Account Status: <span className='active'>Active</span></p>
-            {/* <p className='account-status'>Account Status: <span className='frozen'>Frozen</span></p> */}
+            <p className='account-status'>
+              Account Status: 
+              <span className={activeOrNo ? 'true' : 'false'}>
+                {activeOrNo ? 'Active' : 'Frozen'}
+              </span>
+            </p>
           </Col>
         </Row>
 
@@ -306,9 +321,6 @@ function Dashboard() {
             <Button variant="danger" onClick={handleAccountSettingsClose}>
               Close
             </Button>
-            {/* <Button variant="primary" onClick={handleAccountSettingsClose}>
-              Save Changes
-            </Button> */}
           </Modal.Footer>
         </Modal>
 
@@ -342,9 +354,6 @@ function Dashboard() {
             <Button variant="danger" onClick={handleWithdrawClose}>
               Cancel
             </Button>
-            {/* <Button variant="primary" onClick={handleWithdrawClose}>
-              Save Changes
-            </Button> */}
           </Modal.Footer>
         </Modal>
 
@@ -371,9 +380,6 @@ function Dashboard() {
             <Button variant="danger" onClick={handleTransferClose}>
               Close
             </Button>
-            {/* <Button variant="primary" onClick={handleWithdrawClose}>
-              Save Changes
-            </Button> */}
           </Modal.Footer>
         </Modal>
 
