@@ -32,9 +32,24 @@ namespace TraderaBackend.Controllers
 
         // GET: api/User
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetUsers()
+        public async Task<ActionResult<IEnumerable<UserDTO>>> GetUsers()
         {
-            return await _context.Users.ToListAsync();
+            // Eagerly load related Account and Status data
+            var users = await _context.Users
+                .Include(u => u.Account) // Load related Account
+                .ThenInclude(a => a.Status) // Load related Status
+                .ToListAsync();
+
+            // Map the result to UserDTOs
+            var userDtos = users.Select(user => new UserDTO
+            {
+                Username = user.Username,
+                Email = user.Email,
+                AccountStatus = user.Account?.Status?.Status_name, // Add Status_name here
+                //Active = user.Account?.Active // Include Active status
+            }).ToList();
+
+            return Ok(userDtos);
         }
 
         // GET: api/User/5

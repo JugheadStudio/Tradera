@@ -14,5 +14,7 @@ public class UserDTO
     [Required]
     public string Password { get; set; } = string.Empty;
 
-    public bool IsFrozen { get; set; } = false; // Default to false
+    public string? AccountStatus { get; set; }
+
+    //public bool? Active { get; set; } // Add Active property
 }

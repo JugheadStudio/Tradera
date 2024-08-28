@@ -95,9 +95,9 @@ function Dashboard() {
         <Row>
           <Col className='border-container'>
             <p className='account-status'>
-              Account Status: 
+              Account Status:
               <span className={activeOrNo ? 'true' : 'false'}>
-                {activeOrNo ? 'Active' : 'Frozen'}
+                {activeOrNo ? ' Active' : ' Frozen'}
               </span>
             </p>
           </Col>

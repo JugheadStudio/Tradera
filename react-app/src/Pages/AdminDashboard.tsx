@@ -84,36 +84,38 @@ const AdminDashboard: React.FC = () => {
   // Fetch all users and display them
   useEffect(() => {
     const fetchData = async () => {
-      const data = await getUsers();
-      const validRoles = ['User', 'Admin'];
-
+      const data = await getUsers(); // Assuming this fetches all necessary data, including Account_status_id and Status_name.
+      
       let activeUsers = [];
       let frozenUsers = [];
-
+  
       if (data && data.$values) {
-        activeUsers = data.$values.filter((user: any) => validRoles.includes(user.role) && !user.isFrozen);
-        frozenUsers = data.$values.filter((user: any) => validRoles.includes(user.role) && user.isFrozen);
+        // Filter users with the role 'user' and divide them into active and frozen users
+        activeUsers = data.$values
+          .filter((user: any) => user.role === 'User' && !user.isFrozen);
+        frozenUsers = data.$values
+          .filter((user: any) => user.role === 'User' && user.isFrozen);
       }
-
+  
       // Sort users alphabetically by username
-      activeUsers.sort((a: { username: string; }, b: { username: string; }) => a.username.localeCompare(b.username));
-      frozenUsers.sort((a: { username: string; }, b: { username: string; }) => a.username.localeCompare(b.username));
-
+      activeUsers.sort((a: { username: string }, b: { username: string }) => a.username.localeCompare(b.username));
+      frozenUsers.sort((a: { username: string }, b: { username: string }) => a.username.localeCompare(b.username));
+  
       setUsers(activeUsers);
       setFrozenUsers(frozenUsers);
       setLoading(false);
     };
-
+  
     fetchData();
   }, []);
 
   // tweak die om account status id te gebruik
-  const getRoleColor = (role: string) => {
-    switch (role) {
-      case 'Explorer':
-        return '#9E67F4';
+  const getRoleColor = (accountStatus: string) => {
+    switch (accountStatus) {
       case 'Traveler':
         return '#87CEFA';
+      case 'Explorer':
+        return '#9E67F4';
       case 'Voyager':
         return '#98FB98';
       case 'Precursor':
@@ -125,11 +127,11 @@ const AdminDashboard: React.FC = () => {
 
   const renderCard = (card: any, index: number) => (
     <Col key={index} xs={12} sm={6} md={4} className="mb-4">
-      <div className="admin-card" style={{ backgroundColor: getRoleColor(card.role) }}>
+      <div className="admin-card" style={{ backgroundColor: getRoleColor(card.accountStatus) }}>
         <div className="admin-card-header">
           <img src={card.avatar || logo} alt="User Avatar" className="admin-card-avatar" />
           <div className="admin-card-title">{card.username}</div>
-          <div className="admin-card-subtitle">{card.role}</div>
+          <div className="admin-card-subtitle">{card.accountStatus}</div>
         </div>
         <div className="admin-card-body">
           <div className='cardcontainder'>
@@ -147,13 +149,13 @@ const AdminDashboard: React.FC = () => {
       </div>
     </Col>
   );
-
+  
   const renderFrozenAccount = (account: any, index: number) => (
-    <div key={index} className='transactions-row' style={{ backgroundColor: getRoleColor(account.role) }}>
+    <div key={index} className='transactions-row' style={{ backgroundColor: getRoleColor(account.accountStatus) }}>
       <EonsBlack />
       <div className='transactions-info'>
         <div className='transactions-username'>{account.username}</div>
-        <div className='transactions-usertype'>{account.role}</div>
+        <div className='transactions-usertype'>{account.accountStatus}</div>
       </div>
       <div className='frozen-count-red'>
         {renderFreezeButton(account.user_id, account.isFrozen)}
