@@ -12820,19 +12820,19 @@
     ]
   },
   "packageFolders": {
-    "/Users/jugz/.nuget/packages/": {}
+    "C:\\Users\\emili\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/jugz/Desktop/DV 300/Term 3/Tradera/back-end/TraderaBackend/TraderaBackend.csproj",
+      "projectUniqueName": "C:\\Users\\emili\\Documents\\GitHub\\Tradera\\back-end\\TraderaBackend\\TraderaBackend.csproj",
       "projectName": "TraderaBackend",
-      "projectPath": "/Users/jugz/Desktop/DV 300/Term 3/Tradera/back-end/TraderaBackend/TraderaBackend.csproj",
-      "packagesPath": "/Users/jugz/.nuget/packages/",
-      "outputPath": "/Users/jugz/Desktop/DV 300/Term 3/Tradera/back-end/TraderaBackend/obj/",
+      "projectPath": "C:\\Users\\emili\\Documents\\GitHub\\Tradera\\back-end\\TraderaBackend\\TraderaBackend.csproj",
+      "packagesPath": "C:\\Users\\emili\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\emili\\Documents\\GitHub\\Tradera\\back-end\\TraderaBackend\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/Users/jugz/.nuget/NuGet/NuGet.Config"
+        "C:\\Users\\emili\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
@@ -12937,7 +12937,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.303/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.303/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

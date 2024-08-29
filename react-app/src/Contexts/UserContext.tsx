@@ -3,10 +3,10 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 interface User {
   userId: string | null;
   username: string | null;
-  role: string | null; // Added role property
-  setUserId: (id: string | null) => void; 
+  role: string | null;
+  setUserId: (id: string | null) => void;
   setUsername: (name: string | null) => void;
-  setRole: (role: string | null) => void; // Setter for the role
+  setRole: (role: string | null) => void;
   fetchUserData: (userId: string) => Promise<void>;
 }
 
@@ -21,18 +21,44 @@ export const useUser = () => {
 };
 
 export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [userId, setUserId] = useState<string | null>(null);
-  const [username, setUsername] = useState<string | null>(null);
-  const [role, setRole] = useState<string | null>(null); // State for role
+  const [userId, setUserIdState] = useState<string | null>(sessionStorage.getItem('userId'));
+  const [username, setUsernameState] = useState<string | null>(sessionStorage.getItem('username'));
+  const [role, setRoleState] = useState<string | null>(sessionStorage.getItem('role'));
 
-  // Function to fetch user data
+  const setUserId = (id: string | null) => {
+    setUserIdState(id);
+    if (id) {
+      sessionStorage.setItem('userId', id);
+    } else {
+      sessionStorage.removeItem('userId');
+    }
+  };
+
+  const setUsername = (name: string | null) => {
+    setUsernameState(name);
+    if (name) {
+      sessionStorage.setItem('username', name);
+    } else {
+      sessionStorage.removeItem('username');
+    }
+  };
+
+  const setRole = (role: string | null) => {
+    setRoleState(role);
+    if (role) {
+      sessionStorage.setItem('role', role);
+    } else {
+      sessionStorage.removeItem('role');
+    }
+  };
+
   const fetchUserData = async (userId: string) => {
     try {
       const response = await fetch(`http://localhost:5219/api/user/${userId}`);
       const data = await response.json();
       if (response.ok) {
-        setUsername(data.username); // Assuming the API returns an object with a username field
-        setRole(data.role); // Assuming the API returns an object with a role field
+        setUsername(data.username);
+        setRole(data.role);
       } else {
         throw new Error(data.message || 'Failed to fetch user details');
       }
@@ -51,14 +77,15 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
     <UserContext.Provider value={{
       userId,
       username,
-      role,           // Provide the role
-      setUserId,      
-      setUsername,    
-      setRole,        // Provide the ability to set the role
-      fetchUserData
+      role,
+      setUserId,
+      setUsername,
+      setRole,
+      fetchUserData,
     }}>
       {children}
     </UserContext.Provider>
   );
 };
+
 export default UserContext;
