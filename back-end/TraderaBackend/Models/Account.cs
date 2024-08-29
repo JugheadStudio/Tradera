@@ -12,6 +12,8 @@ public class Account
 
     public int Balance { get; set; }
 
+    public int RandBalance { get; set; }
+
     public bool Active { get; set; }
 
     // Foreign keys

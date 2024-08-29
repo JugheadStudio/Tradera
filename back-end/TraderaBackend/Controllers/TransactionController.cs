@@ -37,6 +37,7 @@ namespace TraderaBackend.Controllers
             return transaction;
         }
 
+        // Deposit function for the Rands
         // POST: api/Transaction/Deposit
         [HttpPost("Deposit")]
         public async Task<IActionResult> Deposit(int accountId, int amount)
@@ -48,7 +49,7 @@ namespace TraderaBackend.Controllers
                 return NotFound();
             }
 
-            account.Balance += amount;
+            account.RandBalance += amount;
 
             _context.Entry(account).State = EntityState.Modified;
 
@@ -83,6 +84,7 @@ namespace TraderaBackend.Controllers
             return NoContent();
         }
 
+        // Withdraw function for the Rands
         // POST: api/Transaction/Withdraw
         [HttpPost("Withdraw")]
         public async Task<IActionResult> Withdraw(int accountId, int amount)
@@ -99,7 +101,7 @@ namespace TraderaBackend.Controllers
                 return BadRequest("Insufficient balance");
             }
 
-            account.Balance -= amount;
+            account.RandBalance -= amount;
 
             _context.Entry(account).State = EntityState.Modified;
 
@@ -111,6 +113,105 @@ namespace TraderaBackend.Controllers
                 Timestamp = DateTime.UtcNow, // Use UTC now
                 FromAccount = account,  // The account from which the funds are withdrawn
                 ToAccount = null        // No ToAccount for a withdrawal
+            };
+
+            _context.Transactions.Add(transaction);
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!AccountExists(accountId))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    return BadRequest("Concurrency exception occurred");
+                }
+            }
+
+            return NoContent();
+        }
+
+        // |||||EONS functionality|||||
+        // Buy
+        // POST: api/Transaction/Buy
+        [HttpPost("Buy")]
+        public async Task<IActionResult> Buy(int accountId, int randAmount, int eonAmount)
+        {
+            var account = await _context.Accounts.FindAsync(accountId);
+
+            if (account == null)
+            {
+                return NotFound();
+            }
+
+            account.RandBalance -= randAmount;
+            account.Balance += eonAmount;
+
+            _context.Entry(account).State = EntityState.Modified;
+
+            // Create the transaction
+            var transaction = new Transaction
+            {
+                Amount = eonAmount,
+                RandAmount = randAmount,
+                Transaction_type = "Buy",
+                Timestamp = DateTime.UtcNow, // Use UTC now
+                FromAccount = null, // No FromAccount for buying
+                ToAccount = account  // The account receiving the deposit
+            };
+
+            _context.Transactions.Add(transaction);
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!AccountExists(accountId))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    return BadRequest("Concurrency exception occurred");
+                }
+            }
+
+            return NoContent();
+        }
+
+        // Sell
+        // POST: api/Transaction/Sell
+        [HttpPost("Sell")]
+        public async Task<IActionResult> Sell(int accountId, int randAmount, int eonAmount)
+        {
+            var account = await _context.Accounts.FindAsync(accountId);
+
+            if (account == null)
+            {
+                return NotFound();
+            }
+
+            account.RandBalance += randAmount;
+            account.Balance -= eonAmount;
+
+            _context.Entry(account).State = EntityState.Modified;
+
+            // Create the transaction
+            var transaction = new Transaction
+            {
+                Amount = eonAmount,
+                RandAmount = randAmount,
+                Transaction_type = "Sell",
+                Timestamp = DateTime.UtcNow, // Use UTC now
+                FromAccount = account, // No FromAccount for buying
+                ToAccount = null  // The account receiving the deposit
             };
 
             _context.Transactions.Add(transaction);

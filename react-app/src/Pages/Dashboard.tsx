@@ -27,7 +27,8 @@ function Dashboard() {
   const [amountInWallet, setAmountInWallet] = useState(0);
   const [activeOrNo, setActiveOrNo] = useState(true);
 
-  const [withdrawAmount, setWithdrawAmount] = useState(0);
+  const [depositAmount, setDepositAmount] = useState(0); // Initialize with 0 or null
+  const [withdrawAmount, setWithdrawAmount] = useState(0); // New state for withdrawal amount
 
   // Fetch user ID from session storage when component mounts
   useEffect(() => {
@@ -61,13 +62,22 @@ function Dashboard() {
     fetchUserData();
   }, [loggedUserId]); // This runs whenever loggedUserId changes
 
-  // Withdraw functionality
-  const handleWithdraw = async () => {
+  // Transaction functionality
+  // Deposits
+  const handleDepositSubmit = async () => {
     try {
-      const response = await axios.post('/api/withdraw', {
-        userId: loggedUserId,
-        amount: withdrawAmount
-      });
+      const response = await axios.post(`http://localhost:5219/api/Transaction/Deposit?accountId=${loggedUserId}&amount=${depositAmount}`);
+      console.log('Deposit successful:', response.data);
+    } catch (error) {
+      console.error('Error processing deposit:', error);
+    }
+  };
+
+  // Withdrawls
+  const handleWithdrawSubmit = async () => {
+    try {
+      const response = await axios.post(`http://localhost:5219/api/Transaction/Withdraw?accountId=${loggedUserId}&amount=${withdrawAmount}`);
+      console.log('Withdrawal successful:', response.data);
     } catch (error) {
       console.error('Error processing withdrawal:', error);
     }
@@ -354,7 +364,7 @@ function Dashboard() {
                     const withdrawInput = document.getElementById('withdrawAmount') as HTMLInputElement;
                     const amount = withdrawInput ? withdrawInput.value : null;
                     setWithdrawAmount(amount ? parseInt(amount) : 0);
-                    handleWithdraw();
+                    handleWithdrawSubmit();
                   }}>
                     Withdraw
                   </Button>
