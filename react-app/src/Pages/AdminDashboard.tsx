@@ -140,10 +140,12 @@ const AdminDashboard: React.FC = () => {
           <div className="admin-card-subtitle">{card.accountStatus}</div>
         </div>
         <div className="admin-card-body">
-          <div className='cardcontainder'>
-            <EonsBlack />
-            <div className='cardbalance'>
-              {card.balance || 'N/A'}
+          <div className='card-container'>
+            <div>
+              <EonsBlack />
+              <div className='cardbalance'>
+                {card.balance || 'N/A'}
+              </div>
             </div>
           </div>
           <div className="admin-card-expiry">Expires {card.expiry || 'N/A'}</div>
