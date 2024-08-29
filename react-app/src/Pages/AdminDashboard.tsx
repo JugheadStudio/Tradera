@@ -91,8 +91,6 @@ const AdminDashboard: React.FC = () => {
     fetchData();
   }, []);
 
-
-
   // Front end rendering stuff
   const renderFreezeButton = (userId: number, isFrozen: boolean) => (
     <button
@@ -148,8 +146,7 @@ const AdminDashboard: React.FC = () => {
               </div>
             </div>
           </div>
-          <div className="admin-card-expiry">Expires {card.expiry || 'N/A'}</div>
-          <div className='admin-button-container-delete-freeze'>
+          <div className='admin-button-container-delete-freeze mt-20'>
             {renderFreezeButton(card.user_id, card.isFrozen)}
             {renderDeleteButton(card.user_id)}
           </div>
@@ -193,7 +190,7 @@ const AdminDashboard: React.FC = () => {
     <div className='page-background'>
       <Container fluid>
         <Row>
-          <Col md={8}>
+          <Col md={9}>
             <div className='column-title'>
               <span className='spesific'>All</span> <span className='transactions'>Accounts</span>
             </div>
@@ -209,7 +206,7 @@ const AdminDashboard: React.FC = () => {
               </Container>
             </div>
           </Col>
-          <Col md={4}>
+          <Col md={3}>
             <div className='column-title'>
               <span className='spesific'>All</span> <span className='transactions'>Frozen Accounts</span>
             </div>
