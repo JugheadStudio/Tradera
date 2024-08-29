@@ -418,7 +418,7 @@ img, svg {
   border: 1px solid var(--tradera-border);
 }
 
-.cardcontainder {
+.card-container div {
   display: flex;
   align-items: center;
 }

@@ -19,9 +19,9 @@ import Signup from './Pages/Signup';
 import Dashboard from './Pages/Dashboard';
 import Details from './Pages/Details';
 import Home from './Pages/Home';
-import Sidebar from './Components/Sidebar';
 import { UserProvider } from './Contexts/UserContext';
 import { useUser } from './Contexts/UserContext';
+import Sidebar from './components/Sidebar';
 
 function App() {
   return (
@@ -46,7 +46,7 @@ const AuthenticatedRoutes = () => {
 
   return (
     <>
-      <Col xs={2}><Sidebar /></Col>
+      <Col xs={2}><Sidebar/></Col>
       <Col xs={10}>
         <Routes>
           <Route path="/Details" element={<Details />} />

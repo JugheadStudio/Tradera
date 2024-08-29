@@ -31,7 +31,6 @@ const customCandlestickPlugin = {
         const highY = chart.scales.y.getPixelForValue(h);
         const lowY = chart.scales.y.getPixelForValue(l);
 
-        // Determine the color based on price movement
         const color = c > o ? 'rgba(209, 239, 105, 1)' : 'rgba(255, 77, 77, 1)';
 
         ctx.beginPath();
