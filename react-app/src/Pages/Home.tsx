@@ -21,17 +21,13 @@ function Home() {
 
   // currently logged in users id
   const [loggedAccountId, setLoggedAccountId] = useState(0);
-  const [depositAmount, setDepositAmount] = useState(0);
-  const [withdrawAmount, setWithdrawAmount] = useState(0); 
   const [userInfo, setUserInfo] = useState(null);
   const [randAmountInWallet, setRandAmountInWallet] = useState(0);
   const [amountInWallet, setAmountInWallet] = useState(0);
 
   const [currentBuyAmount, setCurrentBuyAmount] = useState(0);
-  // const [totalBuyPrice, setTotalBuyPrice] = useState(0);
   
   const [currentSellAmount, setCurrentSellAmount] = useState(0);
-  const [totalSellPrice, setTotalSellPrice] = useState(0);
 
   const [currentPrice, setCurrentPrice] = useState(100);
 
@@ -41,6 +37,8 @@ function Home() {
   const [withdrawShow, setWithdrawShow] = useState(false);
   const [paymentShow, setPaymentShow] = useState(false);
 
+
+  // buy and sell open and close
   const handleBuyClose = () => setBuyShow(false);
   const handleBuyShow = () => {
     setBuyShow(true);
@@ -60,11 +58,13 @@ function Home() {
   const handlePaymentShow = () => setPaymentShow(true);
 
 
+
   // Fetch account ID from session storage when component mounts
   useEffect(() => {
     const accountIdFromSession = sessionStorage.getItem("account_id");
     setLoggedAccountId(accountIdFromSession ? parseInt(accountIdFromSession) : 0);
   }, []); 
+
 
   // Fetches account details
   useEffect(() => {
@@ -73,14 +73,6 @@ function Home() {
         try {
           const response = await axios.get('http://localhost:5219/api/Account/' + loggedAccountId);
           const userData = response.data;
-  const fetchChartData = async () => {
-    try {
-        const response = await axios.get('http://localhost:5219/api/price/hourly-prices');
-        setChartData(response.data);
-    } catch (error) {
-        console.error('Error fetching chart data:', error);
-    }
-};
 
           console.log(userData);
 
@@ -96,9 +88,18 @@ function Home() {
         }
       }
     };
-
     fetchUserData();
   }, [loggedAccountId]); // This runs whenever loggedUserId changes
+
+  const fetchChartData = async () => {
+    try {
+        const response = await axios.get('http://localhost:5219/api/price/hourly-prices');
+        setChartData(response.data);
+    } catch (error) {
+        console.error('Error fetching chart data:', error);
+    }
+};
+
 
   const handleBuy =() => {
     const handleBuyRequest = async () => {
@@ -134,7 +135,6 @@ function Home() {
     handleSellRequest();
   };
 
-
   useEffect(() => {
     fetchChartData(); // Initial fetch
     const interval = setInterval(fetchChartData, 5000); // 5 seconds
@@ -150,9 +150,23 @@ function Home() {
   const setCurrentPriceDetails = (currentPriceDetails: PriceData) => {
     setPriceData(currentPriceDetails);
   }
+
+  // gets the chart data
+  useEffect(() => {
+    fetchChartData(); // Initial fetch
+    const interval = setInterval(fetchChartData, 5000); // 5 seconds
+    return () => clearInterval(interval); // Clean up interval on component unmount
+  }, []);
+
+  interface PriceData {
+    currentPrice: number;
+    highestPrice: number;
+    lowestPrice: number;
+  }
   
   return (
     <div className="page-background">
+
       <Container fluid>
         <Row className="">
           <Col xs={7}>
@@ -342,7 +356,9 @@ function Home() {
                     <span className="icon-wrapper"><RandGrey/></span>
                     {randAmountInWallet}
                   </p>
-            <div className="border-container my-account-container mt-20">
+              </p>
+            </div>
+            {/* <div className="border-container my-account-container mt-20">
               <div className='column-title text-center'>
                 <span className='spesific'>My</span> <span className='transactions'>Account</span>
               </div>
@@ -360,7 +376,7 @@ function Home() {
                 <button onClick={handleWithdrawShow}>Withdraw</button>
                 <button onClick={handlePaymentShow}>deposit</button>
               </div>
-            </div>
+            </div> */}
 
           </Col>
         </Row>
