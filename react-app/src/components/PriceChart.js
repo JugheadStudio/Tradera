@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Chart as ChartJS, CategoryScale, LinearScale, Tooltip, Title, Legend } from 'chart.js';
 import { Chart } from 'react-chartjs-2';
 import { CandlestickController, CandlestickElement } from 'chartjs-chart-financial';
+import axios from 'axios';
 
 ChartJS.register(
   CategoryScale,
@@ -47,43 +48,51 @@ const customCandlestickPlugin = {
   }
 };
 
-const PriceChart = () => {
-  const rawData = [
-    { x: '00:00', o: 100, h: 105, l: 95, c: 102 },
-    { x: '01:00', o: 102, h: 107, l: 100, c: 104 },
-    { x: '02:00', o: 104, h: 106, l: 99, c: 101 },
-    { x: '03:00', o: 101, h: 104, l: 98, c: 99 },
-    { x: '04:00', o: 99, h: 100, l: 94, c: 96 },
-    { x: '05:00', o: 96, h: 98, l: 93, c: 95 },
-    { x: '06:00', o: 95, h: 97, l: 92, c: 94 },
-    { x: '07:00', o: 94, h: 96, l: 91, c: 93 },
-    { x: '08:00', o: 93, h: 95, l: 89, c: 90 },
-    { x: '09:00', o: 90, h: 92, l: 88, c: 91 },
-    { x: '10:00', o: 91, h: 94, l: 89, c: 92 },
-    { x: '11:00', o: 92, h: 96, l: 91, c: 94 },
-    { x: '12:00', o: 94, h: 99, l: 93, c: 98 },
-    { x: '13:00', o: 98, h: 102, l: 95, c: 100 },
-    { x: '14:00', o: 100, h: 104, l: 99, c: 102 },
-    { x: '15:00', o: 102, h: 106, l: 101, c: 105 },
-    { x: '16:00', o: 105, h: 109, l: 104, c: 107 },
-    { x: '17:00', o: 107, h: 110, l: 103, c: 104 },
-    { x: '18:00', o: 104, h: 107, l: 100, c: 101 },
-    { x: '19:00', o: 101, h: 105, l: 97, c: 103 },
-    { x: '20:00', o: 103, h: 108, l: 102, c: 107 },
-    { x: '21:00', o: 107, h: 111, l: 105, c: 109 },
-    { x: '22:00', o: 109, h: 112, l: 108, c: 110 },
-    { x: '23:00', o: 110, h: 115, l: 109, c: 112 },
-  ];
+const PriceChart = ({ currentPriceDetails }) => {
+  const [chartData, setChartData] = useState([]);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('http://localhost:5219/api/Price/hourly-prices');
+        const data = response.data.$values;
+    
+        if (Array.isArray(data) && data.length > 0) {
+          const currentHourData = data[data.length - 1]; // Assuming latest data is last
+          currentPriceDetails({
+            currentPrice: currentHourData.c,
+            highestPrice: Math.max(...data.map(item => item.h)),
+            lowestPrice: Math.min(...data.map(item => item.l))
+          });
+          setChartData(data);
+        } else {
+          console.error('No valid data received:', data);
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+    
+
+    fetchData();
+    const intervalId = setInterval(fetchData, 5000); // Update every 5 seconds
+    return () => clearInterval(intervalId);
+  }, [currentPriceDetails]);
+
+  const defaultData = [
+    { x: 'No Data', o: 0, h: 0, l: 0, c: 0 }
+  ];
+  
   const data = {
     datasets: [{
       label: 'Stock Price',
-      data: rawData,
+      data: chartData.length ? chartData : defaultData,
       borderColor: 'rgba(0, 0, 0, 1)',
       borderWidth: 0.5,
       barThickness: 15,
     }]
   };
+  
 
   const options = {
     responsive: true,
@@ -96,17 +105,18 @@ const PriceChart = () => {
     scales: {
       x: {
         type: 'category',
-        labels: rawData.map(item => item.x)
+        labels: chartData.length ? chartData.map(item => item.x) : [],
       },
       y: {
         type: 'linear',
         beginAtZero: false,
-        min: Math.min(...rawData.map(item => item.l)) * 0.95,
-        max: Math.max(...rawData.map(item => item.h)) * 1.05,
+        min: chartData.length ? Math.min(...chartData.map(item => item.l)) * 0.95 : 0,
+        max: chartData.length ? Math.max(...chartData.map(item => item.h)) * 1.05 : 100,
       }
     }
   };
   
+
   return (
     <div>
       <Chart type="candlestick" data={data} options={options} plugins={[customCandlestickPlugin]} />
@@ -115,3 +125,4 @@ const PriceChart = () => {
 };
 
 export default PriceChart;
+

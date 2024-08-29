@@ -12,6 +12,13 @@ import PriceChart from "../Components/PriceChart";
 
 function Home() {
 
+  const [chartData, setChartData] = useState([]);
+  const [priceData, setPriceData] = useState({
+    currentPrice: 0,
+    highestPrice: 0,
+    lowestPrice: 0
+  });
+
   // currently logged in users id
   const [loggedAccountId, setLoggedAccountId] = useState(0);
   const [depositAmount, setDepositAmount] = useState(0);
@@ -66,6 +73,14 @@ function Home() {
         try {
           const response = await axios.get('http://localhost:5219/api/Account/' + loggedAccountId);
           const userData = response.data;
+  const fetchChartData = async () => {
+    try {
+        const response = await axios.get('http://localhost:5219/api/price/hourly-prices');
+        setChartData(response.data);
+    } catch (error) {
+        console.error('Error fetching chart data:', error);
+    }
+};
 
           console.log(userData);
 
@@ -120,6 +135,21 @@ function Home() {
   };
 
 
+  useEffect(() => {
+    fetchChartData(); // Initial fetch
+    const interval = setInterval(fetchChartData, 5000); // 5 seconds
+    return () => clearInterval(interval); // Clean up interval on component unmount
+  }, []);
+
+  interface PriceData {
+    currentPrice: number;
+    highestPrice: number;
+    lowestPrice: number;
+  }
+
+  const setCurrentPriceDetails = (currentPriceDetails: PriceData) => {
+    setPriceData(currentPriceDetails);
+  }
   
   return (
     <div className="page-background">
@@ -127,7 +157,7 @@ function Home() {
         <Row className="">
           <Col xs={7}>
             <div className="price-chart-container">
-              <PriceChart/>
+              <PriceChart currentPriceDetails={setCurrentPriceDetails}/>
             </div>
 
             <div className='column-title mt-20'>
@@ -276,17 +306,17 @@ function Home() {
                 </div>
                 <div>
                   <p className="home-eons-heading">EONS / ZAR</p>
-                  <p className="home-eons-price">R 112.00</p>
+                  <p className="home-eons-price">R {priceData.currentPrice.toFixed(2)}</p>
                 </div>
               </div>
               <div>
                 <div className="border-container-price">
                   <p className="price-open-close">
                     <span>
-                      <strong className="price-high">High:</strong> R 150.00
+                      <strong className="price-high">High:</strong> R {priceData.highestPrice.toFixed(2)}
                     </span>
                     <span>
-                      <strong className="price-low">low:</strong> R 90.00
+                      <strong className="price-low">low:</strong> R {priceData.lowestPrice.toFixed(2)}
                     </span>
                   </p>
                 </div>
@@ -312,7 +342,24 @@ function Home() {
                     <span className="icon-wrapper"><RandGrey/></span>
                     {randAmountInWallet}
                   </p>
+            <div className="border-container my-account-container mt-20">
+              <div className='column-title text-center'>
+                <span className='spesific'>My</span> <span className='transactions'>Account</span>
+              </div>
+
+              <div className="price-open-close">
+                <p>
+                  <span className="icon-wrapper"><EonsGrey/></span>
+                  25,000
                 </p>
+                <p>
+                  <span className="icon-wrapper"><RandGrey/></span>
+                  105,000
+                </p>
+
+                <button onClick={handleWithdrawShow}>Withdraw</button>
+                <button onClick={handlePaymentShow}>deposit</button>
+              </div>
             </div>
 
           </Col>
