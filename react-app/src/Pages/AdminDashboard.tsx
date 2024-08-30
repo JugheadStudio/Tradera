@@ -23,24 +23,26 @@ const AdminDashboard: React.FC = () => {
 
 
   // handles freezing
-  const handleToggleFreeze = async (user_Id: number, isFrozen: boolean) => {
+  const handleToggleFreeze = async (user_id: number, isFrozen: boolean) => {
     try {
       const apiEndpoint = isFrozen ? 'Unfreeze' : 'Freeze';
-      const url = `http://localhost:5219/api/Account/${apiEndpoint}/${user_Id}`;
-
-      // Update the state to reflect the freeze/unfreeze action
+      const url = `http://localhost:5219/api/Account/${apiEndpoint}/${user_id}`;
+  
+      // Make the API call to update the backend
+      await axios.post(url);
+  
       if (isFrozen) {
         // Unfreezing the user
-        const userToUnfreeze = frozenUsers.find(user => user.$id === user_Id);
+        const userToUnfreeze = frozenUsers.find(user => user.$id === user_id);
         if (userToUnfreeze) {
-          setFrozenUsers(frozenUsers.filter(user => user.user_id !== user_Id));
+          setFrozenUsers(frozenUsers.filter(user => user.$id !== user_id)); 
           setUsers([...users, { ...userToUnfreeze, active: true }].sort((a, b) => a.username.localeCompare(b.username)));
         }
       } else {
         // Freezing the user
-        const userToFreeze = users.find(user => user.$id === user_Id);
+        const userToFreeze = users.find(user => user.$id === user_id);
         if (userToFreeze) {
-          setUsers(users.filter(user => user.$id !== user_Id));
+          setUsers(users.filter(user => user.$id !== user_id)); 
           setFrozenUsers([...frozenUsers, { ...userToFreeze, active: false }].sort((a, b) => a.username.localeCompare(b.username)));
         }
       }
@@ -48,6 +50,7 @@ const AdminDashboard: React.FC = () => {
       console.error('Error toggling freeze status:', error);
     }
   };
+  
 
 
   // Delete user
@@ -59,38 +62,39 @@ const AdminDashboard: React.FC = () => {
 
   // Fetch all users and display them
   useEffect(() => {
-
     const fetchData = async () => {
-
-      const data = await getUsers(); // Assuming this fetches all necessary data, including Account_status_id and Status_name.
-
-      console.log(data);
-
-      let activeUsers = [];
-      let frozenUsers = [];
-
-      if (data && data.$values) {
-
-        // Filter users with the role 'user' and divide them into active and frozen users
-        activeUsers = data.$values.filter((user: any) => user.role === 'User' && user.active);
-        frozenUsers = data.$values.filter((user: any) => user.role === 'User' && !user.active);
+      try {
+        const data = await getUsers(); // Assuming this fetches all necessary data, including Account_status_id and Status_name.
+  
+        let activeUsers = [];
+        let frozenUsers = [];
+  
+        if (data && data.$values) {
+          // Filter users with the role 'user' and divide them into active and frozen users
+          activeUsers = data.$values.filter((user: any) => user.role === 'User' && user.active);
+          frozenUsers = data.$values.filter((user: any) => user.role === 'User' && !user.active);
+        }
+  
+        // Sort users alphabetically by username
+        activeUsers.sort((a: { username: string }, b: { username: string }) => a.username.localeCompare(b.username));
+        frozenUsers.sort((a: { username: string }, b: { username: string }) => a.username.localeCompare(b.username));
+  
+        setUsers(activeUsers);
+        setFrozenUsers(frozenUsers);
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      } finally {
+        setLoading(false);
       }
-
-      // Sort users alphabetically by username
-      activeUsers.sort((a: { username: string }, b: { username: string }) => a.username.localeCompare(b.username));
-      frozenUsers.sort((a: { username: string }, b: { username: string }) => a.username.localeCompare(b.username));
-
-      setUsers(activeUsers);
-      setFrozenUsers(frozenUsers);
-      setLoading(false);
     };
-
+  
     fetchData();
-  }, []);
-
+  }, []);  // Depend on [] to only run on mount
+  
+  
   // Front end rendering stuff
-  const renderFreezeButton = (user_Id: number, isFrozen: boolean) => (
-    <button className="admin-button-freeze" onClick={() => handleToggleFreeze(user_Id, isFrozen)}>
+  const renderFreezeButton = (user_id: number, isFrozen: boolean) => (
+    <button className="admin-button-freeze" onClick={() => handleToggleFreeze(user_id, isFrozen)}>
       {isFrozen ? <Unfreeze /> : <Freeze />}
     </button>
   );
@@ -101,8 +105,8 @@ const AdminDashboard: React.FC = () => {
     </button>
   );
 
-  const renderDeleteButton = (userId: number) => (
-    <button className="admin-button-delete" onClick={() => handleDeleteUser(userId)}>
+  const renderDeleteButton = (user_id: number) => (
+    <button className="admin-button-delete" onClick={() => handleDeleteUser(user_id)}>
       <Delete />
     </button>
   );
@@ -139,7 +143,7 @@ const AdminDashboard: React.FC = () => {
           </div>
           <div className='admin-button-container-delete-freeze mt-20'>
             {renderFreezeButton(card.$id, !card.active)}
-            {renderDeleteButton(card.user_Id)}
+            {renderDeleteButton(card.user_id)}
           </div>
         </div>
       </div>
