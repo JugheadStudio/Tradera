@@ -25,10 +25,14 @@ function Dashboard() {
 
   const [userInfo, setUserInfo] = useState(null);
   const [amountInWallet, setAmountInWallet] = useState(0);
+  const [randAmountInWallet, setRandAmountInWallet] = useState(0);
   const [activeOrNo, setActiveOrNo] = useState(true);
 
-  const [depositAmount, setDepositAmount] = useState(0); // Initialize with 0 or null
-  const [withdrawAmount, setWithdrawAmount] = useState(0); // New state for withdrawal amount
+  const [depositAmount, setDepositAmount] = useState(0);
+  const [withdrawAmount, setWithdrawAmount] = useState(0); 
+
+  const [toAccount, setToAccount] = useState(0);
+  const [transferAmount, setTransferAmount] = useState(0);
 
   // Fetch user ID from session storage when component mounts
   useEffect(() => {
@@ -48,6 +52,7 @@ function Dashboard() {
 
           setUserInfo(userData);
           setAmountInWallet(userData.balance);
+          setRandAmountInWallet(userData.randBalance);
           setActiveOrNo(userData.active);
           console.log("Account data fetched successfully");
 
@@ -66,8 +71,9 @@ function Dashboard() {
   // Deposits
   const handleDepositSubmit = async () => {
     try {
-      const response = await axios.post(`http://localhost:5219/api/Transaction/Deposit?accountId=${loggedUserId}&amount=${depositAmount}`);
+      const response = await axios.post(`http://localhost:5219/api/Transaction/Deposit?accountId=${sessionStorage.getItem("account_id")}&amount=${depositAmount}`);
       console.log('Deposit successful:', response.data);
+      window.location.reload();
     } catch (error) {
       console.error('Error processing deposit:', error);
     }
@@ -76,17 +82,31 @@ function Dashboard() {
   // Withdrawls
   const handleWithdrawSubmit = async () => {
     try {
-      const response = await axios.post(`http://localhost:5219/api/Transaction/Withdraw?accountId=${loggedUserId}&amount=${withdrawAmount}`);
+      const response = await axios.post(`http://localhost:5219/api/Transaction/Withdraw?accountId=${sessionStorage.getItem("account_id")}&amount=${withdrawAmount}`);
       console.log('Withdrawal successful:', response.data);
+      window.location.reload();
     } catch (error) {
       console.error('Error processing withdrawal:', error);
     }
   };
 
+  // Transfers
+  const handleTransferSubmit = async () => {
+    try {
+      const response = await axios.post(`http://localhost:5219/api/Transaction/Transfer?fromAccountId=${sessionStorage.getItem("account_id")}&toAccountId=${toAccount}&amount=${transferAmount}`);
+      console.log('Transfer successful:', response.data);
+      window.location.reload();
+    } catch (error) {
+      console.error('Error processing transfer:', error);
+    }
+  };
+
+
 
   //front end
   const [accountSettingsShow, setAccountSettingsShow] = useState(false);
   const [withdrawShow, setWithdrawShow] = useState(false);
+  const [depositShow, setDepositShow] = useState(false);
   const [transferShow, setTransferShow] = useState(false);
 
   const handleAccountSettingsClose = () => setAccountSettingsShow(false);
@@ -95,8 +115,13 @@ function Dashboard() {
   const handleWithdrawClose = () => setWithdrawShow(false);
   const handleWithdrawShow = () => setWithdrawShow(true);
 
+  const handleDepositClose = () => setDepositShow(false);
+  const handleDepositShow = () => setDepositShow(true);
+
   const handleTransferClose = () => setTransferShow(false);
   const handleTransferShow = () => setTransferShow(true);
+
+
 
   return (
     <div className='page-background'>
@@ -108,6 +133,12 @@ function Dashboard() {
               Account Status:
               <span className={activeOrNo ? 'active' : 'frozen'}>
                 {activeOrNo ? ' Active' : ' Frozen'}
+              </span>
+            </p>
+            <p className='account-status'>
+              Your Account Id: 
+              <span className="active">
+                {sessionStorage.getItem("account_id")}
               </span>
             </p>
           </Col>
@@ -131,7 +162,7 @@ function Dashboard() {
                 <div className='d-flex align-item-center mt-20'>
                   <RandBlack/>
                   <div className='cardbalance'>
-                    {amountInWallet}
+                    {randAmountInWallet}
                   </div>
                 </div>
               </div>
@@ -291,7 +322,7 @@ function Dashboard() {
 
             <div className='action-container'>
               <Button variant="secondary w-100" onClick={handleWithdrawShow} className='mb-3'><i className="fas fa-wallet"></i> Withdraw</Button>
-              <Button variant="primary w-100" className='mb-3'><i className="fas fa-money-bill"></i> Deposit</Button>
+              <Button variant="primary w-100" onClick={handleDepositShow} className='mb-3'><i className="fas fa-money-bill"></i> Deposit</Button>
               <Button variant="primary" className='mb-3 w-100' onClick={handleTransferShow}><i className="fas fa-money-bill-transfer"></i> Transfer</Button>
               <Button variant="tertiary" className="w-100" onClick={handleAccountSettingsShow}><i className="fas fa-sliders"></i>Account Settings</Button>
             </div>
@@ -350,7 +381,7 @@ function Dashboard() {
         {/* Withdraw Modal */}
         <Modal size="lg" show={withdrawShow} onHide={handleWithdrawClose} animation={false} dialogClassName="modal-dialog-centered">
           <Modal.Header closeButton>
-            <Modal.Title>Account <span>Withdraw</span></Modal.Title>
+            <Modal.Title>Account <span>Withdraw ZAR</span></Modal.Title>
           </Modal.Header>
 
           <Modal.Body>
@@ -358,15 +389,56 @@ function Dashboard() {
               <Row>
                 <Col xs={12} className='pl-0 pr-0'>
                   <label htmlFor='withdrawAmount' className='input-label'>Withdraw Amount</label>
-                  <input type='number' className='form-control' id='withdrawAmount' placeholder='Enter amount' />
+                  <input 
+                    type='number' 
+                    className='form-control' 
+                    id='withdrawAmount' 
+                    placeholder='Enter amount' 
+                    onChange={(e) => { setWithdrawAmount(parseInt(e.target.value)) }}
+                    />
+                  <br></br>
+                  <Button variant="primary" 
+                  onClick={() => {
+                    handleWithdrawSubmit();
+                  }}
+                  >
+                    Withdraw
+                  </Button>
+                </Col>
+              </Row>
+            </Container>
+          </Modal.Body>
+
+          <Modal.Footer>
+            <Button variant="danger" onClick={handleWithdrawClose}>
+              Cancel
+            </Button>
+          </Modal.Footer>
+        </Modal>
+
+        {/* Deposit Modal */}
+        <Modal size="lg" show={depositShow} onHide={handleDepositClose} animation={false} dialogClassName="modal-dialog-centered">
+          <Modal.Header closeButton>
+            <Modal.Title>Account <span>Deposit ZAR</span></Modal.Title>
+          </Modal.Header>
+
+          <Modal.Body>
+            <Container fluid>
+              <Row>
+                <Col xs={12} className='pl-0 pr-0'>
+                  <label htmlFor='depositAmount' className='input-label'>Deposit Amount</label>
+                  <input 
+                    type='number' 
+                    className='form-control' 
+                    id='depositAmount' 
+                    placeholder='Enter amount' 
+                    onChange={(e) => { setDepositAmount(parseInt(e.target.value)) }}
+                  />
                   <br></br>
                   <Button variant="primary" onClick={() => {
-                    const withdrawInput = document.getElementById('withdrawAmount') as HTMLInputElement;
-                    const amount = withdrawInput ? withdrawInput.value : null;
-                    setWithdrawAmount(amount ? parseInt(amount) : 0);
-                    handleWithdrawSubmit();
+                    handleDepositSubmit();
                   }}>
-                    Withdraw
+                    Deposit
                   </Button>
                 </Col>
               </Row>
@@ -383,22 +455,40 @@ function Dashboard() {
         {/* Transfer Modal */}
         <Modal size="lg" show={transferShow} onHide={handleTransferClose} animation={false} dialogClassName="modal-dialog-centered">
           <Modal.Header closeButton>
-            <Modal.Title>Account <span>Transfer</span></Modal.Title>
+            <Modal.Title>Account <span>EON Transfer</span></Modal.Title>
           </Modal.Header>
 
           <Modal.Body>
             <Container fluid>
               <Row>
                 <Col xs={12} className='pl-0 pr-0'>
-                  Transfer
+                  <label htmlFor='toAccount' className='input-label'>To Account</label>
+                  <input 
+                    type='number' 
+                    className='form-control' 
+                    id='toAccount' 
+                    placeholder='Enter Account Id' 
+                    onChange={(e) => { setToAccount(parseInt(e.target.value)) }}
+                  />
+
+                  <label htmlFor='transferAmount' className='input-label'>Amount</label>
+                  <input 
+                    type='number' 
+                    className='form-control' 
+                    id='transferAmount' 
+                    placeholder='Enter amount' 
+                    onChange={(e) => { setTransferAmount(parseInt(e.target.value)) }}
+                  />
                 </Col>
               </Row>
             </Container>
           </Modal.Body>
 
           <Modal.Footer>
-            <Button variant="primary" onClick={handleTransferClose}>
-              Edit
+            <Button variant="primary" 
+              onClick={() => {handleTransferSubmit();}}
+            >
+              Send
             </Button>
             <Button variant="danger" onClick={handleTransferClose}>
               Close

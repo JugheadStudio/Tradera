@@ -37,6 +37,7 @@ namespace TraderaBackend.Controllers
             return transaction;
         }
 
+
         // Deposit function for the Rands
         // POST: api/Transaction/Deposit
         [HttpPost("Deposit")]
@@ -56,7 +57,10 @@ namespace TraderaBackend.Controllers
             // Create the transaction
             var transaction = new Transaction
             {
-                Amount = amount,
+                //Rand amount is for zar
+                //Amount is for eons
+                RandAmount = amount,
+                Amount = 0,
                 Transaction_type = "Deposit",
                 Timestamp = DateTime.UtcNow, // Use UTC now
                 FromAccount = null, // No FromAccount for a deposit
@@ -108,7 +112,10 @@ namespace TraderaBackend.Controllers
             // Create the transaction
             var transaction = new Transaction
             {
-                Amount = amount,
+                //Rand amount is for zar
+                //Amount is for eons
+                RandAmount = amount,
+                Amount = 0,
                 Transaction_type = "Withdrawal",
                 Timestamp = DateTime.UtcNow, // Use UTC now
                 FromAccount = account,  // The account from which the funds are withdrawn
@@ -157,6 +164,8 @@ namespace TraderaBackend.Controllers
             // Create the transaction
             var transaction = new Transaction
             {
+                //Rand amount is for zar
+                //Amount is for eons
                 Amount = eonAmount,
                 RandAmount = randAmount,
                 Transaction_type = "Buy",
@@ -206,6 +215,8 @@ namespace TraderaBackend.Controllers
             // Create the transaction
             var transaction = new Transaction
             {
+                //Rand amount is for zar
+                //Amount is for eons
                 Amount = eonAmount,
                 RandAmount = randAmount,
                 Transaction_type = "Sell",
@@ -235,6 +246,7 @@ namespace TraderaBackend.Controllers
             return NoContent();
         }
 
+        // Transfer Eons
         // POST: api/Transaction/Transfer
         [HttpPost("Transfer")]
         public async Task<IActionResult> Transfer(int fromAccountId, int toAccountId, int amount)
@@ -262,6 +274,9 @@ namespace TraderaBackend.Controllers
             // Create the transaction
             var transaction = new Transaction
             {
+                //Rand amount is for zar
+                //Amount is for eons
+                RandAmount = 0,
                 Amount = amount,
                 Transaction_type = "Transfer",
                 Timestamp = DateTime.UtcNow, // Use UTC now
