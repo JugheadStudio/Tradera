@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\emili\\Documents\\GitHub\\Tradera\\back-end\\TraderaBackend\\TraderaBackend.csproj": {}
+    "c:\\Users\\anke1\\Desktop\\OpenWindow\\Year 3\\DV 300\\Term 3\\Finale\\Tradera\\back-end\\TraderaBackend\\TraderaBackend.csproj": {}
   },
   "projects": {
-    "C:\\Users\\emili\\Documents\\GitHub\\Tradera\\back-end\\TraderaBackend\\TraderaBackend.csproj": {
+    "c:\\Users\\anke1\\Desktop\\OpenWindow\\Year 3\\DV 300\\Term 3\\Finale\\Tradera\\back-end\\TraderaBackend\\TraderaBackend.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\emili\\Documents\\GitHub\\Tradera\\back-end\\TraderaBackend\\TraderaBackend.csproj",
+        "projectUniqueName": "c:\\Users\\anke1\\Desktop\\OpenWindow\\Year 3\\DV 300\\Term 3\\Finale\\Tradera\\back-end\\TraderaBackend\\TraderaBackend.csproj",
         "projectName": "TraderaBackend",
-        "projectPath": "C:\\Users\\emili\\Documents\\GitHub\\Tradera\\back-end\\TraderaBackend\\TraderaBackend.csproj",
-        "packagesPath": "C:\\Users\\emili\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\emili\\Documents\\GitHub\\Tradera\\back-end\\TraderaBackend\\obj\\",
+        "projectPath": "c:\\Users\\anke1\\Desktop\\OpenWindow\\Year 3\\DV 300\\Term 3\\Finale\\Tradera\\back-end\\TraderaBackend\\TraderaBackend.csproj",
+        "packagesPath": "C:\\Users\\anke1\\.nuget\\packages\\",
+        "outputPath": "c:\\Users\\anke1\\Desktop\\OpenWindow\\Year 3\\DV 300\\Term 3\\Finale\\Tradera\\back-end\\TraderaBackend\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\emili\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\anke1\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"

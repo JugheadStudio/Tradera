@@ -23,25 +23,25 @@ const AdminDashboard: React.FC = () => {
 
 
   // handles freezing
-  const handleToggleFreeze = async (userId: number, isFrozen: boolean) => {
+  const handleToggleFreeze = async (user_Id: number, isFrozen: boolean) => {
     try {
       const apiEndpoint = isFrozen ? 'Unfreeze' : 'Freeze';
-      await axios.post(`http://localhost:5219/api/Account/${apiEndpoint}/${userId}`);
-  
+      const url = `http://localhost:5219/api/Account/${apiEndpoint}/${user_Id}`;
+
       // Update the state to reflect the freeze/unfreeze action
       if (isFrozen) {
-        // Unfreezing the user: move the user from frozenUsers to users
-        const userToUnfreeze = frozenUsers.find(user => user.user_id === userId);
+        // Unfreezing the user
+        const userToUnfreeze = frozenUsers.find(user => user.$id === user_Id);
         if (userToUnfreeze) {
-          setFrozenUsers(frozenUsers.filter(user => user.user_id !== userId));
-          setUsers([...users, { ...userToUnfreeze, isFrozen: false }].sort((a, b) => a.username.localeCompare(b.username)));
+          setFrozenUsers(frozenUsers.filter(user => user.user_id !== user_Id));
+          setUsers([...users, { ...userToUnfreeze, active: true }].sort((a, b) => a.username.localeCompare(b.username)));
         }
       } else {
-        // Freezing the user: move the user from users to frozenUsers
-        const userToFreeze = users.find(user => user.user_id === userId);
+        // Freezing the user
+        const userToFreeze = users.find(user => user.$id === user_Id);
         if (userToFreeze) {
-          setUsers(users.filter(user => user.user_id !== userId));
-          setFrozenUsers([...frozenUsers, { ...userToFreeze, isFrozen: true }].sort((a, b) => a.username.localeCompare(b.username)));
+          setUsers(users.filter(user => user.$id !== user_Id));
+          setFrozenUsers([...frozenUsers, { ...userToFreeze, active: false }].sort((a, b) => a.username.localeCompare(b.username)));
         }
       }
     } catch (error) {
@@ -53,7 +53,7 @@ const AdminDashboard: React.FC = () => {
   // Delete user
   const handleDeleteUser = async (id: number) => {
     await deleteUser(id);
-    setUsers(users.filter(user => user.user_id !== id)); // Update the UI after deletion
+    setUsers(users.filter(user => user.$id !== id)); // Update the UI after deletion
   };
 
 
@@ -63,40 +63,34 @@ const AdminDashboard: React.FC = () => {
     const fetchData = async () => {
 
       const data = await getUsers(); // Assuming this fetches all necessary data, including Account_status_id and Status_name.
-      
+
       console.log(data);
 
       let activeUsers = [];
       let frozenUsers = [];
-  
+
       if (data && data.$values) {
 
         // Filter users with the role 'user' and divide them into active and frozen users
-        activeUsers = data.$values
-          .filter((user: any) => user.role === 'User' && user.active);
-
-        frozenUsers = data.$values
-          .filter((user: any) => user.role === 'User' && !user.active);
+        activeUsers = data.$values.filter((user: any) => user.role === 'User' && user.active);
+        frozenUsers = data.$values.filter((user: any) => user.role === 'User' && !user.active);
       }
-  
+
       // Sort users alphabetically by username
       activeUsers.sort((a: { username: string }, b: { username: string }) => a.username.localeCompare(b.username));
       frozenUsers.sort((a: { username: string }, b: { username: string }) => a.username.localeCompare(b.username));
-  
+
       setUsers(activeUsers);
       setFrozenUsers(frozenUsers);
       setLoading(false);
     };
-  
+
     fetchData();
   }, []);
 
   // Front end rendering stuff
-  const renderFreezeButton = (userId: number, isFrozen: boolean) => (
-    <button
-      className="admin-button-freeze"
-      onClick={() => handleToggleFreeze(userId, isFrozen)}
-    >
+  const renderFreezeButton = (user_Id: number, isFrozen: boolean) => (
+    <button className="admin-button-freeze" onClick={() => handleToggleFreeze(user_Id, isFrozen)}>
       {isFrozen ? <Unfreeze /> : <Freeze />}
     </button>
   );
@@ -108,10 +102,7 @@ const AdminDashboard: React.FC = () => {
   );
 
   const renderDeleteButton = (userId: number) => (
-    <button
-      className="admin-button-delete"
-      onClick={() => handleDeleteUser(userId)} // Pass userId to the delete handler
-    >
+    <button className="admin-button-delete" onClick={() => handleDeleteUser(userId)}>
       <Delete />
     </button>
   );
@@ -147,8 +138,8 @@ const AdminDashboard: React.FC = () => {
             </div>
           </div>
           <div className='admin-button-container-delete-freeze mt-20'>
-            {renderFreezeButton(card.user_id, card.isFrozen)}
-            {renderDeleteButton(card.user_id)}
+            {renderFreezeButton(card.$id, !card.active)}
+            {renderDeleteButton(card.user_Id)}
           </div>
         </div>
       </div>
@@ -163,7 +154,7 @@ const AdminDashboard: React.FC = () => {
         <div className='transactions-usertype'>{account.accountStatus}</div>
       </div>
       <div className='frozen-count-red'>
-        {renderFreezeButton(account.user_id, account.isFrozen)}
+        {renderFreezeButton(account.$id, account.active === false)}
       </div>
     </div>
   );
@@ -184,7 +175,7 @@ const AdminDashboard: React.FC = () => {
     }
   };
 
-  
+
 
   return (
     <div className='page-background'>
