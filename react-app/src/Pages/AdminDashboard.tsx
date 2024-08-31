@@ -7,6 +7,7 @@ import { deleteUser, getUsers } from '../Services/userService';
 import logo from '../assets/logo2.png';
 
 import { ReactComponent as EonsBlack } from '../assets/eons-black.svg';
+import { ReactComponent as RandBlack } from '../assets/rand-black.svg';
 import { ReactComponent as Delete } from '../assets/delete.svg'
 import { ReactComponent as Unfreeze } from '../assets/Unfreeze.svg'
 import { ReactComponent as Freeze } from '../assets/Freeze.svg'
@@ -18,6 +19,8 @@ const AdminDashboard: React.FC = () => {
 
   // Variables
   const [users, setUsers] = useState<any[]>([]);
+  const [amountInWallet, setAmountInWallet] = useState(0);
+  const [randAmountInWallet, setRandAmountInWallet] = useState(0);
   const [frozenUsers, setFrozenUsers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -27,22 +30,22 @@ const AdminDashboard: React.FC = () => {
     try {
       const apiEndpoint = isFrozen ? 'Unfreeze' : 'Freeze';
       const url = `http://localhost:5219/api/Account/${apiEndpoint}/${user_id}`;
-  
+
       // Make the API call to update the backend
       await axios.post(url);
-  
+
       if (isFrozen) {
         // Unfreezing the user
         const userToUnfreeze = frozenUsers.find(user => user.$id === user_id);
         if (userToUnfreeze) {
-          setFrozenUsers(frozenUsers.filter(user => user.$id !== user_id)); 
+          setFrozenUsers(frozenUsers.filter(user => user.$id !== user_id));
           setUsers([...users, { ...userToUnfreeze, active: true }].sort((a, b) => a.username.localeCompare(b.username)));
         }
       } else {
         // Freezing the user
         const userToFreeze = users.find(user => user.$id === user_id);
         if (userToFreeze) {
-          setUsers(users.filter(user => user.$id !== user_id)); 
+          setUsers(users.filter(user => user.$id !== user_id));
           setFrozenUsers([...frozenUsers, { ...userToFreeze, active: false }].sort((a, b) => a.username.localeCompare(b.username)));
         }
       }
@@ -50,7 +53,7 @@ const AdminDashboard: React.FC = () => {
       console.error('Error toggling freeze status:', error);
     }
   };
-  
+
 
 
   // Delete user
@@ -61,24 +64,44 @@ const AdminDashboard: React.FC = () => {
 
 
   // Fetch all users and display them
+  // Fetch all users and display them
+  // Fetch all users and display them
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await getUsers(); // Assuming this fetches all necessary data, including Account_status_id and Status_name.
-  
+        const data = await getUsers();
+
         let activeUsers = [];
         let frozenUsers = [];
-  
+
         if (data && data.$values) {
-          // Filter users with the role 'user' and divide them into active and frozen users
           activeUsers = data.$values.filter((user: any) => user.role === 'User' && user.active);
           frozenUsers = data.$values.filter((user: any) => user.role === 'User' && !user.active);
+
+          // Fetch wallet amounts for each user
+          for (const user of activeUsers) {
+            // Use either `user.user_id` or `user.$id` if `user_id` is missing
+            const userId = user.user_id || user.$id;  // Fallback to `$id` if `user_id` is not available
+
+            if (userId) {
+              try {
+                console.log(`Fetching wallet data for user ID: ${userId}`);
+                const response = await axios.get(`http://localhost:5219/api/Account/ByUserId/${userId}`);
+                user.amountInWallet = response.data.balance;
+                user.randAmountInWallet = response.data.randBalance;
+              } catch (error) {
+                console.error(`Error fetching wallet data for user ID ${userId}:`, error);
+              }
+            } else {
+              console.warn('User object is missing user_id and $id:', user);
+            }
+          }
         }
-  
+
         // Sort users alphabetically by username
         activeUsers.sort((a: { username: string }, b: { username: string }) => a.username.localeCompare(b.username));
         frozenUsers.sort((a: { username: string }, b: { username: string }) => a.username.localeCompare(b.username));
-  
+
         setUsers(activeUsers);
         setFrozenUsers(frozenUsers);
       } catch (error) {
@@ -87,11 +110,13 @@ const AdminDashboard: React.FC = () => {
         setLoading(false);
       }
     };
-  
+
     fetchData();
-  }, []);  // Depend on [] to only run on mount
-  
-  
+  }, []);
+
+
+
+
   // Front end rendering stuff
   const renderFreezeButton = (user_id: number, isFrozen: boolean) => (
     <button className="admin-button-freeze" onClick={() => handleToggleFreeze(user_id, isFrozen)}>
@@ -134,10 +159,16 @@ const AdminDashboard: React.FC = () => {
         </div>
         <div className="admin-card-body">
           <div className='card-container'>
-            <div>
+            <div className='d-flex align-item-center'>
               <EonsBlack />
               <div className='cardbalance'>
-                {card.balance || 'N/A'}
+                {card.amountInWallet}
+              </div>
+            </div>
+            <div className='d-flex align-item-center mt-20'>
+              <RandBlack />
+              <div className='cardbalance'>
+                {card.randAmountInWallet}
               </div>
             </div>
           </div>
@@ -149,6 +180,7 @@ const AdminDashboard: React.FC = () => {
       </div>
     </Col>
   );
+
 
   const renderFrozenAccount = (account: any, index: number) => (
     <div key={index} className='transactions-row' style={{ backgroundColor: getRoleColor(account.accountStatus) }}>

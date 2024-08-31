@@ -69,6 +69,13 @@ namespace TraderaBackend.Controllers
                 return BadRequest();
             }
 
+            var existingAccount = await _context.Accounts.AsNoTracking().FirstOrDefaultAsync(a => a.Account_id == id);
+            if (existingAccount == null)
+            {
+                return NotFound();
+            }
+
+            // If needed, manually update the tracked entity
             _context.Entry(account).State = EntityState.Modified;
 
             try
@@ -121,7 +128,7 @@ namespace TraderaBackend.Controllers
         [HttpPost("Freeze/{user_id}")]
         public async Task<IActionResult> FreezeAccount(int user_id)
         {
-            var account = await _context.Accounts.FirstOrDefaultAsync(a => a.User_id == user_id);
+            var account = await _context.Accounts.AsNoTracking().FirstOrDefaultAsync(a => a.User_id == user_id);
             if (account == null)
             {
                 return NotFound();
@@ -140,7 +147,7 @@ namespace TraderaBackend.Controllers
         [HttpPost("Unfreeze/{user_id}")]
         public async Task<IActionResult> UnfreezeAccount(int user_id)
         {
-            var account = await _context.Accounts.FirstOrDefaultAsync(a => a.User_id == user_id);
+            var account = await _context.Accounts.AsNoTracking().FirstOrDefaultAsync(a => a.User_id == user_id);
             if (account == null)
             {
                 return NotFound();
