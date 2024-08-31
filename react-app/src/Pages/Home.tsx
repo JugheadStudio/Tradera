@@ -165,12 +165,6 @@ function Home() {
     return () => clearInterval(interval); // Clean up interval on component unmount
   }, []);
 
-  interface PriceData {
-    currentPrice: number;
-    highestPrice: number;
-    lowestPrice: number;
-  }
-
   const setCurrentPriceDetails = (currentPriceDetails: PriceData) => {
     setPriceData(currentPriceDetails);
   }

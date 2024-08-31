@@ -4,16 +4,7 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-function DonutChart() {
-  const data = {
-    datasets: [{
-      data: [80, 20],
-      backgroundColor: ['#9CCDDC', '#1A191E'],
-      borderWidth: 0,
-      borderRadius: 20,
-    }],
-  };
-
+function DonutChart({ data, upgradeEligible, onUpgrade }) {
   const options = {
     cutout: '80%',
     responsive: true,
@@ -40,7 +31,7 @@ function DonutChart() {
       ctx.textBaseline = 'middle';
       ctx.fillStyle = '#FFFFFF';
 
-      const text = '20';
+      const text = `${data.datasets[0].data[0]}`;
       const textX = Math.round((width - ctx.measureText(text).width) / 2);
       const textY = height / 2;
 
@@ -51,7 +42,17 @@ function DonutChart() {
 
   return (
     <div style={{ width: '200px', height: '200px' }}>
-      <Doughnut data={data} options={options} plugins={plugins} />
+      {upgradeEligible ? (
+        <button onClick={onUpgrade} style={{
+          width: '100%', height: '100%', backgroundColor: '#4CAF50',
+          border: 'none', borderRadius: '50%', color: 'white',
+          fontSize: '20px', cursor: 'pointer'
+        }}>
+          Upgrade Now
+        </button>
+      ) : (
+        <Doughnut data={data} options={options} plugins={plugins} />
+      )}
     </div>
   );
 }

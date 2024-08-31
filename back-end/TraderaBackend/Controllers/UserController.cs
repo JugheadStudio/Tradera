@@ -136,7 +136,7 @@ namespace TraderaBackend.Controllers
                 {
                     Username = otpDto.Username,
                     Email = otpDto.Email,
-                    Role = "Traveler",
+                    Role = "User",
                     Created_at = DateTime.UtcNow
                 };
 

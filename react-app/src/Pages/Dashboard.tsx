@@ -18,7 +18,7 @@ import DonutChart from '../Components/DonutChart';
 
 function Dashboard() {
 
-  // currently logged in users id
+  // currently logged in user's id
   const [loggedUserId, setLoggedUserId] = useState(0);
 
   const [amountInWallet, setAmountInWallet] = useState(0);
@@ -26,22 +26,32 @@ function Dashboard() {
   const [activeOrNo, setActiveOrNo] = useState(true);
   const [transactionHistory, setTransactionHistory] = useState();
   const [totalTransactions, setTotalTransactions] = useState(0);
+  const [currentTier, setCurrentTier] = useState(1);
+  const [currentTierText, setCurrentTierText] = useState("");
+
+  const [upgradeEligible, setUpgradeEligible] = useState(false);
 
   const [transactionFee, setTransactionFee] = useState(0);
 
   const [depositAmount, setDepositAmount] = useState(0);
-  const [withdrawAmount, setWithdrawAmount] = useState(0); 
+  const [withdrawAmount, setWithdrawAmount] = useState(0);
 
   const [toAccount, setToAccount] = useState(0);
   const [transferAmount, setTransferAmount] = useState(0);
+
+  const upgradeRequirements: Record<number, { eons: number; transactions: number }> = {
+    1: { eons: 5000, transactions: 10 }, // Traveller to Explorer
+    2: { eons: 20000, transactions: 50 }, // Explorer to Voyager
+    3: { eons: 50000, transactions: 100 }, // Voyager to Precursor
+  };
 
   // Fetch user ID from session storage when component mounts
   useEffect(() => {
     const userIdFromSession = sessionStorage.getItem("user_id");
     setLoggedUserId(userIdFromSession ? parseInt(userIdFromSession) : 0);
-  }, []); 
+  }, []);
 
-  // Fetches account details whenever loggedUserId changes
+  // Fetch account details whenever loggedUserId changes
   useEffect(() => {
     const fetchUserData = async () => {
       if (loggedUserId > 0) {
@@ -54,22 +64,28 @@ function Dashboard() {
           setAmountInWallet(userData.balance);
           setRandAmountInWallet(userData.randBalance);
           setActiveOrNo(userData.active);
+          setCurrentTier(userData.account_status_id);
 
-          if (userData.account_status_id === 1) {
-            setTransactionFee(5);
-            console.log("Account status is Traveller.");
-
-          } else if (userData.account_status_id === 2) {
-            setTransactionFee(20);
-            console.log("Account status is Explorer.");
-
-          } else if (userData.account_status_id === 3) {
-            setTransactionFee(17);
-            console.log("Account status is Voyager.");
-
-          } else {
-            setTransactionFee(12);
-            console.log("Account status is Precursor.");
+          switch (userData.account_status_id) {
+            case 1:
+              setTransactionFee(5);
+              setCurrentTierText("Traveller");
+              console.log("Account status is Traveller.");
+              break;
+            case 2:
+              setTransactionFee(20);
+              setCurrentTierText("Explorer");
+              console.log("Account status is Explorer.");
+              break;
+            case 3:
+              setTransactionFee(17);
+              setCurrentTierText("Voyager");
+              console.log("Account status is Voyager.");
+              break;
+            default:
+              setTransactionFee(12);
+              setCurrentTierText("Precursor");
+              console.log("Account status is Precursor.");
           }
 
           console.log("Account data fetched successfully");
@@ -83,24 +99,34 @@ function Dashboard() {
     };
 
     fetchUserData();
-  }, [loggedUserId]); // This runs whenever loggedUserId changes
+  }, [loggedUserId]);
 
-  // gets the users transaction history on init
+  // Check upgrade eligibility when relevant values change
+  useEffect(() => {
+    if (currentTier < 4) {
+      const { eons, transactions } = upgradeRequirements[currentTier];
+      if (amountInWallet >= eons || totalTransactions >= transactions) {
+        setUpgradeEligible(true);
+      } else {
+        setUpgradeEligible(false);
+      }
+    }
+  }, [amountInWallet, totalTransactions, currentTier]);
+
+  // Fetch the user's transaction history on init
   useEffect(() => {
     const fetchTransactionHistory = async () => {
       if (loggedUserId > 0) {
         try {
-          const response = await axios.get(`http://localhost:5219/api/Transaction/user/${sessionStorage.getItem("account_id")}`);
+          const response = await axios.get(`http://localhost:5219/api/Transaction/User/${sessionStorage.getItem("account_id")}`);
           const transactionData = response.data;
 
-          // Access the $values array to get the actual transactions
           const transactions = transactionData.$values;
 
           console.log(transactions);
           setTransactionHistory(transactions);
           console.log("Transaction history fetched successfully");
 
-          // Set the total number of transactions
           setTotalTransactions(transactions.length);
           console.log("Total transactions:", transactions.length);
 
@@ -111,7 +137,7 @@ function Dashboard() {
     };
 
     fetchTransactionHistory();
-  }, [loggedUserId]); // This runs whenever loggedUserId changes
+  }, [loggedUserId]);
 
   // Transaction functionality
   // Deposits
@@ -125,7 +151,7 @@ function Dashboard() {
     }
   };
 
-  // Withdrawls
+  // Withdrawals
   const handleWithdrawSubmit = async () => {
     try {
       const response = await axios.post(`http://localhost:5219/api/Transaction/Withdraw?accountId=${sessionStorage.getItem("account_id")}&amount=${withdrawAmount}`);
@@ -139,26 +165,44 @@ function Dashboard() {
   // Transfers
   const handleTransferSubmit = async () => {
     try {
-
-      // subtract the fee from the actual transfer
       let taxedTransferAmount = transferAmount - transactionFee;
 
-      // Check if the transfer amount is less than the fee
       if (transferAmount < transactionFee) {
         console.error('Transfer amount is less than the transaction fee. Transfer not processed.');
-        return; 
+        return;
       }
-      
+
       const response = await axios.post(`http://localhost:5219/api/Transaction/Transfer?fromAccountId=${sessionStorage.getItem("account_id")}&toAccountId=${toAccount}&amount=${taxedTransferAmount}`);
       console.log('Transfer successful:', response.data);
-      
+
       window.location.reload();
     } catch (error) {
       console.error('Error processing transfer:', error);
     }
   };
 
-  //front end
+  // when you upgrade to a new account tier
+  const handleUpgrade = async () => {
+    try {
+      const response = await axios.put(`http://localhost:5219/api/Account/Upgrade/${sessionStorage.getItem("account_id")}`);
+      console.log('Upgrade successful:', response.data);
+
+      window.location.reload();
+    } catch (error) {
+      console.error('Error upgrading account:', error);
+    }
+  };
+
+  const donutData = {
+    datasets: [{
+      data: [totalTransactions, upgradeRequirements[currentTier].transactions - totalTransactions],
+      backgroundColor: ['#9CCDDC', '#1A191E'],
+      borderWidth: 0,
+      borderRadius: 20,
+    }],
+  };
+
+  // Frontend modal control
   const [accountSettingsShow, setAccountSettingsShow] = useState(false);
   const [withdrawShow, setWithdrawShow] = useState(false);
   const [depositShow, setDepositShow] = useState(false);
@@ -166,7 +210,7 @@ function Dashboard() {
 
   const handleAccountSettingsClose = () => setAccountSettingsShow(false);
   const handleAccountSettingsShow = () => setAccountSettingsShow(true);
-  
+
   const handleWithdrawClose = () => setWithdrawShow(false);
   const handleWithdrawShow = () => setWithdrawShow(true);
 
@@ -175,6 +219,7 @@ function Dashboard() {
 
   const handleTransferClose = () => setTransferShow(false);
   const handleTransferShow = () => setTransferShow(true);
+
 
   return (
     <div className='page-background'>
@@ -192,6 +237,12 @@ function Dashboard() {
               Your Account Id: 
               <span className="active">
                 {sessionStorage.getItem("account_id")}
+              </span>
+            </p>
+            <p className='account-status'>
+              Your tier: 
+              <span className="active">
+                {currentTierText}
               </span>
             </p>
           </Col>
@@ -379,15 +430,23 @@ function Dashboard() {
               <Button variant="primary" className='mb-3 w-100' onClick={handleTransferShow} disabled={!activeOrNo}><i className="fas fa-money-bill-transfer"></i> Transfer</Button>
               <Button variant="tertiary" className="w-100" onClick={handleAccountSettingsShow} disabled={!activeOrNo}><i className="fas fa-sliders"></i>Account Settings</Button>
             </div>
+            <br></br>
 
-            <div className='column-title mt-20'>
-              <span className='spesific'>Total</span> <span className='transactions'>Transactions</span>
-            </div>
-            <div className='dashboard-transactions-chart'>
-              <DonutChart/>
-
-              <p className='mt-20 mb-0'>Next Tier 20/50</p>
-            </div>
+          {/* upgrade chart / button */}
+            <Row>
+                <div className='action-title'>
+                  <span className='spesific'>Total</span> <span className='transactions'>Transactions</span>
+                </div>
+                <div className='dashboard-transactions-chart'>
+                  <DonutChart
+                    data={donutData}
+                    upgradeEligible={upgradeEligible}
+                    onUpgrade={handleUpgrade}
+                  />
+                  <p className='mt-20 mb-0'>Next Tier {totalTransactions}/{upgradeRequirements[currentTier].transactions}</p>
+                </div>
+            </Row>
+            
           </Col>
 
         </Row>
