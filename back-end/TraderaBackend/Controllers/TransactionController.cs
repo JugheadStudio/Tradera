@@ -37,6 +37,24 @@ namespace TraderaBackend.Controllers
             return transaction;
         }
 
+        //get all transactions from a specific user
+        // GET: api/Transaction/user/{accountId}
+        [HttpGet("User/{accountId}")]
+        public async Task<ActionResult<IEnumerable<Transaction>>> GetTransactionsForUser(int accountId)
+        {
+            var transactions = await _context.Transactions
+                .Where(t => t.From_account_id == accountId || t.To_account_id == accountId)
+                .ToListAsync();
+
+            if (transactions == null || transactions.Count == 0)
+            {
+                return NotFound();
+            }
+
+            return Ok(transactions);
+        }
+
+
 
         // Deposit function for the Rands
         // POST: api/Transaction/Deposit

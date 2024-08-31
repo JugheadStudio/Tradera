@@ -25,6 +25,10 @@ function Home() {
   const [randAmountInWallet, setRandAmountInWallet] = useState(0);
   const [amountInWallet, setAmountInWallet] = useState(0);
 
+  const [transactionFee, setTransactionFee] = useState(0);
+
+  const [activeOrNo, setActiveOrNo] = useState(0);
+
   const [currentBuyAmount, setCurrentBuyAmount] = useState(0);
   
   const [currentSellAmount, setCurrentSellAmount] = useState(0);
@@ -79,6 +83,26 @@ function Home() {
           setUserInfo(userData);
           setAmountInWallet(userData.balance);
           setRandAmountInWallet(userData.randBalance);
+
+          setActiveOrNo(userData.active);
+
+          if (userData.account_status_id === 1) {
+            setTransactionFee(5);
+            console.log("Account status is Traveller.");
+
+          } else if (userData.account_status_id === 2) {
+            setTransactionFee(20);
+            console.log("Account status is Explorer.");
+
+          } else if (userData.account_status_id === 3) {
+            setTransactionFee(17);
+            console.log("Account status is Voyager.");
+
+          } else {
+            setTransactionFee(12);
+            console.log("Account status is Precursor.");
+          }
+
           console.log("Account data fetched successfully");
 
           sessionStorage.setItem("account_id", userData.account_id);
@@ -336,8 +360,8 @@ function Home() {
                 </div>
               </div>
               <div className="home-buttons">
-                <Button variant="secondary" onClick={handleBuyShow}>Buy</Button>
-                <Button variant="danger" onClick={handleSellShow}>Sell</Button>
+                <Button variant="secondary" onClick={handleBuyShow} disabled={!activeOrNo}>Buy</Button>
+                <Button variant="danger" onClick={handleSellShow} disabled={!activeOrNo}>Sell</Button>
               </div>
             </div>
 

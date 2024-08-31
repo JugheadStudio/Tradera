@@ -16,17 +16,18 @@ import { ReactComponent as EonsBlack } from '../assets/eons-black.svg';
 import { ReactComponent as RandBlack } from '../assets/rand-black.svg';
 import DonutChart from '../Components/DonutChart';
 
-// Components
-
 function Dashboard() {
 
   // currently logged in users id
   const [loggedUserId, setLoggedUserId] = useState(0);
 
-  const [userInfo, setUserInfo] = useState(null);
   const [amountInWallet, setAmountInWallet] = useState(0);
   const [randAmountInWallet, setRandAmountInWallet] = useState(0);
   const [activeOrNo, setActiveOrNo] = useState(true);
+  const [transactionHistory, setTransactionHistory] = useState();
+  const [totalTransactions, setTotalTransactions] = useState(0);
+
+  const [transactionFee, setTransactionFee] = useState(0);
 
   const [depositAmount, setDepositAmount] = useState(0);
   const [withdrawAmount, setWithdrawAmount] = useState(0); 
@@ -50,10 +51,27 @@ function Dashboard() {
 
           console.log(userData);
 
-          setUserInfo(userData);
           setAmountInWallet(userData.balance);
           setRandAmountInWallet(userData.randBalance);
           setActiveOrNo(userData.active);
+
+          if (userData.account_status_id === 1) {
+            setTransactionFee(5);
+            console.log("Account status is Traveller.");
+
+          } else if (userData.account_status_id === 2) {
+            setTransactionFee(20);
+            console.log("Account status is Explorer.");
+
+          } else if (userData.account_status_id === 3) {
+            setTransactionFee(17);
+            console.log("Account status is Voyager.");
+
+          } else {
+            setTransactionFee(12);
+            console.log("Account status is Precursor.");
+          }
+
           console.log("Account data fetched successfully");
 
           sessionStorage.setItem("account_id", userData.account_id);
@@ -65,6 +83,34 @@ function Dashboard() {
     };
 
     fetchUserData();
+  }, [loggedUserId]); // This runs whenever loggedUserId changes
+
+  // gets the users transaction history on init
+  useEffect(() => {
+    const fetchTransactionHistory = async () => {
+      if (loggedUserId > 0) {
+        try {
+          const response = await axios.get(`http://localhost:5219/api/Transaction/user/${sessionStorage.getItem("account_id")}`);
+          const transactionData = response.data;
+
+          // Access the $values array to get the actual transactions
+          const transactions = transactionData.$values;
+
+          console.log(transactions);
+          setTransactionHistory(transactions);
+          console.log("Transaction history fetched successfully");
+
+          // Set the total number of transactions
+          setTotalTransactions(transactions.length);
+          console.log("Total transactions:", transactions.length);
+
+        } catch (error) {
+          console.log('Error fetching transaction history:', error);
+        }
+      }
+    };
+
+    fetchTransactionHistory();
   }, [loggedUserId]); // This runs whenever loggedUserId changes
 
   // Transaction functionality
@@ -93,15 +139,24 @@ function Dashboard() {
   // Transfers
   const handleTransferSubmit = async () => {
     try {
-      const response = await axios.post(`http://localhost:5219/api/Transaction/Transfer?fromAccountId=${sessionStorage.getItem("account_id")}&toAccountId=${toAccount}&amount=${transferAmount}`);
+
+      // subtract the fee from the actual transfer
+      let taxedTransferAmount = transferAmount - transactionFee;
+
+      // Check if the transfer amount is less than the fee
+      if (transferAmount < transactionFee) {
+        console.error('Transfer amount is less than the transaction fee. Transfer not processed.');
+        return; 
+      }
+      
+      const response = await axios.post(`http://localhost:5219/api/Transaction/Transfer?fromAccountId=${sessionStorage.getItem("account_id")}&toAccountId=${toAccount}&amount=${taxedTransferAmount}`);
       console.log('Transfer successful:', response.data);
+      
       window.location.reload();
     } catch (error) {
       console.error('Error processing transfer:', error);
     }
   };
-
-
 
   //front end
   const [accountSettingsShow, setAccountSettingsShow] = useState(false);
@@ -120,8 +175,6 @@ function Dashboard() {
 
   const handleTransferClose = () => setTransferShow(false);
   const handleTransferShow = () => setTransferShow(true);
-
-
 
   return (
     <div className='page-background'>
@@ -321,10 +374,10 @@ function Dashboard() {
             </div>
 
             <div className='action-container'>
-              <Button variant="secondary w-100" onClick={handleWithdrawShow} className='mb-3'><i className="fas fa-wallet"></i> Withdraw</Button>
-              <Button variant="primary w-100" onClick={handleDepositShow} className='mb-3'><i className="fas fa-money-bill"></i> Deposit</Button>
-              <Button variant="primary" className='mb-3 w-100' onClick={handleTransferShow}><i className="fas fa-money-bill-transfer"></i> Transfer</Button>
-              <Button variant="tertiary" className="w-100" onClick={handleAccountSettingsShow}><i className="fas fa-sliders"></i>Account Settings</Button>
+              <Button variant="secondary w-100" onClick={handleWithdrawShow} className='mb-3' disabled={!activeOrNo}><i className="fas fa-wallet"></i> Withdraw</Button>
+              <Button variant="primary w-100" onClick={handleDepositShow} className='mb-3' disabled={!activeOrNo}><i className="fas fa-money-bill"></i> Deposit</Button>
+              <Button variant="primary" className='mb-3 w-100' onClick={handleTransferShow} disabled={!activeOrNo}><i className="fas fa-money-bill-transfer"></i> Transfer</Button>
+              <Button variant="tertiary" className="w-100" onClick={handleAccountSettingsShow} disabled={!activeOrNo}><i className="fas fa-sliders"></i>Account Settings</Button>
             </div>
 
             <div className='column-title mt-20'>
@@ -401,6 +454,7 @@ function Dashboard() {
                   onClick={() => {
                     handleWithdrawSubmit();
                   }}
+                  disabled={!activeOrNo}
                   >
                     Withdraw
                   </Button>
@@ -437,7 +491,7 @@ function Dashboard() {
                   <br></br>
                   <Button variant="primary" onClick={() => {
                     handleDepositSubmit();
-                  }}>
+                  }} disabled={!activeOrNo}>
                     Deposit
                   </Button>
                 </Col>
@@ -462,6 +516,15 @@ function Dashboard() {
             <Container fluid>
               <Row>
                 <Col xs={12} className='pl-0 pr-0'>
+
+                  <label htmlFor='transactionFee' className='input-label'>Transaction fee: </label>
+                  <input
+                    type='number'
+                    className='form-control'
+                    id="transactionFee"
+                    value={transactionFee}
+                  />
+
                   <label htmlFor='toAccount' className='input-label'>To Account</label>
                   <input 
                     type='number' 
@@ -487,6 +550,7 @@ function Dashboard() {
           <Modal.Footer>
             <Button variant="primary" 
               onClick={() => {handleTransferSubmit();}}
+              disabled={!activeOrNo}
             >
               Send
             </Button>

@@ -90,6 +90,40 @@ namespace TraderaBackend.Controllers
             return NoContent();
         }
 
+        // Upgrade account status to the next level
+        [HttpPut("Upgrade/{id}")]
+        public async Task<IActionResult> UpgradeAccount(int id)
+        {
+            // Retrieve the account from the database
+            var account = await _context.Accounts.FindAsync(id);
+
+            if (account == null)
+            {
+                return NotFound();
+            }
+
+            // Check if the account status id is not 4 before upgrading
+            if (account.Account_status_id < 4)
+            {
+                account.Account_status_id += 1; // Increment the account status id
+
+                _context.Entry(account).State = EntityState.Modified;
+
+                try
+                {
+                    await _context.SaveChangesAsync();
+                    return NoContent(); // Return success response if upgrade was successful
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    throw;
+                }
+            }
+
+            return NoContent(); // Return success response if the status was not incremented because it's already 4
+        }
+
+
         // POST: api/Account
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
