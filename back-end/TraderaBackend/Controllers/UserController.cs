@@ -203,7 +203,7 @@ namespace TraderaBackend.Controllers
             }
 
             var user = await _context.Users
-                                    .Include(u => u.UserSecurity) // Ensure related data is loaded
+                                    .Include(u => u.UserSecurity)
                                     .FirstOrDefaultAsync(u => u.Email == userDto.Email);
 
             if (user == null || !BCrypt.Net.BCrypt.Verify(userDto.Password, user.UserSecurity?.Password_hash))
@@ -211,8 +211,68 @@ namespace TraderaBackend.Controllers
                 return Unauthorized("Invalid credentials");
             }
 
+            // Convert IPAddress to string
+            var ipAddress = HttpContext.Connection.RemoteIpAddress?.ToString();
+
+            // Capture login time, IP address, and device info
+            var authLog = new AuthLog
+            {
+                User_id = user.User_id,
+                User = user,
+                Login_time = DateTime.UtcNow,
+                Ip_address = ipAddress, // Store as string
+                Device_info = Request.Headers["User-Agent"].ToString()
+            };
+
+            try
+            {
+                _context.AuthLogs.Add(authLog);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error saving AuthLog entry for user {UserId}", user.User_id);
+                return StatusCode(500, "Internal Server Error: " + ex.Message);
+            }
+
             return Ok(user);
         }
+
+        [HttpPost("logout")]
+        public async Task<IActionResult> LogoutUser([FromBody] int userId)
+        {
+            // Find the most recent AuthLog entry for the user
+            var authLog = await _context.AuthLogs
+                                        .Where(log => log.User_id == userId)
+                                        .OrderByDescending(log => log.Login_time)
+                                        .FirstOrDefaultAsync();
+
+            if (authLog == null)
+            {
+                _logger.LogWarning("No active login found for user {UserId}", userId);
+                return NotFound("No active login found for this user.");
+            }
+
+            // Update the Logout_time with the current time
+            authLog.Logout_time = DateTime.UtcNow;
+
+            try
+            {
+                _context.AuthLogs.Update(authLog);
+                await _context.SaveChangesAsync();
+                _logger.LogInformation("Logout time recorded for user {UserId}", userId);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error updating logout time for user {UserId}", userId);
+                return StatusCode(500, "Internal Server Error: " + ex.Message + " - " + ex.InnerException?.Message);
+            }
+
+            return Ok("User logged out successfully.");
+        }
+
+
+
 
         // DELETE: api/User/5
         [HttpDelete("{id}")]

@@ -1,4 +1,3 @@
-// src/components/Sidebar.js
 import React from 'react';
 import { Button, Nav } from 'react-bootstrap';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
@@ -7,21 +6,41 @@ import { ReactComponent as NavLogo } from '../assets/logo.svg';
 import profile from '../assets/profile.png';
 
 const Sidebar = () => {
-  const { username, role } = useUser(); // Access the username and role from the context
+  const { userId, username, role } = useUser(); // Access the userId, username, and role from the context
   const { setUserId, setUsername } = useUser(); // Access setUserId to nullify on logout
   const location = useLocation();
   const navigate = useNavigate(); // Hook to navigate programmatically
 
-  const handleSignOut = () => {
-    // Clear user context or any other global state or storage mechanism you use
-    setUserId(null);
-    setUsername(null);
-    
-    // Optional: Clear any local storage or session storage if used
-    localStorage.removeItem('userToken'); // Adjust based on your actual storage key
+  const handleSignOut = async () => {
+    try {
+        // Make the API call to log out
+        const response = await fetch('http://localhost:5219/api/user/logout', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(userId), // Send the userId to the backend
+        });
 
-    // Navigate to the login page or home page
-    navigate('/');
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        // Clear user context or any other global state or storage mechanism you use
+        setUserId(null);
+        setUsername(null);
+        
+        // Optional: Clear any local storage or session storage if used
+        localStorage.removeItem('userToken'); // Adjust based on your actual storage key
+
+        // Navigate to the login page or home page
+        navigate('/');
+        
+        console.log('User logged out successfully');
+    } catch (error) {
+        console.error('Logout error:', error);
+        // Optionally, you can show an error message to the user
+    }
   };
 
   return (
@@ -61,7 +80,6 @@ const Sidebar = () => {
         </Nav.Link>
       </Nav>
 
-      {/* Conditionally render Admin section based on the user's role */}
       {role === 'Admin' && (
         <>
           <div className='sidenav-headings'>
