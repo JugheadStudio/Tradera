@@ -10,6 +10,16 @@ import { ReactComponent as EonsGrey } from "../assets/eons-grey.svg";
 import { ReactComponent as RandGrey } from "../assets/rand-icon.svg";
 import PriceChart from "../Components/PriceChart";
 
+interface Transaction {
+  transaction_id: number;
+  amount: number;
+  randAmount: number;
+  transaction_type: 'Buy' | 'Sell' | 'Deposit' | 'Withdrawal' | 'Transfer';
+  timestamp: string;
+  trom_account_id?: number;
+  to_account_id?: number;
+}
+
 function Home() {
 
   const [chartData, setChartData] = useState([]);
@@ -41,6 +51,7 @@ function Home() {
   const [withdrawShow, setWithdrawShow] = useState(false);
   const [paymentShow, setPaymentShow] = useState(false);
 
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
 
   // buy and sell open and close
   const handleBuyClose = () => setBuyShow(false);
@@ -68,6 +79,25 @@ function Home() {
     const accountIdFromSession = sessionStorage.getItem("account_id");
     setLoggedAccountId(accountIdFromSession ? parseInt(accountIdFromSession) : 0);
   }, []); 
+
+  // Pull transactions from database 
+  useEffect(() => {
+    axios.get('http://localhost:5219/api/Transaction')
+      .then(response => {
+        const data = response.data;
+        // Access the array under $values
+        const transactionsArray = data.$values || [];
+
+        // Log the entire array and its content
+        console.log("data: ", transactionsArray);
+        
+        setTransactions(transactionsArray);
+      })
+      .catch(err => {
+        console.error("Failed to fetch transactions", err);
+        setTransactions([]);
+      });
+  }, []);
 
 
   // Fetches account details
@@ -193,7 +223,7 @@ function Home() {
             </div>
 
             <div className='column-title mt-20'>
-              <span className='spesific'>Trade</span> <span className='transactions'>History</span>
+              <span className='spesific'>Transaction</span> <span className='transactions'>History</span>
             </div>
 
             <div className='home-transactions-row-headings'>
@@ -206,127 +236,34 @@ function Home() {
               </div>
 
               <div>
-                <p>Total</p>
-              </div>
-
-              <div>
                 <p>Eons</p>
               </div>
             </div>
 
-            <div className='home-transactions-row'>
-              <div>
-                <p><strong>Sell</strong></p>
-              </div>
+            <div className='home-transactions'>
+              {transactions
+                .filter(transaction => transaction.transaction_type === 'Buy' || transaction.transaction_type === 'Sell')
+                .reverse()
+                .slice(0, 6)
+                .map((transaction, index) => (
+                  <div key={index} className='home-transactions-row'>
+                    <div>
+                      <p><strong>{transaction.transaction_type}</strong></p>
+                    </div>
 
-              <div>
-                <p className="text-grey">R 112</p>
-              </div>
+                    <div>
+                      <p className="text-grey">R {transaction.randAmount.toFixed(2)}</p>
+                    </div>
 
-              <div>
-                <p className="text-grey">R 15,500</p>
-              </div>
-
-              <div className='home-transactions-count-red'>
-                <p>55</p>
-                <EonsRed/>
-              </div>
+                    <div className={transaction.transaction_type === 'Buy' ? 'home-transactions-count-green' : 'home-transactions-count-red'}>
+                      <p>{transaction.amount}</p>
+                      {transaction.transaction_type === 'Buy' ? <EonsGreen /> : <EonsRed />}
+                    </div>
+                  </div>
+                ))}
             </div>
 
-            <div className='home-transactions-row'>
-              <div>
-                <p><strong>Buy</strong></p>
-              </div>
 
-              <div>
-                <p className="text-grey">R 112</p>
-              </div>
-
-              <div>
-                <p className="text-grey">R 15,500</p>
-              </div>
-
-              <div className='home-transactions-count-green'>
-                <p>55</p>
-                <EonsGreen/>
-              </div>
-            </div>
-
-            <div className='home-transactions-row'>
-              <div>
-                <p><strong>Sell</strong></p>
-              </div>
-
-              <div>
-                <p className="text-grey">R 112</p>
-              </div>
-
-              <div>
-                <p className="text-grey">R 15,500</p>
-              </div>
-
-              <div className='home-transactions-count-red'>
-                <p>55</p>
-                <EonsRed/>
-              </div>
-            </div>
-
-            <div className='home-transactions-row'>
-              <div>
-                <p><strong>Buy</strong></p>
-              </div>
-
-              <div>
-                <p className="text-grey">R 112</p>
-              </div>
-
-              <div>
-                <p className="text-grey">R 15,500</p>
-              </div>
-
-              <div className='home-transactions-count-green'>
-                <p>55</p>
-                <EonsGreen/>
-              </div>
-            </div>
-
-            <div className='home-transactions-row'>
-              <div>
-                <p><strong>Sell</strong></p>
-              </div>
-
-              <div>
-                <p className="text-grey">R 112</p>
-              </div>
-
-              <div>
-                <p className="text-grey">R 15,500</p>
-              </div>
-
-              <div className='home-transactions-count-red'>
-                <p>55</p>
-                <EonsRed/>
-              </div>
-            </div>
-
-            <div className='home-transactions-row'>
-              <div>
-                <p><strong>Buy</strong></p>
-              </div>
-
-              <div>
-                <p className="text-grey">R 112</p>
-              </div>
-
-              <div>
-                <p className="text-grey">R 15,500</p>
-              </div>
-
-              <div className='home-transactions-count-green'>
-                <p>55</p>
-                <EonsGreen/>
-              </div>
-            </div>
           </Col>
 
           <Col xs={5}>
