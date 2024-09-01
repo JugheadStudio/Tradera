@@ -31,11 +31,6 @@ function DonutChart({ data, upgradeEligible, onUpgrade }) {
       ctx.textBaseline = 'middle';
       ctx.fillStyle = '#FFFFFF';
 
-      const text = `${data.datasets[0].data[0]}`;
-      const textX = Math.round((width - ctx.measureText(text).width) / 2);
-      const textY = height / 2;
-
-      ctx.fillText(text, textX, textY);
       ctx.save();
     }
   }];
