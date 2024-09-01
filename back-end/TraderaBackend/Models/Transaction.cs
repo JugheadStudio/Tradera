@@ -17,6 +17,9 @@ public class Transaction
     public int Amount { get; set; }
 
     [Required]
+    public int RandAmount { get; set; }
+
+    [Required]
     public DateTime Timestamp { get; set; }
 
     // Nullable foreign keys for transactions

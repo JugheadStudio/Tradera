@@ -37,6 +37,26 @@ namespace TraderaBackend.Controllers
             return transaction;
         }
 
+        //get all transactions from a specific user
+        // GET: api/Transaction/user/{accountId}
+        [HttpGet("User/{accountId}")]
+        public async Task<ActionResult<IEnumerable<Transaction>>> GetTransactionsForUser(int accountId)
+        {
+            var transactions = await _context.Transactions
+                .Where(t => t.From_account_id == accountId || t.To_account_id == accountId)
+                .ToListAsync();
+
+            if (transactions == null || transactions.Count == 0)
+            {
+                return NotFound();
+            }
+
+            return Ok(transactions);
+        }
+
+
+
+        // Deposit function for the Rands
         // POST: api/Transaction/Deposit
         [HttpPost("Deposit")]
         public async Task<IActionResult> Deposit(int accountId, int amount)
@@ -48,14 +68,17 @@ namespace TraderaBackend.Controllers
                 return NotFound();
             }
 
-            account.Balance += amount;
+            account.RandBalance += amount;
 
             _context.Entry(account).State = EntityState.Modified;
 
             // Create the transaction
             var transaction = new Transaction
             {
-                Amount = amount,
+                //Rand amount is for zar
+                //Amount is for eons
+                RandAmount = amount,
+                Amount = 0,
                 Transaction_type = "Deposit",
                 Timestamp = DateTime.UtcNow, // Use UTC now
                 FromAccount = null, // No FromAccount for a deposit
@@ -83,6 +106,7 @@ namespace TraderaBackend.Controllers
             return NoContent();
         }
 
+        // Withdraw function for the Rands
         // POST: api/Transaction/Withdraw
         [HttpPost("Withdraw")]
         public async Task<IActionResult> Withdraw(int accountId, int amount)
@@ -99,14 +123,17 @@ namespace TraderaBackend.Controllers
                 return BadRequest("Insufficient balance");
             }
 
-            account.Balance -= amount;
+            account.RandBalance -= amount;
 
             _context.Entry(account).State = EntityState.Modified;
 
             // Create the transaction
             var transaction = new Transaction
             {
-                Amount = amount,
+                //Rand amount is for zar
+                //Amount is for eons
+                RandAmount = amount,
+                Amount = 0,
                 Transaction_type = "Withdrawal",
                 Timestamp = DateTime.UtcNow, // Use UTC now
                 FromAccount = account,  // The account from which the funds are withdrawn
@@ -134,6 +161,110 @@ namespace TraderaBackend.Controllers
             return NoContent();
         }
 
+        // |||||EONS functionality|||||
+        // Buy
+        // POST: api/Transaction/Buy
+        [HttpPost("Buy")]
+        public async Task<IActionResult> Buy(int accountId, int randAmount, int eonAmount)
+        {
+            var account = await _context.Accounts.FindAsync(accountId);
+
+            if (account == null)
+            {
+                return NotFound();
+            }
+
+            account.RandBalance -= randAmount;
+            account.Balance += eonAmount;
+
+            _context.Entry(account).State = EntityState.Modified;
+
+            // Create the transaction
+            var transaction = new Transaction
+            {
+                //Rand amount is for zar
+                //Amount is for eons
+                Amount = eonAmount,
+                RandAmount = randAmount,
+                Transaction_type = "Buy",
+                Timestamp = DateTime.UtcNow, // Use UTC now
+                FromAccount = null, // No FromAccount for buying
+                ToAccount = account  // The account receiving the deposit
+            };
+
+            _context.Transactions.Add(transaction);
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!AccountExists(accountId))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    return BadRequest("Concurrency exception occurred");
+                }
+            }
+
+            return NoContent();
+        }
+
+        // Sell
+        // POST: api/Transaction/Sell
+        [HttpPost("Sell")]
+        public async Task<IActionResult> Sell(int accountId, int randAmount, int eonAmount)
+        {
+            var account = await _context.Accounts.FindAsync(accountId);
+
+            if (account == null)
+            {
+                return NotFound();
+            }
+
+            account.RandBalance += randAmount;
+            account.Balance -= eonAmount;
+
+            _context.Entry(account).State = EntityState.Modified;
+
+            // Create the transaction
+            var transaction = new Transaction
+            {
+                //Rand amount is for zar
+                //Amount is for eons
+                Amount = eonAmount,
+                RandAmount = randAmount,
+                Transaction_type = "Sell",
+                Timestamp = DateTime.UtcNow, // Use UTC now
+                FromAccount = account, // No FromAccount for buying
+                ToAccount = null  // The account receiving the deposit
+            };
+
+            _context.Transactions.Add(transaction);
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!AccountExists(accountId))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    return BadRequest("Concurrency exception occurred");
+                }
+            }
+
+            return NoContent();
+        }
+
+        // Transfer Eons
         // POST: api/Transaction/Transfer
         [HttpPost("Transfer")]
         public async Task<IActionResult> Transfer(int fromAccountId, int toAccountId, int amount)
@@ -161,6 +292,9 @@ namespace TraderaBackend.Controllers
             // Create the transaction
             var transaction = new Transaction
             {
+                //Rand amount is for zar
+                //Amount is for eons
+                RandAmount = 0,
                 Amount = amount,
                 Transaction_type = "Transfer",
                 Timestamp = DateTime.UtcNow, // Use UTC now

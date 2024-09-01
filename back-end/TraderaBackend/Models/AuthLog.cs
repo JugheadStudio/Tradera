@@ -15,7 +15,7 @@ public class AuthLog
 
     public DateTime Logout_time { get; set; }
 
-    public required IPAddress Ip_address { get; set; }
+    public required string Ip_address { get; set; }
 
     public required string Device_info { get; set; }
 
