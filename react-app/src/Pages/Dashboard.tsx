@@ -148,7 +148,11 @@ function Dashboard() {
     try {
       const response = await axios.post(`http://localhost:5219/api/Transaction/Deposit?accountId=${sessionStorage.getItem("account_id")}&amount=${depositAmount}`);
       console.log('Deposit successful:', response.data);
-      window.location.reload();
+
+      // Set success message and show modal
+      setSuccessMessage("Deposit has been successfully completed!");
+      setShowSuccessModal(true);
+
     } catch (error) {
       console.error('Error processing deposit:', error);
     }
@@ -159,7 +163,11 @@ function Dashboard() {
     try {
       const response = await axios.post(`http://localhost:5219/api/Transaction/Withdraw?accountId=${sessionStorage.getItem("account_id")}&amount=${withdrawAmount}`);
       console.log('Withdrawal successful:', response.data);
-      window.location.reload();
+
+      // Set success message and show modal
+      setSuccessMessage("Withdrawal has been successfully completed!");
+      setShowSuccessModal(true);
+
     } catch (error) {
       console.error('Error processing withdrawal:', error);
     }
@@ -240,7 +248,7 @@ function Dashboard() {
         {/* Success Modal */}
         <Modal show={showSuccessModal} onHide={handleCloseModal}>
           <Modal.Header closeButton>
-            <Modal.Title>Transfer completed</Modal.Title>
+            <Modal.Title>Operation Completed</Modal.Title>
           </Modal.Header>
           <Modal.Body>{successMessage}</Modal.Body>
           <Modal.Footer>
