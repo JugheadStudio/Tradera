@@ -42,6 +42,11 @@ function Dashboard() {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
 
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+
   const upgradeRequirements: Record<number, { eons: number; transactions: number }> = {
     1: { eons: 5000, transactions: 10 }, // Traveller to Explorer
     2: { eons: 20000, transactions: 50 }, // Explorer to Voyager
@@ -213,6 +218,27 @@ function Dashboard() {
       console.error('Error upgrading account:', error);
     }
   };
+
+  // Handle updating account settings
+  const handleUpdateAccountSettings = async () => {
+    try {
+      const updateUser = {
+        UserId: loggedUserId,
+        Username: username,
+        Email: email,
+        Password: password, // Include this only if the user is changing their password
+      };
+
+      await axios.put(`http://localhost:5219/api/User/${loggedUserId}`, updateUser);
+      
+      setSuccessMessage("Account settings updated successfully!");
+      setShowSuccessModal(true);
+      handleAccountSettingsClose();
+    } catch (error) {
+      console.error('Error updating account settings:', error);
+    }
+  };
+
 
   const donutData = {
     datasets: [{
@@ -493,28 +519,46 @@ function Dashboard() {
             <Container fluid>
               <Row>
                 <Col xs={6} className='pl-0'>
-                  <label htmlFor='usename' className='input-label'>Username</label>
-                  <input type='text' className='form-control' id='accountSettingsUsername' placeholder='Han Solo' />
+                  <label htmlFor='username' className='input-label'>Username</label>
+                  <input 
+                    type='text' 
+                    className='form-control' 
+                    id='accountSettingsUsername' 
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)} 
+                  />
                 </Col>
               </Row>
 
               <Row className='mt-20'>
                 <Col xs={6} className='pl-0'>
                   <label htmlFor='email' className='input-label'>Email address</label>
-                  <input type='email' className='form-control' id='accountSettingsEmail' placeholder='test@test.com' />
+                  <input 
+                    type='email' 
+                    className='form-control' 
+                    id='accountSettingsEmail' 
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)} 
+                  />
                 </Col>
 
                 <Col xs={6} className='pr-0'>
                   <label htmlFor='password' className='input-label'>Password</label>
-                  <input type='password' className='form-control' id='accountSettingsPassword' placeholder='Password' />
+                  <input 
+                    type='password' 
+                    className='form-control' 
+                    id='accountSettingsPassword' 
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)} 
+                  />
                 </Col>
               </Row>
             </Container>
           </Modal.Body>
 
           <Modal.Footer>
-            <Button variant="primary" onClick={handleAccountSettingsClose}>
-              Edit
+            <Button variant="primary" onClick={handleUpdateAccountSettings}>
+              Save Changes
             </Button>
             <Button variant="danger" onClick={handleAccountSettingsClose}>
               Close

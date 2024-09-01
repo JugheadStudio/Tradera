@@ -68,13 +68,35 @@ namespace TraderaBackend.Controllers
         }
 
         // PUT: api/User/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        // Updated to use UserUpdateDto for receiving user data from the frontend.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutUser(int id, User user)
+        public async Task<IActionResult> PutUser(int id, UserUpdateDto updateUserDto)
         {
-            if (id != user.User_id)
+            
+            if (id != updateUserDto.UserId)
             {
-                return BadRequest();
+                return BadRequest("User ID mismatch.");
+            }
+
+            
+            var user = await _context.Users
+                                     .Include(u => u.UserSecurity)
+                                     .FirstOrDefaultAsync(u => u.User_id == id);
+
+            if (user == null)
+            {
+                return NotFound("User not found.");
+            }
+
+            
+            user.Username = updateUserDto.Username;
+            user.Email = updateUserDto.Email;
+
+            
+            if (!string.IsNullOrEmpty(updateUserDto.Password))
+            {
+                user.UserSecurity.Password_hash = HashPassword(updateUserDto.Password);
+                user.UserSecurity.Updated_at = DateTime.UtcNow;
             }
 
             _context.Entry(user).State = EntityState.Modified;
@@ -87,7 +109,7 @@ namespace TraderaBackend.Controllers
             {
                 if (!UserExists(id))
                 {
-                    return NotFound();
+                    return NotFound("User no longer exists.");
                 }
                 else
                 {
