@@ -8,7 +8,7 @@ import { ReactComponent as EonsGreen } from "../assets/eons-green.svg";
 import { ReactComponent as EonsRed } from "../assets/eons-red.svg";
 import { ReactComponent as EonsGrey } from "../assets/eons-grey.svg";
 import { ReactComponent as RandGrey } from "../assets/rand-icon.svg";
-import PriceChart from "../components/PriceChart";
+import PriceChart from "../Components/PriceChart";
 
 function Home() {
 
@@ -347,7 +347,7 @@ function Home() {
             </div>
             <div className="border-container my-account-container">
 
-              <div className="price-open-close">
+              <p className="price-open-close">
                   <p>
                     <span className="icon-wrapper"><EonsGrey/></span>
                     {amountInWallet}
@@ -356,7 +356,7 @@ function Home() {
                     <span className="icon-wrapper"><RandGrey/></span>
                     {randAmountInWallet}
                   </p>
-              </div>
+              </p>
             </div>
             {/* <div className="border-container my-account-container mt-20">
               <div className='column-title text-center'>
