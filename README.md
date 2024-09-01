@@ -223,11 +223,10 @@ Admin Page
 <!-- Final Outcome -->
 ## Final Outcome
 <!-- MOCKUPS -->
-<!-- ### Mockups
-<img src="spynet/src/assets/readmeAssets/Dashboard.jpg" alt="Mockup" style="height: 600px"/>
-<img src="spynet/src/assets/readmeAssets/Login.jpg" alt="Mockup" style="height: 600px"/>
-<img src="spynet/src/assets/readmeAssets/MarketplaceAdmin.jpg" alt="Mockup" style="height: 600px"/>
-<img src="spynet/src/assets/readmeAssets/Warehouses.jpg" alt="Mockup" style="height: 600px"/>
+### Mockups
+![MacBook Air (2022)-2](https://github.com/user-attachments/assets/379c7891-d255-4b4d-80fb-567fe9402767)
+![MacBook Air (2022)](https://github.com/user-attachments/assets/975d3da4-2002-4eaf-bded-f83bc4637d81)
+![MacBook Air (2022)-1](https://github.com/user-attachments/assets/1497356b-89db-46c8-8448-13103ebbbd36)
 
 <br>
 
