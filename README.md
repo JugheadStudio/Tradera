@@ -209,6 +209,7 @@ Admin Page
 <!-- Challenges -->
 <!-- Explain the challenges faced with the project and why you think you faced it or how you think you'll solve it (if not solved), or how you solved it -->
 #### Challenges
+* The biggest challenge of them all was "Internal server error 500: Connections reserved for Superuser" which hounded us on our last day of coding. Essentially we had a 75% chance of clicking on something and it just refusing to work. The only fix I know of is to try again later when more connections are open which doesnt make sense because we were literally doing everything in the demo video from 1 computer.
 * Getting the authentication to even work was a titanic struggle, thats not even mentioning the OTP functionality
 * We struggled in the beginning with committing because of the default connection string and because of how github desktop works
 * Because Ruan is on a mac, every time we wanted to commit there were changes to so many unnecessary backend files that we had to discard every.single.time
@@ -232,7 +233,7 @@ Admin Page
 
 <!-- Video Demonstration -->
 ### Video Demonstration
-**Video Demonstration:** <a href="https://drive.google.com/file/d/1Txd197Wk5i3jK9rxGzuZIU-WJIWO6FcR/view?usp=sharing">Google Drive Link</a> -->
+**Video Demonstration:** <a href="https://drive.google.com/file/d/1RHl_5j6lXsXsVsP9Hpjn7Ya6SG7a6UfB/view?usp=sharing">Google Drive Link</a> -->
 
 <!-- LICENSE -->
 ## License
