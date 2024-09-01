@@ -14,7 +14,9 @@ import { ReactComponent as EonsRed } from '../assets/eons-red.svg';
 import { ReactComponent as EonsGreen } from '../assets/eons-green.svg';
 import { ReactComponent as EonsBlack } from '../assets/eons-black.svg';
 import { ReactComponent as RandBlack } from '../assets/rand-black.svg';
-import DonutChart from '../Components/DonutChart';
+import DonutChart from '../components/DonutChart';
+
+// Components
 
 function Dashboard() {
 
@@ -24,29 +26,8 @@ function Dashboard() {
   const [userInfo, setUserInfo] = useState(null);
   const [amountInWallet, setAmountInWallet] = useState(0);
   const [activeOrNo, setActiveOrNo] = useState(true);
-  const [transactionHistory, setTransactionHistory] = useState();
-  const [totalTransactions, setTotalTransactions] = useState(0);
-  const [currentTier, setCurrentTier] = useState(1);
-  const [currentTierText, setCurrentTierText] = useState("");
 
-  const [upgradeEligible, setUpgradeEligible] = useState(false);
-
-  const [transactionFee, setTransactionFee] = useState(0);
-
-  const [depositAmount, setDepositAmount] = useState(0);
   const [withdrawAmount, setWithdrawAmount] = useState(0);
-
-  const [toAccount, setToAccount] = useState(0);
-  const [transferAmount, setTransferAmount] = useState(0);
-
-  const [showSuccessModal, setShowSuccessModal] = useState(false);
-  const [successMessage, setSuccessMessage] = useState("");
-
-  const upgradeRequirements: Record<number, { eons: number; transactions: number }> = {
-    1: { eons: 5000, transactions: 10 }, // Traveller to Explorer
-    2: { eons: 20000, transactions: 50 }, // Explorer to Voyager
-    3: { eons: 50000, transactions: 100 }, // Voyager to Precursor
-  };
 
   // Fetch user ID from session storage when component mounts
   useEffect(() => {
@@ -83,84 +64,17 @@ function Dashboard() {
   // Withdraw functionality
   const handleWithdraw = async () => {
     try {
-      const response = await axios.post(`http://localhost:5219/api/Transaction/Deposit?accountId=${sessionStorage.getItem("account_id")}&amount=${depositAmount}`);
-      console.log('Deposit successful:', response.data);
-
-      // Set success message and show modal
-      setSuccessMessage("Deposit has been successfully completed!");
-      setShowSuccessModal(true);
-
-    } catch (error) {
-      console.error('Error processing deposit:', error);
-    }
-  };
-
-  // Withdrawals
-  const handleWithdrawSubmit = async () => {
-    try {
-      const response = await axios.post(`http://localhost:5219/api/Transaction/Withdraw?accountId=${sessionStorage.getItem("account_id")}&amount=${withdrawAmount}`);
-      console.log('Withdrawal successful:', response.data);
-
-      // Set success message and show modal
-      setSuccessMessage("Withdrawal has been successfully completed!");
-      setShowSuccessModal(true);
-
+      const response = await axios.post('/api/withdraw', {
+        userId: loggedUserId,
+        amount: withdrawAmount
+      });
     } catch (error) {
       console.error('Error processing withdrawal:', error);
     }
   };
 
-  // Transfers
-  const handleTransferSubmit = async () => {
-    try {
-      let taxedTransferAmount = transferAmount - transactionFee;
 
-      if (transferAmount < transactionFee) {
-        console.error('Transfer amount is less than the transaction fee. Transfer not processed.');
-        return;
-      }
-
-      const response = await axios.post(`http://localhost:5219/api/Transaction/Transfer?fromAccountId=${sessionStorage.getItem("account_id")}&toAccountId=${toAccount}&amount=${taxedTransferAmount}`);
-      console.log('Transfer successful:', response.data);
-
-      // Set success message and show modal
-      setSuccessMessage("Transfer has successfully been completed!");
-      setShowSuccessModal(true);
-
-    } catch (error) {
-      console.error('Error processing transfer:', error);
-    }
-  };
-
-  // Function to handle closing the modal
-  const handleCloseModal = () => {
-    setShowSuccessModal(false);
-    // Optionally reload the data or page if needed
-    window.location.reload();
-  };
-
-  // when you upgrade to a new account tier
-  const handleUpgrade = async () => {
-    try {
-      const response = await axios.put(`http://localhost:5219/api/Account/Upgrade/${sessionStorage.getItem("account_id")}`);
-      console.log('Upgrade successful:', response.data);
-
-      window.location.reload();
-    } catch (error) {
-      console.error('Error upgrading account:', error);
-    }
-  };
-
-  const donutData = {
-    datasets: [{
-      data: [totalTransactions, upgradeRequirements[currentTier].transactions - totalTransactions],
-      backgroundColor: ['#9CCDDC', '#1A191E'],
-      borderWidth: 0,
-      borderRadius: 20,
-    }],
-  };
-
-  // Frontend modal control
+  //front end
   const [accountSettingsShow, setAccountSettingsShow] = useState(false);
   const [withdrawShow, setWithdrawShow] = useState(false);
   const [transferShow, setTransferShow] = useState(false);
@@ -177,18 +91,7 @@ function Dashboard() {
   return (
     <div className='page-background'>
       <Container fluid>
-        {/* Success Modal */}
-        <Modal show={showSuccessModal} onHide={handleCloseModal}>
-          <Modal.Header closeButton>
-            <Modal.Title>Operation Completed</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>{successMessage}</Modal.Body>
-          <Modal.Footer>
-            <Button variant="primary" onClick={handleCloseModal}>
-              OK
-            </Button>
-          </Modal.Footer>
-        </Modal>
+
         <Row>
           <Col className='border-container'>
             <p className='account-status'>
