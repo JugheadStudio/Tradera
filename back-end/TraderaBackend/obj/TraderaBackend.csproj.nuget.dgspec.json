@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "c:\\Users\\anke1\\Desktop\\OpenWindow\\Year 3\\DV 300\\Term 3\\Finale\\Tradera\\back-end\\TraderaBackend\\TraderaBackend.csproj": {}
+    "/Users/jugz/Desktop/DV 300/Term 3/Tradera/back-end/TraderaBackend/TraderaBackend.csproj": {}
   },
   "projects": {
-    "c:\\Users\\anke1\\Desktop\\OpenWindow\\Year 3\\DV 300\\Term 3\\Finale\\Tradera\\back-end\\TraderaBackend\\TraderaBackend.csproj": {
+    "/Users/jugz/Desktop/DV 300/Term 3/Tradera/back-end/TraderaBackend/TraderaBackend.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Users\\anke1\\Desktop\\OpenWindow\\Year 3\\DV 300\\Term 3\\Finale\\Tradera\\back-end\\TraderaBackend\\TraderaBackend.csproj",
+        "projectUniqueName": "/Users/jugz/Desktop/DV 300/Term 3/Tradera/back-end/TraderaBackend/TraderaBackend.csproj",
         "projectName": "TraderaBackend",
-        "projectPath": "c:\\Users\\anke1\\Desktop\\OpenWindow\\Year 3\\DV 300\\Term 3\\Finale\\Tradera\\back-end\\TraderaBackend\\TraderaBackend.csproj",
-        "packagesPath": "C:\\Users\\anke1\\.nuget\\packages\\",
-        "outputPath": "c:\\Users\\anke1\\Desktop\\OpenWindow\\Year 3\\DV 300\\Term 3\\Finale\\Tradera\\back-end\\TraderaBackend\\obj\\",
+        "projectPath": "/Users/jugz/Desktop/DV 300/Term 3/Tradera/back-end/TraderaBackend/TraderaBackend.csproj",
+        "packagesPath": "/Users/jugz/.nuget/packages/",
+        "outputPath": "/Users/jugz/Desktop/DV 300/Term 3/Tradera/back-end/TraderaBackend/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\anke1\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "/Users/jugz/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
@@ -119,7 +119,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.303/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.303/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

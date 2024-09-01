@@ -14,7 +14,7 @@ import { ReactComponent as EonsRed } from '../assets/eons-red.svg';
 import { ReactComponent as EonsGreen } from '../assets/eons-green.svg';
 import { ReactComponent as EonsBlack } from '../assets/eons-black.svg';
 import { ReactComponent as RandBlack } from '../assets/rand-black.svg';
-import DonutChart from '../Components/DonutChart';
+import DonutChart from '../components/DonutChart';
 
 // Components
 

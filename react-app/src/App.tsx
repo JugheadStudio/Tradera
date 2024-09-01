@@ -21,7 +21,7 @@ import Details from './Pages/Details';
 import Home from './Pages/Home';
 import { UserProvider } from './Contexts/UserContext';
 import { useUser } from './Contexts/UserContext';
-import Sidebar from './Components/Sidebar';
+import Sidebar from './components/Sidebar';
 
 function App() {
   return (
