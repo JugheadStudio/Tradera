@@ -245,20 +245,37 @@ function Dashboard() {
       const response = await axios.get(`http://localhost:5219/api/Status/ByAccountId/${sessionStorage.getItem("account_id")}`);
       const statusData = response.data;
   
-      // Get the annual interest rate from the response
-      const annualInterestRate = statusData.annual_interest_rate;
-      
-      if (annualInterestRate !== undefined && amountInWallet > 0) {
-        // Convert the rate to a decimal format by dividing by 100
-        const interestAmount = amountInWallet * (annualInterestRate / 100);
-        
-        console.log(`Calculated Interest: ${interestAmount}`);
+      if (statusData && statusData.annual_interest_rate !== undefined) {
+        const annualInterestRate = statusData.annual_interest_rate;
   
-        // Update state with the new amount after adding the interest
-        setAmountInWallet(prevAmount => prevAmount + interestAmount);
+        if (amountInWallet > 0) {
+          const interestAmount = amountInWallet * (annualInterestRate / 100);
+          const newBalance = amountInWallet + interestAmount;
   
-        setSuccessMessage(`Interest calculated and added to your wallet: ${interestAmount}`);
-        setShowSuccessModal(true);
+          console.log(`Calculated Interest: ${interestAmount}`);
+          
+          // Update the state
+          setAmountInWallet(newBalance);
+  
+          // Send the updated balance to the backend
+          const accountId = sessionStorage.getItem("account_id");
+  
+          // Wrap the balance in an object to match the expected input format
+          await axios.put(`http://localhost:5219/api/Account/UpdateBalance/${accountId}`, {
+            balance: newBalance
+          }, {
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          });
+  
+          setSuccessMessage(`Interest calculated and added to your wallet: ${interestAmount}`);
+          setShowSuccessModal(true);
+        } else {
+          console.error('Invalid amount in wallet:', amountInWallet);
+        }
+      } else {
+        console.error('Annual interest rate is undefined:', statusData);
       }
     } catch (error) {
       console.error('Error fetching interest rate or calculating interest:', error);

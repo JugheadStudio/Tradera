@@ -73,6 +73,19 @@ namespace TraderaBackend.Controllers
             return NoContent();
         }
 
+        [HttpGet("ByAccountId/{accountId}")]
+        public async Task<ActionResult<Status>> GetStatusByAccountId(int accountId)
+        {
+            var account = await _context.Accounts.Include(a => a.Status).FirstOrDefaultAsync(a => a.Account_id == accountId);
+
+            if (account == null || account.Status == null)
+            {
+                return NotFound();
+            }
+
+            return account.Status;
+        }
+
         // POST: api/Status
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]

@@ -131,6 +131,24 @@ namespace TraderaBackend.Controllers
         }
 
 
+        // PUT: api/Account/UpdateBalance/5
+        [HttpPut("UpdateBalance/{id}")]
+        public async Task<IActionResult> UpdateBalance(int id, [FromBody] Account account)
+        {
+            var existingAccount = await _context.Accounts.FindAsync(id);
+            if (existingAccount == null)
+            {
+                return NotFound();
+            }
+
+            existingAccount.Balance = account.Balance;
+
+            _context.Entry(existingAccount).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
         // POST: api/Account
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
