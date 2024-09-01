@@ -50,11 +50,11 @@ namespace TraderaBackend.Controllers
                     {
                         decimal amountChange = transaction.Amount * 0.1m;
 
-                        if (transaction.Transaction_type == "Deposit")
+                        if (transaction.Transaction_type == "Buy")
                         {
                             closePrice += amountChange;
                         }
-                        else if (transaction.Transaction_type == "Withdrawal")
+                        else if (transaction.Transaction_type == "Sell")
                         {
                             closePrice -= amountChange;
                         }
