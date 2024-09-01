@@ -90,15 +90,10 @@ function Dashboard() {
               setCurrentTierText("Voyager");
               console.log("Account status is Voyager.");
               break;
-            case 4:
-              setTransactionFee(0); // Set a default fee for tier 4 to prevent crashes
-              setCurrentTierText("Precursor");
-              console.log("Account status is Precursor.");
-              break;
             default:
               setTransactionFee(12);
-              setCurrentTierText("Unknown Tier");
-              console.log("Account status is Unknown Tier.");
+              setCurrentTierText("Precursor");
+              console.log("Account status is Precursor.");
           }
 
           console.log("Account data fetched successfully");
@@ -123,8 +118,6 @@ function Dashboard() {
       } else {
         setUpgradeEligible(false);
       }
-    } else {
-      setUpgradeEligible(false); // Ensure upgrade eligibility is false for tier 4
     }
   }, [amountInWallet, totalTransactions, currentTier]);
 
@@ -237,7 +230,7 @@ function Dashboard() {
       };
 
       await axios.put(`http://localhost:5219/api/User/${loggedUserId}`, updateUser);
-      
+
       setSuccessMessage("Account settings updated successfully!");
       setShowSuccessModal(true);
       handleAccountSettingsClose();
@@ -246,10 +239,35 @@ function Dashboard() {
     }
   };
 
+  const handleCalculateInterest = async () => {
+    try {
+      // Fetch the user's status to get the Annual_interest_rate
+      const response = await axios.get(`http://localhost:5219/api/Status/ByAccountId/${sessionStorage.getItem("account_id")}`);
+      const statusData = response.data;
+  
+      // Get the annual interest rate from the response
+      const annualInterestRate = statusData.annual_interest_rate;
+      
+      if (annualInterestRate !== undefined && amountInWallet > 0) {
+        // Convert the rate to a decimal format by dividing by 100
+        const interestAmount = amountInWallet * (annualInterestRate / 100);
+        
+        console.log(`Calculated Interest: ${interestAmount}`);
+  
+        // Update state with the new amount after adding the interest
+        setAmountInWallet(prevAmount => prevAmount + interestAmount);
+  
+        setSuccessMessage(`Interest calculated and added to your wallet: ${interestAmount}`);
+        setShowSuccessModal(true);
+      }
+    } catch (error) {
+      console.error('Error fetching interest rate or calculating interest:', error);
+    }
+  };
 
   const donutData = {
     datasets: [{
-      data: [totalTransactions, currentTier < 4 ? upgradeRequirements[currentTier].transactions - totalTransactions : 0],
+      data: [totalTransactions, upgradeRequirements[currentTier].transactions - totalTransactions],
       backgroundColor: ['#9CCDDC', '#1A191E'],
       borderWidth: 0,
       borderRadius: 20,
@@ -493,6 +511,7 @@ function Dashboard() {
               <Button variant="secondary w-100" onClick={handleWithdrawShow} className='mb-3' disabled={!activeOrNo}><i className="fas fa-wallet"></i> Withdraw</Button>
               <Button variant="primary w-100" onClick={handleDepositShow} className='mb-3' disabled={!activeOrNo}><i className="fas fa-money-bill"></i> Deposit</Button>
               <Button variant="primary" className='mb-3 w-100' onClick={handleTransferShow} disabled={!activeOrNo}><i className="fas fa-money-bill-transfer"></i> Transfer</Button>
+              <Button variant="primary" className="mb-3 w-100" onClick={handleCalculateInterest} disabled={!activeOrNo}><i className="fas fa-percent"></i> Calculate Interest</Button>
               <Button variant="tertiary" className="w-100" onClick={handleAccountSettingsShow} disabled={!activeOrNo}><i className="fas fa-sliders"></i>Account Settings</Button>
             </div>
             <br></br>
@@ -508,7 +527,7 @@ function Dashboard() {
                   upgradeEligible={upgradeEligible}
                   onUpgrade={handleUpgrade}
                 />
-                <p className='mt-20 mb-0'>Next Tier {totalTransactions}/{currentTier < 4 ? upgradeRequirements[currentTier].transactions : 0}</p>
+                <p className='mt-20 mb-0'>Next Tier {totalTransactions}/{upgradeRequirements[currentTier].transactions}</p>
               </div>
             </Row>
 
@@ -527,12 +546,12 @@ function Dashboard() {
               <Row>
                 <Col xs={6} className='pl-0'>
                   <label htmlFor='username' className='input-label'>Username</label>
-                  <input 
-                    type='text' 
-                    className='form-control' 
-                    id='accountSettingsUsername' 
+                  <input
+                    type='text'
+                    className='form-control'
+                    id='accountSettingsUsername'
                     value={username}
-                    onChange={(e) => setUsername(e.target.value)} 
+                    onChange={(e) => setUsername(e.target.value)}
                   />
                 </Col>
               </Row>
@@ -540,23 +559,23 @@ function Dashboard() {
               <Row className='mt-20'>
                 <Col xs={6} className='pl-0'>
                   <label htmlFor='email' className='input-label'>Email address</label>
-                  <input 
-                    type='email' 
-                    className='form-control' 
-                    id='accountSettingsEmail' 
+                  <input
+                    type='email'
+                    className='form-control'
+                    id='accountSettingsEmail'
                     value={email}
-                    onChange={(e) => setEmail(e.target.value)} 
+                    onChange={(e) => setEmail(e.target.value)}
                   />
                 </Col>
 
                 <Col xs={6} className='pr-0'>
                   <label htmlFor='password' className='input-label'>Password</label>
-                  <input 
-                    type='password' 
-                    className='form-control' 
-                    id='accountSettingsPassword' 
+                  <input
+                    type='password'
+                    className='form-control'
+                    id='accountSettingsPassword'
                     value={password}
-                    onChange={(e) => setPassword(e.target.value)} 
+                    onChange={(e) => setPassword(e.target.value)}
                   />
                 </Col>
               </Row>
