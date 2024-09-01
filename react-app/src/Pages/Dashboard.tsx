@@ -39,6 +39,9 @@ function Dashboard() {
   const [toAccount, setToAccount] = useState(0);
   const [transferAmount, setTransferAmount] = useState(0);
 
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+
   const upgradeRequirements: Record<number, { eons: number; transactions: number }> = {
     1: { eons: 5000, transactions: 10 }, // Traveller to Explorer
     2: { eons: 20000, transactions: 50 }, // Explorer to Voyager
@@ -175,10 +178,20 @@ function Dashboard() {
       const response = await axios.post(`http://localhost:5219/api/Transaction/Transfer?fromAccountId=${sessionStorage.getItem("account_id")}&toAccountId=${toAccount}&amount=${taxedTransferAmount}`);
       console.log('Transfer successful:', response.data);
 
-      window.location.reload();
+      // Set success message and show modal
+      setSuccessMessage("Transfer has successfully been completed!");
+      setShowSuccessModal(true);
+
     } catch (error) {
       console.error('Error processing transfer:', error);
     }
+  };
+
+  // Function to handle closing the modal
+  const handleCloseModal = () => {
+    setShowSuccessModal(false);
+    // Optionally reload the data or page if needed
+    window.location.reload();
   };
 
   // when you upgrade to a new account tier
@@ -224,7 +237,18 @@ function Dashboard() {
   return (
     <div className='page-background'>
       <Container fluid>
-
+        {/* Success Modal */}
+        <Modal show={showSuccessModal} onHide={handleCloseModal}>
+          <Modal.Header closeButton>
+            <Modal.Title>Transfer completed</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>{successMessage}</Modal.Body>
+          <Modal.Footer>
+            <Button variant="primary" onClick={handleCloseModal}>
+              OK
+            </Button>
+          </Modal.Footer>
+        </Modal>
         <Row>
           <Col className='border-container'>
             <p className='account-status'>
@@ -234,13 +258,13 @@ function Dashboard() {
               </span>
             </p>
             <p className='account-status'>
-              Your Account Id: 
+              Your Account Id:
               <span className="active">
                 {sessionStorage.getItem("account_id")}
               </span>
             </p>
             <p className='account-status'>
-              Your tier: 
+              Your tier:
               <span className="active">
                 {currentTierText}
               </span>
@@ -257,14 +281,14 @@ function Dashboard() {
             <div className='dashboard-balance-card'>
               <div className='cardcontainder'>
                 <div className='d-flex align-item-center'>
-                  <EonsBlack/>
+                  <EonsBlack />
                   <div className='cardbalance'>
                     {amountInWallet}
                   </div>
                 </div>
 
                 <div className='d-flex align-item-center mt-20'>
-                  <RandBlack/>
+                  <RandBlack />
                   <div className='cardbalance'>
                     {randAmountInWallet}
                   </div>
@@ -289,7 +313,7 @@ function Dashboard() {
               </div>
               <div className="transactions-count-red">
                 <p>-25</p>
-                <EonsRed/>
+                <EonsRed />
               </div>
             </div>
 
@@ -305,7 +329,7 @@ function Dashboard() {
               </div>
               <div className="transactions-count-yellow">
                 <p>+25</p>
-                <EonsGreen/>
+                <EonsGreen />
               </div>
             </div>
 
@@ -321,7 +345,7 @@ function Dashboard() {
               </div>
               <div className="transactions-count-red">
                 <p>-55</p>
-                <EonsRed/>
+                <EonsRed />
               </div>
             </div>
 
@@ -341,7 +365,7 @@ function Dashboard() {
               </div>
               <div className='transactions-count-red'>
                 <p>-55</p>
-                <EonsRed/>
+                <EonsRed />
               </div>
             </div>
 
@@ -353,7 +377,7 @@ function Dashboard() {
               </div>
               <div className='transactions-count-yellow'>
                 <p>+25</p>
-                  <EonsGreen/>
+                <EonsGreen />
               </div>
             </div>
 
@@ -365,7 +389,7 @@ function Dashboard() {
               </div>
               <div className='transactions-count-red'>
                 <p>-525</p>
-                <EonsRed/>
+                <EonsRed />
               </div>
             </div>
 
@@ -377,7 +401,7 @@ function Dashboard() {
               </div>
               <div className='transactions-count-yellow'>
                 <p>+25</p>
-                  <EonsGreen/>
+                <EonsGreen />
               </div>
             </div>
 
@@ -389,7 +413,7 @@ function Dashboard() {
               </div>
               <div className='transactions-count-red'>
                 <p>-525</p>
-                <EonsRed/>
+                <EonsRed />
               </div>
             </div>
 
@@ -401,7 +425,7 @@ function Dashboard() {
               </div>
               <div className='transactions-count-yellow'>
                 <p>+25</p>
-                  <EonsGreen/>
+                <EonsGreen />
               </div>
             </div>
 
@@ -413,7 +437,7 @@ function Dashboard() {
               </div>
               <div className='transactions-count-red'>
                 <p>-525</p>
-                <EonsRed/>
+                <EonsRed />
               </div>
             </div>
           </Col>
@@ -432,21 +456,21 @@ function Dashboard() {
             </div>
             <br></br>
 
-          {/* upgrade chart / button */}
+            {/* upgrade chart / button */}
             <Row>
-                <div className='action-title'>
-                  <span className='spesific'>Total</span> <span className='transactions'>Transactions</span>
-                </div>
-                <div className='dashboard-transactions-chart'>
-                  <DonutChart
-                    data={donutData}
-                    upgradeEligible={upgradeEligible}
-                    onUpgrade={handleUpgrade}
-                  />
-                  <p className='mt-20 mb-0'>Next Tier {totalTransactions}/{upgradeRequirements[currentTier].transactions}</p>
-                </div>
+              <div className='action-title'>
+                <span className='spesific'>Total</span> <span className='transactions'>Transactions</span>
+              </div>
+              <div className='dashboard-transactions-chart'>
+                <DonutChart
+                  data={donutData}
+                  upgradeEligible={upgradeEligible}
+                  onUpgrade={handleUpgrade}
+                />
+                <p className='mt-20 mb-0'>Next Tier {totalTransactions}/{upgradeRequirements[currentTier].transactions}</p>
+              </div>
             </Row>
-            
+
           </Col>
 
         </Row>
@@ -465,7 +489,7 @@ function Dashboard() {
                   <input type='text' className='form-control' id='accountSettingsUsername' placeholder='Han Solo' />
                 </Col>
               </Row>
-              
+
               <Row className='mt-20'>
                 <Col xs={6} className='pl-0'>
                   <label htmlFor='email' className='input-label'>Email address</label>
@@ -501,19 +525,19 @@ function Dashboard() {
               <Row>
                 <Col xs={12} className='pl-0 pr-0'>
                   <label htmlFor='withdrawAmount' className='input-label'>Withdraw Amount</label>
-                  <input 
-                    type='number' 
-                    className='form-control' 
-                    id='withdrawAmount' 
-                    placeholder='Enter amount' 
+                  <input
+                    type='number'
+                    className='form-control'
+                    id='withdrawAmount'
+                    placeholder='Enter amount'
                     onChange={(e) => { setWithdrawAmount(parseInt(e.target.value)) }}
-                    />
+                  />
                   <br></br>
-                  <Button variant="primary" 
-                  onClick={() => {
-                    handleWithdrawSubmit();
-                  }}
-                  disabled={!activeOrNo}
+                  <Button variant="primary"
+                    onClick={() => {
+                      handleWithdrawSubmit();
+                    }}
+                    disabled={!activeOrNo}
                   >
                     Withdraw
                   </Button>
@@ -540,11 +564,11 @@ function Dashboard() {
               <Row>
                 <Col xs={12} className='pl-0 pr-0'>
                   <label htmlFor='depositAmount' className='input-label'>Deposit Amount</label>
-                  <input 
-                    type='number' 
-                    className='form-control' 
-                    id='depositAmount' 
-                    placeholder='Enter amount' 
+                  <input
+                    type='number'
+                    className='form-control'
+                    id='depositAmount'
+                    placeholder='Enter amount'
                     onChange={(e) => { setDepositAmount(parseInt(e.target.value)) }}
                   />
                   <br></br>
@@ -585,20 +609,20 @@ function Dashboard() {
                   />
 
                   <label htmlFor='toAccount' className='input-label'>To Account</label>
-                  <input 
-                    type='number' 
-                    className='form-control' 
-                    id='toAccount' 
-                    placeholder='Enter Account Id' 
+                  <input
+                    type='number'
+                    className='form-control'
+                    id='toAccount'
+                    placeholder='Enter Account Id'
                     onChange={(e) => { setToAccount(parseInt(e.target.value)) }}
                   />
 
                   <label htmlFor='transferAmount' className='input-label'>Amount</label>
-                  <input 
-                    type='number' 
-                    className='form-control' 
-                    id='transferAmount' 
-                    placeholder='Enter amount' 
+                  <input
+                    type='number'
+                    className='form-control'
+                    id='transferAmount'
+                    placeholder='Enter amount'
                     onChange={(e) => { setTransferAmount(parseInt(e.target.value)) }}
                   />
                 </Col>
@@ -607,8 +631,8 @@ function Dashboard() {
           </Modal.Body>
 
           <Modal.Footer>
-            <Button variant="primary" 
-              onClick={() => {handleTransferSubmit();}}
+            <Button variant="primary"
+              onClick={() => { handleTransferSubmit(); }}
               disabled={!activeOrNo}
             >
               Send
