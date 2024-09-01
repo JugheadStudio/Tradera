@@ -365,7 +365,7 @@ function Home() {
             </div>
             <div className="border-container my-account-container">
 
-              <p className="price-open-close">
+              <div className="price-open-close">
                   <p>
                     <span className="icon-wrapper"><EonsGrey/></span>
                     {amountInWallet}
@@ -374,7 +374,7 @@ function Home() {
                     <span className="icon-wrapper"><RandGrey/></span>
                     {randAmountInWallet}
                   </p>
-              </p>
+              </div>
             </div>
             {/* <div className="border-container my-account-container mt-20">
               <div className='column-title text-center'>
