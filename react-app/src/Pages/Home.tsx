@@ -43,7 +43,7 @@ function Home() {
   
   const [currentSellAmount, setCurrentSellAmount] = useState(0);
 
-  const [currentPrice, setCurrentPrice] = useState(100);
+  const [currentPrice, setCurrentPrice] = useState(0);
 
   const [buyShow, setBuyShow] = useState(false);
   const [sellShow, setSellShow] = useState(false);
@@ -159,8 +159,10 @@ function Home() {
     const handleBuyRequest = async () => {
       try {
         let TotalBuyPrice = 0;
-        TotalBuyPrice = currentBuyAmount * currentPrice;
+
+        TotalBuyPrice = Math.round(currentBuyAmount * priceData.currentPrice);
         console.log(TotalBuyPrice);
+        
         const response = await axios.post(`http://localhost:5219/api/Transaction/Buy?accountId=${sessionStorage.getItem("account_id")}&randAmount=${TotalBuyPrice}&eonAmount=${currentBuyAmount}`);
         console.log('Buy request successful:', response.data);
         window.location.reload();
@@ -176,10 +178,13 @@ function Home() {
     const handleSellRequest = async () => {
       try {
         let TotalSellPrice = 0;
-        TotalSellPrice = currentSellAmount * currentPrice;
+
+        TotalSellPrice = Math.round(currentSellAmount * priceData.currentPrice);
         console.log(TotalSellPrice);
+
         const response = await axios.post(`http://localhost:5219/api/Transaction/Sell?accountId=${sessionStorage.getItem("account_id")}&randAmount=${TotalSellPrice}&eonAmount=${currentSellAmount}`);
         console.log('Sell request successful:', response.data);
+        
         window.location.reload();
       } catch (error) {
         console.error('Error buying:', error);
@@ -313,25 +318,6 @@ function Home() {
                   </p>
               </div>
             </div>
-            {/* <div className="border-container my-account-container mt-20">
-              <div className='column-title text-center'>
-                <span className='spesific'>My</span> <span className='transactions'>Account</span>
-              </div>
-
-              <div className="price-open-close">
-                <p>
-                  <span className="icon-wrapper"><EonsGrey/></span>
-                  25,000
-                </p>
-                <p>
-                  <span className="icon-wrapper"><RandGrey/></span>
-                  105,000
-                </p>
-
-                <button onClick={handleWithdrawShow}>Withdraw</button>
-                <button onClick={handlePaymentShow}>deposit</button>
-              </div>
-            </div> */}
 
           </Col>
         </Row>
@@ -377,13 +363,13 @@ function Home() {
                 </Col>
                 <Col xs={6} className="pr-0">
                   <label htmlFor='currentPrice' className='input-label'>Current Buy Price</label>
-                  <input type='text' className='form-control' id='buyCurrentPrice' placeholder='100' readOnly />
+                  <input type='text' className='form-control' id='buyCurrentPrice' value={priceData.currentPrice} readOnly />
                 </Col>
               </Row>
 
               <Row className="mt-20">
                 <Col xs={12} className="pl-0 text-end">
-                  <h3><strong>Total:</strong> R{currentBuyAmount * currentPrice}</h3>
+                  <h3><strong>Total:</strong> R{currentBuyAmount * priceData.currentPrice}</h3>
                 </Col>
               </Row>
               
@@ -443,13 +429,13 @@ function Home() {
 
                 <Col xs={6} className="pr-0">
                   <label htmlFor='currentPrice' className='input-label'>Current Sell Price</label>
-                  <input type='text' className='form-control' id='buyCurrentPrice' placeholder='100' readOnly />
+                  <input type='text' className='form-control' id='buyCurrentPrice' value={priceData.currentPrice} readOnly />
                 </Col>
               </Row>
 
               <Row className="mt-20">
                 <Col xs={12} className="pl-0 text-end">
-                  <h3><strong>Total:</strong> R{currentSellAmount * currentPrice}</h3>
+                  <h3><strong>Total:</strong> R{currentSellAmount * priceData.currentPrice}</h3>
                 </Col>
               </Row>
 

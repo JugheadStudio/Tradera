@@ -90,10 +90,15 @@ function Dashboard() {
               setCurrentTierText("Voyager");
               console.log("Account status is Voyager.");
               break;
-            default:
-              setTransactionFee(12);
+            case 4:
+              setTransactionFee(0); // Set a default fee for tier 4 to prevent crashes
               setCurrentTierText("Precursor");
               console.log("Account status is Precursor.");
+              break;
+            default:
+              setTransactionFee(12);
+              setCurrentTierText("Unknown Tier");
+              console.log("Account status is Unknown Tier.");
           }
 
           console.log("Account data fetched successfully");
@@ -118,6 +123,8 @@ function Dashboard() {
       } else {
         setUpgradeEligible(false);
       }
+    } else {
+      setUpgradeEligible(false); // Ensure upgrade eligibility is false for tier 4
     }
   }, [amountInWallet, totalTransactions, currentTier]);
 
@@ -242,7 +249,7 @@ function Dashboard() {
 
   const donutData = {
     datasets: [{
-      data: [totalTransactions, upgradeRequirements[currentTier].transactions - totalTransactions],
+      data: [totalTransactions, currentTier < 4 ? upgradeRequirements[currentTier].transactions - totalTransactions : 0],
       backgroundColor: ['#9CCDDC', '#1A191E'],
       borderWidth: 0,
       borderRadius: 20,
@@ -501,7 +508,7 @@ function Dashboard() {
                   upgradeEligible={upgradeEligible}
                   onUpgrade={handleUpgrade}
                 />
-                <p className='mt-20 mb-0'>Next Tier {totalTransactions}/{upgradeRequirements[currentTier].transactions}</p>
+                <p className='mt-20 mb-0'>Next Tier {totalTransactions}/{currentTier < 4 ? upgradeRequirements[currentTier].transactions : 0}</p>
               </div>
             </Row>
 
